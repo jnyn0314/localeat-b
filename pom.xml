@@ -50,11 +50,12 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- 일단 테스트용으로 DB h2로 했습니다. 향후 ORACLE로 수정할 예정입니다. -->
 		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<scope>runtime</scope>
+			<groupId>com.oracle.database.jdbc</groupId>
+			<artifactId>ojdbc11</artifactId>
+			<version>21.5.0.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/libs/ojdbc11.jar</systemPath>
 		</dependency>
 	</dependencies>
 
