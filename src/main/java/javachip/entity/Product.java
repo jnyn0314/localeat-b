@@ -6,6 +6,7 @@
 */
 package javachip.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -23,7 +24,7 @@ import java.util.Date;
 public class Product {
 
     @Id
-    private int product_id;
+    private Long id;
 
     private String product_name;
 
@@ -39,7 +40,8 @@ public class Product {
 
     private String local;
 
-    private String product_grade;
+
+    private String productgrade;
 
     private Integer delivery_fee;
 
@@ -48,13 +50,7 @@ public class Product {
     // private Subscription subscription;
     // private GroupBuy groupBuy;
 
-    private Integer maxParticipants;
+    private Integer maxparticipants;
 
-    private String images;
 
-    private String order_items;
-
-    private Date create_at;
-
-    private Integer stock_quantity;
 }
