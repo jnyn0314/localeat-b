@@ -46,7 +46,7 @@ public class OrderItem {
     @JoinColumn(name = "order_id", nullable = false)
     private Orders order;
 
-    /** 주문자(사용자) ID */
-    @Column(name = "user_id", nullable = false, length = 20)
-    private String userId;
+//    /** 주문자(사용자) ID */
+//    @Column(name = "id", nullable = false, length = 20)
+//    private String userId;
 }

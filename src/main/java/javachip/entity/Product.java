@@ -40,17 +40,17 @@ public class Product {
 
     private String local;
 
-
-    private String productgrade;
+    private String product_grade;
 
     private Integer delivery_fee;
 
     private String description;
 
-    // private Subscription subscription;
-    // private GroupBuy groupBuy;
+    //private Subscription subscription;
 
-    private Integer maxparticipants;
+    //private GroupBuy groupBuy;
+
+    private Integer max_participants;
 
 
 }
