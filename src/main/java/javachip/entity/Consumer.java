@@ -6,8 +6,8 @@ import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "Consumer")
-@PrimaryKeyJoinColumn(name = "user_id")
+@Table(name = "CONSUMER")
+@PrimaryKeyJoinColumn(name = "ID")
 public class Consumer extends User {
 
     private String birth;
