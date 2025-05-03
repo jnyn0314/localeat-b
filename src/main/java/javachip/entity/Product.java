@@ -3,6 +3,11 @@
 파일설명 : Product 엔티티.
 작성자 : 정여진
 기간 : 2025-05.01.
+*//*
+파일명 : Product.java
+파일설명 : Product 엔티티.
+작성자 : 정여진
+기간 : 2025-05.01.
 */
 package javachip.entity;
 
