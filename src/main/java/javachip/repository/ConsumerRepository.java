@@ -1,6 +1,6 @@
 package javachip.repository;
 
-import com.yourproject.entity.Consumer;
+import javachip.entity.Consumer;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

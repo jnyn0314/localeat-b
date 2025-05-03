@@ -1,6 +1,6 @@
 package javachip.repository;
 
-import com.yourproject.entity.User;
+import javachip.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

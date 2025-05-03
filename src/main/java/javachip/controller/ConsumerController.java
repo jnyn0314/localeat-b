@@ -1,7 +1,7 @@
 package javachip.controller;
 
 import javachip.entity.Consumer;
-import javachip.service.ConsumerService;
+import javachip.Service.ConsumerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +16,7 @@ public class ConsumerController {
 
     private final ConsumerService consumerService;
 
-    @PostMapping("/register")
+    @PostMapping("/signUp/consumer/form")
     public ResponseEntity<Consumer> register(@RequestBody Consumer consumer) {
         Consumer registered = consumerService.registerConsumer(consumer);
         return ResponseEntity.ok(registered);

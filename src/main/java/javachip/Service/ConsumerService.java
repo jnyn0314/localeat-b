@@ -1,4 +1,4 @@
-package javachip.service;
+package javachip.Service;
 
 import javachip.entity.Consumer;
 import javachip.repository.ConsumerRepository;

@@ -1,7 +1,7 @@
 package javachip.repository;
 
 
-import com.yourproject.entity.Seller;
+import javachip.entity.Seller;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

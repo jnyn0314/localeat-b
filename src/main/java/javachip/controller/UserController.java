@@ -1,7 +1,7 @@
 package javachip.controller;
 
 import javachip.entity.User;
-import javachip.service.UserService;
+import javachip.Service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +16,7 @@ public class UserController {
     private final UserService userService;
 
     // 회원가입
-    @PostMapping("/register")
+    @PostMapping("/signUp")
     public ResponseEntity<User> register(@RequestBody User user) {
         User registered = userService.registerUser(user);
         return ResponseEntity.ok(registered);
@@ -28,6 +28,11 @@ public class UserController {
         Optional<User> user = userService.login(userId, password);
         return user.map(u -> ResponseEntity.ok("로그인 성공: " + u.getName()))
                 .orElse(ResponseEntity.status(401).body("로그인 실패"));
+    }
+
+    @GetMapping("/check-id")
+    public ResponseEntity<Boolean> checkUserId(@RequestParam String userId) {
+        return ResponseEntity.ok(userService.checkUserIdDuplicate(userId));
     }
 
     // 사용자 조회

@@ -1,4 +1,4 @@
-package javachip.service;
+package javachip.Service;
 
 import javachip.entity.User;
 import javachip.repository.UserRepository;
@@ -31,6 +31,10 @@ public class UserService {
     public Optional<User> login(String userId, String rawPassword) {
         return userRepository.findByUserId(userId)
                 .filter(user -> user.getPassword().equals(rawPassword)); // 실제 서비스에서는 해싱된 비밀번호 비교
+    }
+
+    public boolean checkUserIdDuplicate(String userId) {
+        return userRepository.existsByUserId(userId);
     }
 
     // 사용자 조회
