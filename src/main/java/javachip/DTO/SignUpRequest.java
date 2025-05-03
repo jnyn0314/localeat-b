@@ -1,36 +1,17 @@
-/*
-    파일명 : User.java
-    파일설명 : User 테이블 엔티티
-    작성자 : 김소망
-    기간 : 2025-05.03.
-*/
-package javachip.entity;
+package javachip.DTO;
 
 
-import jakarta.persistence.*;
+public class SignUpRequest {
 
-import javax.management.relation.Role;
-
-@Entity
-@Inheritance(strategy = InheritanceType.JOINED)
-@Table(name = "User")
-public abstract class User {
-    @Id
-    @Column(name = "user_id")
     private String userId;
-
     private String password;
     private String name;
     private String phone;
     private String email;
     private String address;
-    private String local;
-
-    @Enumerated(EnumType.STRING)
-    private Role role;
-
-    @Lob
-    private String notifications;
+    private String birth;
+    private String role;  // CONSUMER (String으로 받음)
+    private String local; // 지역명 (예: 서울/경기/인천)
 
     public String getUserId() {
         return userId;
@@ -80,27 +61,27 @@ public abstract class User {
         this.address = address;
     }
 
+    public String getBirth() {
+        return birth;
+    }
+
+    public void setBirth(String birth) {
+        this.birth = birth;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     public String getLocal() {
         return local;
     }
 
     public void setLocal(String local) {
         this.local = local;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(UserRole role) {
-        this.role = role;
-    }
-
-    public String getNotifications() {
-        return notifications;
-    }
-
-    public void setNotifications(String notifications) {
-        this.notifications = notifications;
     }
 }

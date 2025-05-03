@@ -9,14 +9,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/signUp")
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
 
     // 회원가입
-    @PostMapping("/signUp")
+    @PostMapping("/consumer/form")
     public ResponseEntity<User> register(@RequestBody User user) {
         User registered = userService.registerUser(user);
         return ResponseEntity.ok(registered);
@@ -41,11 +41,5 @@ public class UserController {
         return userService.getUserById(userId)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
-    }
-
-    // 이메일 중복 확인
-    @GetMapping("/check-email")
-    public ResponseEntity<Boolean> checkEmail(@RequestParam String email) {
-        return ResponseEntity.ok(userService.checkEmailDuplicate(email));
     }
 }
