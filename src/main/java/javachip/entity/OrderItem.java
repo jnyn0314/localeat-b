@@ -21,7 +21,7 @@ public class OrderItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int order_item_id;
+    private int id;
 
     @Column(nullable = false)
     private int quantity;

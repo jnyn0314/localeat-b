@@ -1,15 +1,12 @@
 /*
 파일명 : Product.java
-파일설명 : Product 테이블 엔티티
+파일설명 : Product 엔티티.
 작성자 : 정여진
 기간 : 2025-05.01.
 */
 package javachip.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
@@ -24,8 +21,11 @@ import java.util.Date;
 public class Product {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_seq_gen")
+    @SequenceGenerator(name = "product_seq_gen", sequenceName = "PRODUCT_SEQ", allocationSize = 1)
     private Long id;
 
+    @Column(name = "product_name", nullable = false, length = 100)
     private String product_name;
 
     private Integer price;
@@ -36,21 +36,27 @@ public class Product {
 
     private Boolean is_subscription;
 
-    private boolean is_group_buy;
+    private Boolean is_group_buy;
 
     private String local;
 
-
-    private String productgrade;
+    private String product_grade;
 
     private Integer delivery_fee;
 
     private String description;
 
-    // private Subscription subscription;
-    // private GroupBuy groupBuy;
+    private Long subscription_id;
 
-    private Integer maxparticipants;
+    private Long groupbuy_id;
 
+    private Integer max_participants;
 
+    private Long alarm_id;
+
+    private Date create_at;
+
+    private Integer stock_quantity;
+
+    private String seller_id;
 }

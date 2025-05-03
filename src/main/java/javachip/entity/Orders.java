@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
 @Builder
 public class Orders {
     @Id
-    private Long order_id;
+    private Long id;
 
     private LocalDateTime order_at;
 
