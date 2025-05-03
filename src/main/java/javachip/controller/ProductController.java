@@ -13,6 +13,10 @@ import javachip.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import javachip.entity.LocalType;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/products")
@@ -22,7 +26,7 @@ public class ProductController {
     private final ProductRepository productRepository;
     private final ProductService productService;
 
-    @GetMapping("/{id}")
+    @GetMapping("/{id:[\\d]+}")
     public ResponseEntity<Product> getProductById(@PathVariable Long id) {
         return productRepository.findById(id)
                 .map(ResponseEntity::ok)
