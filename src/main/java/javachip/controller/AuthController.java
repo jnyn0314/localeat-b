@@ -4,6 +4,7 @@ import javachip.DTO.LoginRequest;
 import javachip.DTO.LoginResponse;
 import javachip.DTO.SignUpRequest;
 import javachip.Service.AuthService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/signUp/consumer")
 public class AuthController {
 
     private final AuthService authService;
@@ -20,10 +21,14 @@ public class AuthController {
         this.authService = authService;
     }
 
-    @PostMapping("/signup")
+    @PostMapping("/form")
     public ResponseEntity<String> signup(@RequestBody SignUpRequest request) {
-        authService.registerConsumer(request);
-        return ResponseEntity.ok("회원가입 성공");
+        try {
+            authService.registerConsumer(request);
+            return ResponseEntity.ok("회원가입 성공");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("회원가입 실패: " + e.getMessage());
+        }
     }
 
     @PostMapping("/login")
