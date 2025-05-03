@@ -23,7 +23,14 @@ import java.util.Date;
 public class Product {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) //김소망이 추가함 product_id 기본키 설정하려고
+    @Column(name = "product_id")
     private int product_id;
+
+
+    @ManyToOne(fetch = FetchType.LAZY) //김소망이 추가함
+    @JoinColumn(name = "seller_id") //김소망이 추가함
+    private Seller seller; //김소망이 추가함
 
     private String product_name;
 
@@ -57,4 +64,8 @@ public class Product {
     private Date create_at;
 
     private Integer stock_quantity;
+
+
+
+
 }
