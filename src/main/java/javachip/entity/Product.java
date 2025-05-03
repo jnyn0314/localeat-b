@@ -6,9 +6,7 @@
 */
 package javachip.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
@@ -23,7 +21,8 @@ import java.util.Date;
 public class Product {
 
     @Id
-    private int product_id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // 또는 다른 전략
+    private Long id;
 
     private String product_name;
 
@@ -57,4 +56,8 @@ public class Product {
     private Date create_at;
 
     private Integer stock_quantity;
+
+
+
+
 }
