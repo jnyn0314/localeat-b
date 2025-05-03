@@ -9,5 +9,4 @@ class LocaleatApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
 }
