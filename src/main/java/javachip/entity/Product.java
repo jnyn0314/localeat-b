@@ -28,7 +28,6 @@ public class Product {
 
     @ManyToOne(fetch = FetchType.LAZY) //김소망이 추가함
     @JoinColumn(name = "seller_id") //김소망이 추가함
-    private Seller seller; //김소망이 추가함
 
     private String product_name;
 

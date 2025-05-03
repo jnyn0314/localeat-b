@@ -27,7 +27,7 @@ public abstract class User {
     private String local;
 
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private UserRole role;
 
     @Lob
     private String notifications;
@@ -88,7 +88,7 @@ public abstract class User {
         this.local = local;
     }
 
-    public Role getRole() {
+    public UserRole getRole() {
         return role;
     }
 

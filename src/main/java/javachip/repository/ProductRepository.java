@@ -1,7 +1,6 @@
 package javachip.repository;
 
 import javachip.entity.Product;
-import javachip.entity.Seller;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,7 +14,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findByProductNameContainingIgnoreCase(String productName);
 
     // 특정 판매자의 모든 상품 찾기 (Seller 객체 이용)
-    List<Product> findBySeller(Seller seller);
 
     // 특정 판매자 ID의 모든 상품 찾기 (Seller의 ID 이용)
     List<Product> findBySellerUserId(String sellerUserId);
