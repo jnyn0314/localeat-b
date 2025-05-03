@@ -6,6 +6,7 @@ import javachip.DTO.SignUpRequest;
 import javachip.entity.Consumer;
 import javachip.entity.UserRole;
 import javachip.repository.ConsumerRepository;
+import javachip.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,10 +15,12 @@ public class AuthService {
 
     private final ConsumerRepository consumerRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
 
-    public AuthService(ConsumerRepository consumerRepository, PasswordEncoder passwordEncoder) {
+    public AuthService(ConsumerRepository consumerRepository, PasswordEncoder passwordEncoder, UserRepository userRepository) {
         this.consumerRepository = consumerRepository;
         this.passwordEncoder = passwordEncoder;
+        this.userRepository = userRepository;
     }
 
     public void registerConsumer(SignUpRequest request) {
@@ -45,6 +48,11 @@ public class AuthService {
 
         return new LoginResponse(user.getUserId(), user.getName());
     }
+
+    public boolean isUserIdDuplicate(String userId) {
+        return userRepository.existsByUserId(userId);
+    }
+
 }
 
 

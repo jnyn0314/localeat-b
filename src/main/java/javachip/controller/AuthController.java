@@ -6,19 +6,23 @@ import javachip.DTO.SignUpRequest;
 import javachip.Service.AuthService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/signUp/consumer")
+@CrossOrigin(origins = "http://localhost:3000")
 public class AuthController {
 
     private final AuthService authService;
 
     public AuthController(AuthService authService) {
         this.authService = authService;
+    }
+
+    @GetMapping("/check-id")
+    public ResponseEntity<Boolean> checkUserIdDuplicate(@RequestParam String userId) {
+        boolean isDuplicate = authService.isUserIdDuplicate(userId);
+        return ResponseEntity.ok(isDuplicate);
     }
 
     @PostMapping("/form")
