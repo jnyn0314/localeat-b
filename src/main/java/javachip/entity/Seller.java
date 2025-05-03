@@ -17,7 +17,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @SuperBuilder
-// @DiscriminatorValue("1") // 만약 User 엔티티에 @DiscriminatorColumn을 사용했다면, 해당 값 지정
+@DiscriminatorValue("SELLER")
 public class Seller extends User {
 
     @Column(name = "business_id", nullable = false, length = 30)
@@ -29,22 +29,4 @@ public class Seller extends User {
 
     // Lombok @SuperBuilder를 사용하면 부모 필드를 포함하는 빌더 생성
 
-
-    public String getBusinessId() {
-        return businessId;
-    }
-
-    public void setBusinessId(String businessId) {
-        this.businessId = businessId;
-    }
-
-
-    //이거
-    public List<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(List<Product> products) {
-        this.products = products;
-    }
 }

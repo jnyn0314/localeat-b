@@ -15,7 +15,7 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @NoArgsConstructor
 @SuperBuilder
-// @DiscriminatorValue("0") // 만약 User 엔티티에 @DiscriminatorColumn을 사용했다면, 해당 값 지정
+@DiscriminatorValue("CONSUMER")
 public class Consumer extends User {
 
     @Column(name = "birth", nullable = false, length = 20)
@@ -28,19 +28,4 @@ public class Consumer extends User {
 
     // Lombok @SuperBuilder를 사용하면 부모 필드를 포함하는 빌더 생성
 
-    public String getBirth() {
-        return birth;
-    }
-
-    public void setBirth(String birth) {
-        this.birth = birth;
-    }
-
-    public Cart getCart() {
-        return cart;
-    }
-
-    public void setCart(Cart cart) {
-        this.cart = cart;
-    }
 }
