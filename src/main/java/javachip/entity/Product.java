@@ -41,11 +41,11 @@ public class Product {
 
     private Boolean is_subscription;
 
-    private Boolean is_group_buy;
+    @Enumerated(EnumType.STRING)
+    private LocalType  local;
 
-    private String local;
-
-    private String product_grade;
+    @Enumerated(EnumType.STRING)
+    private GradeBOption product_grade;
 
     private Integer delivery_fee;
 
@@ -53,7 +53,8 @@ public class Product {
 
     private Long subscription_id;
 
-    private Long groupbuy_id;
+    @Enumerated(EnumType.ORDINAL)
+    private GroupBuyOption is_group_buy;
 
     private Integer max_participants;
 
@@ -64,4 +65,7 @@ public class Product {
     private Integer stock_quantity;
 
     private String seller_id;
+
 }
+// 안한 값들 몇개 있어요
+// 그.. 배송료?이런거.
