@@ -12,8 +12,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder; // 상속 관계 빌더 사용 시 필요
-import javachip.enums.UserRole;
-import javachip.enums.LocalType;
 
 @Entity
 @Table(name = "\"User\"") // Oracle에서 대소문자 구분 테이블 이름 사용 시 따옴표 필요

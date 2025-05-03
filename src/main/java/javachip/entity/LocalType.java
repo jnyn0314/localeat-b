@@ -1,4 +1,4 @@
-package javachip.enums;
+package javachip.entity;
 
 public enum LocalType {
     SEOUL,
