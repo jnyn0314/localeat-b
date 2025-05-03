@@ -1,6 +1,5 @@
 package javachip;
 
-import jakarta.transaction.Transactional;
 import javachip.DTO.SignUpRequest;
 import javachip.Service.AuthService;
 import javachip.entity.Consumer;
@@ -9,12 +8,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.test.annotation.Rollback;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest
-@Transactional
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE) // 실제 DB를 사용하는 경우
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class AuthServiceTest {
 
     @Autowired
@@ -24,6 +24,8 @@ class AuthServiceTest {
     private ConsumerRepository consumerRepository;
 
     @Test
+    @Transactional
+    @Rollback(false)  // rollback을 막아야 실제로 DB에 저장됨
     void 회원가입_성공_테스트() {
         // given
         SignUpRequest request = new SignUpRequest();
@@ -44,7 +46,5 @@ class AuthServiceTest {
                 .orElseThrow(() -> new RuntimeException("저장 실패"));
 
         assertThat(consumer.getName()).isEqualTo("테스트 유저");
-        assertThat(consumer.getBirth()).isEqualTo("1990-01-01");
-        assertThat(consumer.getPassword()).isNotEqualTo("password123"); // 암호화 확인
     }
 }

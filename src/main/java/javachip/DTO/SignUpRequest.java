@@ -2,16 +2,14 @@ package javachip.DTO;
 
 
 public class SignUpRequest {
-
     private String userId;
     private String password;
     private String name;
     private String phone;
     private String email;
     private String address;
+    private String local;
     private String birth;
-    private String role;  // CONSUMER (String으로 받음)
-    private String local; // 지역명 (예: 서울/경기/인천)
 
     public String getUserId() {
         return userId;
@@ -61,27 +59,19 @@ public class SignUpRequest {
         this.address = address;
     }
 
-    public String getBirth() {
-        return birth;
-    }
-
-    public void setBirth(String birth) {
-        this.birth = birth;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
     public String getLocal() {
         return local;
     }
 
     public void setLocal(String local) {
         this.local = local;
+    }
+
+    public String getBirth() {
+        return birth;
+    }
+
+    public void setBirth(String birth) {
+        this.birth = birth;
     }
 }

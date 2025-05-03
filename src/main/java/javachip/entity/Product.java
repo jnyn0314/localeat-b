@@ -21,13 +21,8 @@ import java.util.Date;
 public class Product {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) //김소망이 추가함 product_id 기본키 설정하려고
-    @Column(name = "product_id")
-    private int product_id;
-
-
-    @ManyToOne(fetch = FetchType.LAZY) //김소망이 추가함
-    @JoinColumn(name = "seller_id") //김소망이 추가함
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // 또는 다른 전략
+    private Long id;
 
     private String product_name;
 

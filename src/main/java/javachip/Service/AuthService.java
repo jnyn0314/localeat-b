@@ -6,18 +6,19 @@ import javachip.DTO.SignUpRequest;
 import javachip.entity.Consumer;
 import javachip.entity.UserRole;
 import javachip.repository.ConsumerRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
 public class AuthService {
 
     private final ConsumerRepository consumerRepository;
     private final PasswordEncoder passwordEncoder;
+
+    public AuthService(ConsumerRepository consumerRepository, PasswordEncoder passwordEncoder) {
+        this.consumerRepository = consumerRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     public void registerConsumer(SignUpRequest request) {
         Consumer consumer = new Consumer();
@@ -36,13 +37,14 @@ public class AuthService {
 
     public LoginResponse login(LoginRequest request) {
         Consumer user = consumerRepository.findById(request.getUserId())
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+                .orElseThrow(() -> new RuntimeException("해당 사용자가 존재하지 않습니다."));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new BadCredentialsException("Invalid credentials");
+            throw new RuntimeException("비밀번호가 일치하지 않습니다.");
         }
 
         return new LoginResponse(user.getUserId(), user.getName());
     }
 }
+
 

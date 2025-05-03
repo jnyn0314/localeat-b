@@ -13,10 +13,10 @@ import javax.management.relation.Role;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-@Table(name = "User")
+@Table(name = "Users")
 public abstract class User {
     @Id
-    @Column(name = "user_id")
+    @Column(name = "ID")
     private String userId;
 
     private String password;
