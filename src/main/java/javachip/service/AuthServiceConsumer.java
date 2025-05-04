@@ -1,4 +1,4 @@
-package javachip.Service;
+package javachip.service;
 
 import javachip.DTO.LoginRequest;
 import javachip.DTO.LoginResponse;

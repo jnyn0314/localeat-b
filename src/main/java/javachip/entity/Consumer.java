@@ -12,7 +12,7 @@ public class Consumer extends User {
 
     private String birth;
 
-    @Column(name = "cart_id")
+    @Column(name = "cartId")
     private Long cartId;
 
     public String getBirth() {

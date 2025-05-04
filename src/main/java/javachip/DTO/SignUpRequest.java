@@ -10,7 +10,7 @@ public class SignUpRequest {
     private String address;
     private String local;
     private String birth;
-    private String business_id;
+    private String businessId;
 
     public String getUserId() {
         return userId;
@@ -76,11 +76,11 @@ public class SignUpRequest {
         this.birth = birth;
     }
 
-    public String getBusiness_id() {
-        return business_id;
+    public String getBusinessId() {
+        return businessId;
     }
 
-    public void setBusiness_id(String business_id) {
-        this.business_id = business_id;
+    public void setBusinessId(String businessId) {
+        this.businessId = businessId;
     }
 }
