@@ -1,4 +1,4 @@
-package javachip.Service;
+package javachip.service;
 
 import javachip.entity.UserRole;
 import org.hibernate.usertype.UserType;
@@ -9,11 +9,11 @@ import java.util.Map;
 
 @Component
 public class AuthServiceFactory {
-    private final Map<UserRole, AuthService> serviceMap;
+    private final Map<UserRole, javachip.service.AuthService> serviceMap;
 
     public AuthServiceFactory(
-            @Qualifier("AuthServiceConsumer") AuthService consumerService,
-            @Qualifier("AuthServiceSeller") AuthService sellerService
+            @Qualifier("AuthServiceConsumer") javachip.service.AuthService consumerService,
+            @Qualifier("AuthServiceSeller") javachip.service.AuthService sellerService
     ) {
         this.serviceMap = Map.of(
                 UserRole.CONSUMER, consumerService,

@@ -1,4 +1,4 @@
-package javachip.Service;
+package javachip.service;
 
 import javachip.DTO.LoginRequest;
 import javachip.DTO.LoginResponse;
@@ -12,7 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service("AuthServiceConsumer")
-public class AuthServiceConsumer implements AuthService{
+public class AuthServiceConsumer implements javachip.service.AuthService {
 
     private final ConsumerRepository consumerRepository;
     private final PasswordEncoder passwordEncoder;
