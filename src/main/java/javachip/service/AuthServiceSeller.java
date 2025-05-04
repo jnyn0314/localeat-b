@@ -33,7 +33,7 @@ public class AuthServiceSeller implements AuthService {
         seller.setEmail(request.getEmail());
         seller.setAddress(request.getAddress());
         seller.setLocal(request.getLocal());
-        seller.setBusiness_id(request.getBusiness_id());
+        seller.setBusinessId(request.getBusinessId());
         seller.setRole(UserRole.SELLER);
 
         sellerRepository.save(seller);

@@ -1,7 +1,6 @@
 package javachip.service;
 
 import javachip.entity.UserRole;
-import org.hibernate.usertype.UserType;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
