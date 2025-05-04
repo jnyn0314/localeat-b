@@ -1,9 +1,9 @@
 package javachip;
 
 import javachip.DTO.SignUpRequest;
-import javachip.Service.AuthServiceConsumer;
-import javachip.entity.Consumer;
-import javachip.repository.ConsumerRepository;
+import javachip.Service.AuthServiceSeller;
+import javachip.entity.Seller;
+import javachip.repository.SellerRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -15,13 +15,13 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class AuthServiceTest {
+class AuthServiceSellerTest {
 
     @Autowired
-    private AuthServiceConsumer authService;
+    private AuthServiceSeller authServiceSeller;
 
     @Autowired
-    private ConsumerRepository consumerRepository;
+    private SellerRepository sellerRepository;
 
     @Test
     @Transactional
@@ -29,22 +29,22 @@ class AuthServiceTest {
     void 회원가입_성공_테스트() {
         // given
         SignUpRequest request = new SignUpRequest();
-        request.setUserId("testuser");
-        request.setPassword("password123");
-        request.setName("테스트 유저");
+        request.setUserId("asgvcx");
+        request.setPassword("1234");
+        request.setName("김소망");
         request.setPhone("010-1234-5678");
         request.setEmail("test@example.com");
-        request.setAddress("서울시 어딘가");
-        request.setLocal("서울");
-        request.setBirth("1990-01-01");
+        request.setAddress("인천 어딘가");
+        request.setLocal("인천");
+        request.setBusiness_id("1990-01-01");
 
         // when
-        authService.registerConsumer(request);
+        authServiceSeller.registerSeller(request);
 
         // then
-        Consumer consumer = consumerRepository.findById("testuser")
+        Seller seller = sellerRepository.findById("asgvcx")
                 .orElseThrow(() -> new RuntimeException("저장 실패"));
 
-        assertThat(consumer.getName()).isEqualTo("테스트 유저");
+        assertThat(seller.getName()).isEqualTo("김소망");
     }
 }
