@@ -35,12 +35,6 @@ public class AuthControllerSeller {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("회원가입 실패: " + e.getMessage());
         }
     }
-
-    @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
-        LoginResponse response = authServiceSeller.login(request);
-        return ResponseEntity.ok(response);
-    }
 }
 
 

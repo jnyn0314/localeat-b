@@ -3,44 +3,45 @@ package javachip.Service;
 import javachip.DTO.LoginRequest;
 import javachip.DTO.LoginResponse;
 import javachip.DTO.SignUpRequest;
-import javachip.entity.Seller;
+import javachip.entity.Consumer;
 import javachip.entity.UserRole;
+import javachip.repository.ConsumerRepository;
 import javachip.repository.SellerRepository;
 import javachip.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-@Service("AuthServiceSeller")
-public class AuthServiceSeller implements AuthService{
+@Service("AuthServiceConsumer")
+public class AuthServiceConsumer implements AuthService{
 
-    private final SellerRepository sellerRepository;
+    private final ConsumerRepository consumerRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 
-    public AuthServiceSeller(SellerRepository sellerRepository, PasswordEncoder passwordEncoder, UserRepository userRepository) {
-        this.sellerRepository = sellerRepository;
+    public AuthServiceConsumer(ConsumerRepository consumerRepository, SellerRepository sellerRepository, PasswordEncoder passwordEncoder, UserRepository userRepository) {
+        this.consumerRepository = consumerRepository;
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
     }
 
-    public void registerSeller(SignUpRequest request) {
-        Seller seller = new Seller();
-        seller.setUserId(request.getUserId());
-        seller.setPassword(passwordEncoder.encode(request.getPassword()));
-        seller.setName(request.getName());
-        seller.setPhone(request.getPhone());
-        seller.setEmail(request.getEmail());
-        seller.setAddress(request.getAddress());
-        seller.setLocal(request.getLocal());
-        seller.setBusiness_id(request.getBusiness_id());
-        seller.setRole(UserRole.SELLER);
+    public void registerConsumer(SignUpRequest request) {
+        Consumer consumer = new Consumer();
+        consumer.setUserId(request.getUserId());
+        consumer.setPassword(passwordEncoder.encode(request.getPassword()));
+        consumer.setName(request.getName());
+        consumer.setPhone(request.getPhone());
+        consumer.setEmail(request.getEmail());
+        consumer.setAddress(request.getAddress());
+        consumer.setLocal(request.getLocal());
+        consumer.setBirth(request.getBirth());
+        consumer.setRole(UserRole.CONSUMER);
 
-        sellerRepository.save(seller);
+        consumerRepository.save(consumer);
     }
 
     @Override
     public LoginResponse login(LoginRequest request) {
-        Seller user = sellerRepository.findById(request.getUserId())
+        Consumer user = consumerRepository.findById(request.getUserId())
                 .orElseThrow(() -> new RuntimeException("해당 사용자가 존재하지 않습니다."));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {

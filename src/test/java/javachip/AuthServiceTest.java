@@ -1,7 +1,7 @@
 package javachip;
 
 import javachip.DTO.SignUpRequest;
-import javachip.Service.AuthService;
+import javachip.Service.AuthServiceConsumer;
 import javachip.entity.Consumer;
 import javachip.repository.ConsumerRepository;
 import org.junit.jupiter.api.Test;
@@ -18,7 +18,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 class AuthServiceTest {
 
     @Autowired
-    private AuthService authService;
+    private AuthServiceConsumer authService;
 
     @Autowired
     private ConsumerRepository consumerRepository;
