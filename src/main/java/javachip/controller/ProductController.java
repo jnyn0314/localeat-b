@@ -13,12 +13,8 @@ import javachip.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/products")
@@ -34,6 +30,7 @@ public class ProductController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
     @PostMapping
     public ResponseEntity<ProductDto> createProduct(@RequestBody ProductDto dto) {
         ProductDto saved = productService.saveProduct(dto);
@@ -42,7 +39,7 @@ public class ProductController {
 
     @GetMapping
     public ResponseEntity<List<ProductDto>> getAllProducts() {
-        List<ProductDto> products = productService.getAllProducts(); // service에서 가져오기
+        List<ProductDto> products = productService.getAllProducts();
         return ResponseEntity.ok(products);
     }
 }

@@ -3,11 +3,6 @@
 파일설명 : Product 엔티티.
 작성자 : 정여진
 기간 : 2025-05.01.
-*//*
-파일명 : Product.java
-파일설명 : Product 엔티티.
-작성자 : 정여진
-기간 : 2025-05.01.
 */
 package javachip.entity;
 
@@ -42,7 +37,7 @@ public class Product {
     private Boolean is_subscription;
 
     @Enumerated(EnumType.STRING)
-    private LocalType  local;
+    private LocalType local;
 
     @Enumerated(EnumType.STRING)
     private GradeBOption product_grade;
@@ -65,7 +60,4 @@ public class Product {
     private Integer stock_quantity;
 
     private String seller_id;
-
 }
-// 안한 값들 몇개 있어요
-// 그.. 배송료?이런거.
