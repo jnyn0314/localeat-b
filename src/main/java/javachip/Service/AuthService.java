@@ -65,7 +65,7 @@ public class AuthService {
             throw new RuntimeException("비밀번호가 일치하지 않습니다.");
         }
 
-        return new LoginResponse(user.getUserId(), user.getName());
+        return new LoginResponse(user.getUserId(), user.getPassword());
     }
 
     public boolean isUserIdDuplicate(String userId) {
