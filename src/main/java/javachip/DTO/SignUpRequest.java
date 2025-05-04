@@ -87,7 +87,7 @@ public class SignUpRequest {
     public void setBirth(String birth) {
         this.birth = birth;
     }
-    
+
     public String getBusinessId() {
         return businessId;
     }
