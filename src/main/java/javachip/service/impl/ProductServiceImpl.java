@@ -1,3 +1,10 @@
+/*
+파일명 : ProductServiceImpl.java
+파일설명 : ProductServiceImpl
+작성자 : 정여진
+기간 : 2025-05.03.
+*/
+
 package javachip.service.impl;
 
 import javachip.dto.ProductDto;
@@ -8,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

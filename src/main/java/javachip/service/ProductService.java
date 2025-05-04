@@ -1,3 +1,9 @@
+/*
+파일명 : ProductServiceImpl.java
+파일설명 : ProductServiceImpl
+작성자 : 정여진
+기간 : 2025-05.03.
+*/
 package javachip.service;
 
 import javachip.dto.ProductDto;
