@@ -1,7 +1,8 @@
 package javachip.controller;
 
-import jakarta.validation.Valid;
-import javachip.DTO.SignUpRequest;
+import javachip.dto.LoginRequest;
+import javachip.dto.LoginResponse;
+import javachip.dto.SignUpRequest;
 import javachip.service.AuthServiceSeller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +27,7 @@ public class AuthControllerSeller {
     }
 
     @PostMapping("/form")
-    public ResponseEntity<String> signup(@Valid @RequestBody SignUpRequest request) {
+    public ResponseEntity<String> signup(@RequestBody SignUpRequest request) {
         try {
             authServiceSeller.registerSeller(request);
             return ResponseEntity.ok("회원가입 성공");

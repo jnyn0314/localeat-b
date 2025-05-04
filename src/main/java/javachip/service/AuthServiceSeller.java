@@ -1,17 +1,18 @@
 package javachip.service;
 
-import javachip.DTO.LoginRequest;
-import javachip.DTO.LoginResponse;
-import javachip.DTO.SignUpRequest;
+import javachip.dto.LoginRequest;
+import javachip.dto.LoginResponse;
+import javachip.dto.SignUpRequest;
 import javachip.entity.Seller;
 import javachip.entity.UserRole;
 import javachip.repository.SellerRepository;
 import javachip.repository.UserRepository;
+import javachip.service.AuthService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service("AuthServiceSeller")
-public class AuthServiceSeller implements AuthService{
+public class AuthServiceSeller implements AuthService {
 
     private final SellerRepository sellerRepository;
     private final PasswordEncoder passwordEncoder;
