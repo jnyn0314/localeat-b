@@ -87,8 +87,7 @@ public class SignUpRequest {
     public void setBirth(String birth) {
         this.birth = birth;
     }
-
-    @NotBlank(message = "{NotBlank.businessId}")
+    
     public String getBusinessId() {
         return businessId;
     }
