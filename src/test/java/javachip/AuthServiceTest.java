@@ -1,7 +1,7 @@
 package javachip;
 
-import javachip.DTO.SignUpRequest;
-import javachip.Service.AuthServiceConsumer;
+import javachip.dto.SignUpRequest;
+import javachip.service.AuthServiceConsumer;
 import javachip.entity.Consumer;
 import javachip.repository.ConsumerRepository;
 import org.junit.jupiter.api.Test;

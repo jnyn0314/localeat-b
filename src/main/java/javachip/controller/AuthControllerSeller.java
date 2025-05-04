@@ -1,8 +1,6 @@
 package javachip.controller;
 
-import javachip.DTO.LoginRequest;
-import javachip.DTO.LoginResponse;
-import javachip.DTO.SignUpRequest;
+import javachip.dto.SignUpRequest;
 import javachip.service.AuthServiceSeller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
