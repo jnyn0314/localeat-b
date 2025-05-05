@@ -1,9 +1,6 @@
 package javachip.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.PrimaryKeyJoinColumn;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "CONSUMER")
@@ -12,8 +9,9 @@ public class Consumer extends User {
 
     private String birth;
 
-    @Column(name = "cartId")
-    private Long cartId;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "cartId", referencedColumnName = "cartId")
+    private Cart cart;
 
     public String getBirth() {
         return birth;
@@ -23,11 +21,11 @@ public class Consumer extends User {
         this.birth = birth;
     }
 
-    public Long getCartId() {
-        return cartId;
+    public Cart getCart() {
+        return cart;
     }
 
-    public void setCartId(Long cartId) {
-        this.cartId = cartId;
+    public void setCart(Cart cart) {
+        this.cart = cart;
     }
 }

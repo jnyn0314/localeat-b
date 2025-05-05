@@ -8,11 +8,13 @@ package javachip.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
-@Table(name = "Product")
+@Table(name = "PRODUCT")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -55,9 +57,20 @@ public class Product {
 
     private Long alarm_id;
 
-    private Date create_at;
+    //김소망이 수정
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 
     private Integer stock_quantity;
 
     private String seller_id;
+
+    //김소망이 추가
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sellerId")
+    private Seller seller;
+
+    //김소망이 추가
+    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL)
+    private GroupBuy groupBuy;
 }

@@ -24,7 +24,9 @@ public abstract class User {
     private String phone;
     private String email;
     private String address;
-    private String local;
+
+    @Enumerated(EnumType.STRING)
+    private LocalType local;
 
     @Enumerated(EnumType.STRING)
     private UserRole role;
@@ -80,11 +82,11 @@ public abstract class User {
         this.address = address;
     }
 
-    public String getLocal() {
+    public LocalType getLocal() {
         return local;
     }
 
-    public void setLocal(String local) {
+    public void setLocal(LocalType local) {
         this.local = local;
     }
 
