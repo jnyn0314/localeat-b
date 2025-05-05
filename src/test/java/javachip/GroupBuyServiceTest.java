@@ -1,8 +1,8 @@
+package javachip;
+
 import javachip.dto.GroupBuyCreateRequest;
 import javachip.dto.GroupBuyCreateResponse;
-import javachip.entity.Consumer;
-import javachip.entity.GroupBuy;
-import javachip.entity.Product;
+import javachip.entity.*;
 import javachip.repository.ConsumerRepository;
 import javachip.repository.GroupBuyRepository;
 import javachip.repository.ProductRepository;
@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
@@ -56,14 +57,14 @@ class GroupBuyServiceTest {
         Product mockProduct = Product.builder()
                 .id(productId)
                 .product_name("사과")
-                .is_group_buy(GroupBuyOption.YES)
-                .local(LocalType.SEOUL)
+                .is_group_buy(GroupBuyOption.TRUE)
+                .local(LocalType.GANGWON)
                 .max_participants(5)
                 .build();
 
         when(consumerRepository.findById(userId)).thenReturn(Optional.of(mockConsumer));
         when(productRepository.findById(productId)).thenReturn(Optional.of(mockProduct));
-        when(groupBuyRepository.save(any(GroupBuy.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        when(groupBuyRepository.save(Mockito.<GroupBuy>any())).thenAnswer(invocation -> invocation.getArgument(0));
 
         // when
         GroupBuyCreateResponse response = groupBuyService.createGroupBuy(request, userId);
@@ -72,13 +73,13 @@ class GroupBuyServiceTest {
         assertNotNull(response);
         assertEquals(productId, response.getProductId());
         assertEquals("친구들과 함께 저렴하게 구매해요", response.getDescription());
-        assertEquals(GroupBuyStatus.IN_PROGRESS, response.getStatus());
+        assertEquals(GroupBuyStatus.RECRUITING, response.getStatus());
         assertEquals(1, response.getCurrentParticipants());
-        assertEquals(LocalType.SEOUL, response.getLocal());
+        assertEquals(LocalType.GANGWON, response.getLocal());
 
         // verify interactions
         verify(consumerRepository).findById(userId);
         verify(productRepository).findById(productId);
-        verify(groupBuyRepository).save(any(GroupBuy.class));
+        verify(groupBuyRepository).save(Mockito.<GroupBuy>any());
     }
 }

@@ -40,15 +40,13 @@ public class GroupBuyService {
                 .deadline(request.getDeadline())
                 .status(GroupBuyStatus.RECRUITING)
                 .time(LocalDateTime.now().plusDays(1)) // 예시: 마감시간 후 24시간 내 결제
-                .maxParticipants(product.getMax_participants())
-                .local(product.getLocal())
                 .partiCount(1)
                 .payCount(0)
                 .build();
 
         // 4. 첫 Participant 등록
         Participant participant = Participant.builder()
-                .user(consumer)
+                .consumer(consumer)
                 .product(product)
                 .groupBuy(groupBuy)
                 .quantity(request.getQuantity())
@@ -60,13 +58,13 @@ public class GroupBuyService {
 
         // 5. 응답 반환
         return GroupBuyCreateResponse.builder()
-                .groupBuyId(groupBuy.getGroupBuyId())
+                .groupBuyId(groupBuy.getId())
                 .productId(product.getId())
                 .description(groupBuy.getDescription())
                 .deadline(groupBuy.getDeadline())
-                .local(groupBuy.getLocal())
-                .maxParticipants(groupBuy.getMaxParticipants())
-                .currentParticipants(groupBuy.getPartiCount())
+                .local(product.getLocal().toString())
+                .maxParticipants(product.getMax_participants())
+                .currentParticipants(groupBuy.getParticipants())
                 .status(groupBuy.getStatus())
                 .build();
     }
