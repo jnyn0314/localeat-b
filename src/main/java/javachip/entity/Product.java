@@ -35,8 +35,11 @@ public class Product {
     @Column(name = "subscription_discount_rate")
     private Float subscriptionDiscountRate;  // 이전: subscription_discount_rate
 
-    @Column(name = "is_subscription")
-    private Boolean isSubscription;          // 이전: is_subscription
+    @Column(name = "is_subscription", nullable = false)
+    private boolean isSubscription;          // 이전: is_subscription
+
+    @Column(name = "is_group_buy", nullable = false)
+    private boolean isGroupBuy;         // 이전: is_group_buy
 
     @Enumerated(EnumType.STRING)
     private LocalType local;
@@ -52,10 +55,6 @@ public class Product {
 
     @Column(name = "subscription_id")
     private Long subscriptionId;             // 이전: subscription_id
-
-    @Enumerated(EnumType.ORDINAL)
-    @Column(name = "is_group_buy")
-    private GroupBuyOption groupBuy;         // 이전: is_group_buy
 
     @Column(name = "max_participants")
     private Integer maxParticipants;         // 이전: max_participants

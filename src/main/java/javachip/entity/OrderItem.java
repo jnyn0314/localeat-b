@@ -30,23 +30,26 @@ public class OrderItem {
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
-    @Column(nullable = false)
-    private boolean is_subscription;
+    @Column(name = "is_subscription",  nullable = false)
+    private boolean isSubscription;
 
-    @Column(nullable = false)
-    private boolean is_group_buy;
+    @Column(name = "is_group_buy", nullable = false)
+    private boolean isGroupBuy;
 
     /** 연관된 상품 */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false)
-    private Product product_id;
+    private Product product;
 
     /** 이 항목이 속한 주문 */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id", nullable = false)
     private Orders order;
 
-//    /** 주문자(사용자) ID */
-//    @Column(name = "id", nullable = false, length = 20)
-//    private String userId;
+    /** 주문자(사용자) ID */
+    @Column(name = "user_id", nullable = false, length = 20)
+    private String userId;
+
+    @Column(name = "is_reviewed", nullable = false)
+    private boolean isReviewed = false;
 }

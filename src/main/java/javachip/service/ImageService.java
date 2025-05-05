@@ -22,9 +22,9 @@ public class ImageService {
     public void saveImage(Long productId, MultipartFile file) throws IOException {
         ProductImage img = new ProductImage();
         img.setId(productId); // ID 생성 방식 자유
-        img.setProduct_id(productId);
-        img.setImage_name(file.getOriginalFilename());
-        img.setImage_data(file.getBytes());
+        img.setProductId(productId);
+        img.setImageName(file.getOriginalFilename());
+        img.setImageData(file.getBytes());
         repository.save(img);
     }
 
@@ -35,11 +35,11 @@ public class ImageService {
         }
 
         ProductImage img = new ProductImage();
-        img.setProduct_id(productId);
-        img.setImage_name(file.getName());
+        img.setProductId(productId);
+        img.setImageName(file.getName());
 
         FileInputStream fis = new FileInputStream(file);
-        img.setImage_data(fis.readAllBytes());
+        img.setImageData(fis.readAllBytes());
 
         repository.save(img);
     }

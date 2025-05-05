@@ -1,7 +1,6 @@
 package javachip.dto;
 
 import javachip.entity.GradeBOption;
-import javachip.entity.GroupBuyOption;
 import javachip.entity.LocalType;
 import javachip.entity.Product;
 import lombok.*;
@@ -20,7 +19,7 @@ public class ProductDto {
     private Float gradeDiscountRate;         // 이전: grade_discount_rate
     private Float subscriptionDiscountRate;  // 이전: subscription_discount_rate
     private Boolean isSubscription;          // 이전: is_subscription
-    private GroupBuyOption groupBuy;         // 이전: is_group_buy
+    private Boolean isGroupBuy;         // 이전: is_group_buy
     private LocalType local;
     private String productGrade;             // previous enum name
     private Integer deliveryFee;             // 이전: delivery_fee
@@ -39,8 +38,8 @@ public class ProductDto {
                 .price(p.getPrice())
                 .gradeDiscountRate(p.getGradeDiscountRate())
                 .subscriptionDiscountRate(p.getSubscriptionDiscountRate())
-                .isSubscription(p.getIsSubscription())
-                .groupBuy(p.getGroupBuy())
+                .isSubscription(p.isSubscription())
+                .isGroupBuy(p.isGroupBuy())
                 .local(p.getLocal())
                 .productGrade(p.getProductGrade().name())
                 .deliveryFee(p.getDeliveryFee())
@@ -62,7 +61,7 @@ public class ProductDto {
                 .gradeDiscountRate(gradeDiscountRate)
                 .subscriptionDiscountRate(subscriptionDiscountRate)
                 .isSubscription(isSubscription)
-                .groupBuy(groupBuy)
+                .isGroupBuy(isGroupBuy)
                 .local(local)
                 .productGrade(GradeBOption.valueOf(productGrade))
                 .deliveryFee(deliveryFee)

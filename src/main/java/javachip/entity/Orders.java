@@ -6,6 +6,7 @@
 */
 package javachip.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -24,7 +25,9 @@ public class Orders {
     @Id
     private Long id;
 
-    private LocalDateTime order_at;
+    @Column(name = "CREATED_AT", nullable = false)
+    private LocalDateTime createdAt;
 
-    private String user_id;
+    @Column(name = "user_id", nullable = false)
+    private String userId;
 }
