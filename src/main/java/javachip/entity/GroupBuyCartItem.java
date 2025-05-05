@@ -17,12 +17,12 @@ public class GroupBuyCartItem {
     private GroupBuyCartItemId id;
 
     @OneToOne
-    @MapsId("cartItemId")
+    @MapsId("cartItemId")//GroupBuyCartItemId의 cartItemId와 연결
     @JoinColumn(name = "cartItemId")
     private CartItem cartItem;
 
     @ManyToOne
-    @MapsId("groupBuyId")
+    @MapsId("groupBuyId")// @MapsId는 GroupBuyCartItemId의 groupBuyId와 연결
     @JoinColumn(name = "groupBuyId")
     private GroupBuy groupBuy;
 

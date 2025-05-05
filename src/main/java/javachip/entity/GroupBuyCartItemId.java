@@ -8,10 +8,15 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 @Embeddable
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class GroupBuyCartItemId implements Serializable {
     private Long cartItemId;
-    private Long groupBuyCartItemId;
+    private Long groupBuyId;
+
+    // Getter, Setter, Constructor 등 필요한 코드
+    public GroupBuyCartItemId() {}
+
+    public GroupBuyCartItemId(Long cartItemId, Long groupBuyId) {
+        this.cartItemId = cartItemId;
+        this.groupBuyId = groupBuyId;
+    }
 }

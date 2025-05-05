@@ -4,9 +4,10 @@ import javachip.entity.GradeBOption;
 import javachip.entity.GroupBuyOption;
 import javachip.entity.LocalType;
 import javachip.entity.Product;
+import javachip.entity.GroupBuyStatus;
 import lombok.*;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -30,9 +31,10 @@ public class ProductDto {
     private GradeBOption groupbuy_id;
     private Integer max_participants;
     private Long alarm_id;
-    private Date create_at;
+    private LocalDateTime createdAt;
     private Integer stock_quantity;
     private String seller_id;
+    private GroupBuyStatus groupBuyStatus;  // 추가된 필드
 
     public static ProductDto fromEntity(Product product) {
         return ProductDto.builder()
@@ -50,9 +52,10 @@ public class ProductDto {
                 .subscription_id(product.getSubscription_id())
                 .max_participants(product.getMax_participants())
                 .alarm_id(product.getAlarm_id())
-                .create_at(product.getCreate_at())
+                .createdAt(product.getCreatedAt())
                 .stock_quantity(product.getStock_quantity())
-                .seller_id(product.getSeller_id())
+                .seller_id(product.getSeller() != null ? product.getSeller().getUserId() : null)  // seller_id를 getSeller().getId()로 수정
+                .groupBuyStatus(product.getGroupBuy() != null ? product.getGroupBuy().getStatus() : null)
                 .build();
     }
 
@@ -70,12 +73,14 @@ public class ProductDto {
                 .description(description)
                 .max_participants(max_participants)
                 .alarm_id(alarm_id)
-                .create_at(create_at)
+                .createdAt(createdAt)
                 .stock_quantity(stock_quantity)
                 .seller_id(seller_id)
                 .is_group_buy(is_group_buy)
                 .build();
     }
 }
+
 // groupbuy랑연결해야하고,,
 // status도 없어요 아직
+//김소망이 연결하고 status도 추가함

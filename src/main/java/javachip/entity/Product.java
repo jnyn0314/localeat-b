@@ -63,14 +63,17 @@ public class Product {
 
     private Integer stock_quantity;
 
+    @Column(name = "seller_id", insertable = false, updatable = false)
     private String seller_id;
 
     //김소망이 추가
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sellerId")
+    @JoinColumn(name = "seller_id")
     private Seller seller;
 
     //김소망이 추가
     @OneToOne(mappedBy = "product", cascade = CascadeType.ALL)
     private GroupBuy groupBuy;
+
+
 }
