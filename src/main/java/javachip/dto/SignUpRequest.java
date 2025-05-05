@@ -4,6 +4,7 @@ package javachip.dto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import javachip.entity.LocalType;
 
 public class SignUpRequest {
     private String userId;
@@ -70,8 +71,7 @@ public class SignUpRequest {
         this.address = address;
     }
 
-    @NotBlank(message = "{NotBlank.local}")
-    public String getLocal() {
+    public LocalType getLocal() {
         return local;
     }
 
