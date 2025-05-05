@@ -9,8 +9,6 @@ package javachip.entity;
 
 import jakarta.persistence.*;
 
-import javax.management.relation.Role;
-
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "USERS")
@@ -24,9 +22,7 @@ public abstract class User {
     private String phone;
     private String email;
     private String address;
-
-    @Enumerated(EnumType.STRING)
-    private LocalType local;
+    private String local;
 
     @Enumerated(EnumType.STRING)
     private UserRole role;
@@ -82,11 +78,11 @@ public abstract class User {
         this.address = address;
     }
 
-    public LocalType getLocal() {
+    public String getLocal() {
         return local;
     }
 
-    public void setLocal(LocalType local) {
+    public void setLocal(String local) {
         this.local = local;
     }
 

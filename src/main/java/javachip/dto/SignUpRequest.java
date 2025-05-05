@@ -13,7 +13,7 @@ public class SignUpRequest {
     private String phone;
     private String email;
     private String address;
-    private LocalType local;
+    private String local;
     private String birth;
     private String businessId;
 
@@ -71,11 +71,12 @@ public class SignUpRequest {
         this.address = address;
     }
 
-    public LocalType getLocal() {
-        return local;
-    }
 
-    public void setLocal(LocalType local) {
+    public String getLocal() {
+        return local;
+
+    }
+    public void setLocal(String local) {
         this.local = local;
     }
 

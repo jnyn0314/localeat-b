@@ -2,6 +2,7 @@ package javachip.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import jakarta.persistence.Transient;
 
 import java.time.LocalDateTime;
 
@@ -26,16 +27,17 @@ public class GroupBuyCartItem {
     @JoinColumn(name = "groupBuyId")
     private GroupBuy groupBuy;
 
-    @Column(nullable = false)
+
+    @Transient //이거 나중에 지워야함 이거 있음 db에 안들어감
     private LocalDateTime addedAt;
 
-    @Column(nullable = false)
+    @Transient
     private LocalDateTime expiresAt;
 
     // 생성 시 자동 계산
-    @PrePersist
+    /*@PrePersist
     public void prePersist() {
         this.addedAt = LocalDateTime.now();
         this.expiresAt = this.addedAt.plusHours(24);
-    }
+    }*/
 }

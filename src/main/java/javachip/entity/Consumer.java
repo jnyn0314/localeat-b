@@ -10,7 +10,7 @@ public class Consumer extends User {
     private String birth;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "cartId", referencedColumnName = "cartId")
+    @JoinColumn(name = "CART_ID")
     private Cart cart;
 
     public String getBirth() {

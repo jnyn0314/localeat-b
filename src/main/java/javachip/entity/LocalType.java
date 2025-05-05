@@ -8,5 +8,5 @@ public enum LocalType {
         JNGJ,
         DGGB,
         GNBNUL,
-        JEJU
+        JEJU,
 }

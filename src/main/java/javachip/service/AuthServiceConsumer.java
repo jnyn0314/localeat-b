@@ -18,7 +18,7 @@ public class AuthServiceConsumer implements javachip.service.AuthService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 
-    public AuthServiceConsumer(ConsumerRepository consumerRepository, SellerRepository sellerRepository, PasswordEncoder passwordEncoder, UserRepository userRepository) {
+    public AuthServiceConsumer(ConsumerRepository consumerRepository, PasswordEncoder passwordEncoder, UserRepository userRepository) {
         this.consumerRepository = consumerRepository;
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
