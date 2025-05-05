@@ -1,7 +1,7 @@
 package javachip;
 
-import javachip.DTO.SignUpRequest;
-import javachip.Service.AuthServiceSeller;
+import javachip.dto.SignUpRequest;
+import javachip.service.AuthServiceSeller;
 import javachip.entity.Seller;
 import javachip.repository.SellerRepository;
 import org.junit.jupiter.api.Test;
@@ -36,7 +36,7 @@ class AuthServiceSellerTest {
         request.setEmail("test@example.com");
         request.setAddress("인천 어딘가");
         request.setLocal("인천");
-        request.setBusiness_id("1990-01-01");
+        request.setBusinessId("1990-01-01");
 
         // when
         authServiceSeller.registerSeller(request);
