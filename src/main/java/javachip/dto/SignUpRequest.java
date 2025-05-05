@@ -1,10 +1,12 @@
 package javachip.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import javachip.entity.LocalType;
+import lombok.Getter;
 
 public class SignUpRequest {
     private String userId;
@@ -13,8 +15,12 @@ public class SignUpRequest {
     private String phone;
     private String email;
     private String address;
+    @Getter
+
     private String local;
     private String birth;
+
+    @JsonProperty("business_id")
     private String businessId;
 
     @NotBlank(message = "{NotBlank.userId}")
@@ -72,10 +78,6 @@ public class SignUpRequest {
     }
 
 
-    public String getLocal() {
-        return local;
-
-    }
     public void setLocal(String local) {
         this.local = local;
     }
@@ -89,11 +91,12 @@ public class SignUpRequest {
         this.birth = birth;
     }
 
+    public void setBusinessId(String businessId) {
+        this.businessId = businessId;
+    }
+
     public String getBusinessId() {
         return businessId;
     }
 
-    public void setBusinessId(String businessId) {
-        this.businessId = businessId;
-    }
 }

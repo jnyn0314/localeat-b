@@ -41,7 +41,7 @@ public class GroupBuy {
     @Enumerated(EnumType.STRING)
     private GroupBuyStatus status;
 
-    private LocalDateTime expiresAt;
+    private LocalDateTime time;
 
     @OneToMany(mappedBy = "groupBuy", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Participant> participants = new ArrayList<>();

@@ -52,7 +52,7 @@ public class ProductDto {
                 .subscription_id(product.getSubscription_id())
                 .max_participants(product.getMax_participants())
                 .alarm_id(product.getAlarm_id())
-                .createdAt(product.getCreatedAt())
+                .createdAt(product.getCreate_At())
                 .stock_quantity(product.getStock_quantity())
                 .seller_id(product.getSeller() != null ? product.getSeller().getUserId() : null)  // seller_id를 getSeller().getId()로 수정
                 .groupBuyStatus(product.getGroupBuy() != null ? product.getGroupBuy().getStatus() : null)
@@ -73,7 +73,7 @@ public class ProductDto {
                 .description(description)
                 .max_participants(max_participants)
                 .alarm_id(alarm_id)
-                .createdAt(createdAt)
+                .create_At(createdAt)
                 .stock_quantity(stock_quantity)
                 .seller_id(seller_id)
                 .is_group_buy(is_group_buy)

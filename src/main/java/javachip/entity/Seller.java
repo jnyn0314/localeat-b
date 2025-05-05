@@ -10,7 +10,7 @@ import jakarta.persistence.Table;
 @PrimaryKeyJoinColumn(name = "ID")
 public class Seller extends User {
 
-    @Column(name = "businessId")
+    @Column(name = "BUSINESS_ID", nullable = false)
     private String businessId;
 
     public String getBusinessId() {

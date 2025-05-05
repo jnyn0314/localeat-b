@@ -59,7 +59,7 @@ public class Product {
 
     //김소망이 수정
     @CreationTimestamp
-    private LocalDateTime createdAt;
+    private LocalDateTime create_At;
 
     private Integer stock_quantity;
 
