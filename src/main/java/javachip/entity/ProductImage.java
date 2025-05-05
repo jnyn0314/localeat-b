@@ -13,16 +13,21 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@Table(name = "PRODUCTIMAGE")
 public class ProductImage {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "productImageSeq")
+    @SequenceGenerator(name = "productImageSeq", sequenceName = "PRODUCT_IMAGE_SEQ", allocationSize = 1)
     private Long id;
 
-    @Column(nullable = false)
-    private Long product_id;
+    @JoinColumn(name = "product_id", nullable = false)
+    private Long productId; // ← 필드명 CamelCase로 고침
 
     private String image_name;
 
     private byte[] image_data;
+
+    @Version
+    private int version;
 }

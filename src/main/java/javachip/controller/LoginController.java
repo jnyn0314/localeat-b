@@ -1,9 +1,9 @@
 package javachip.controller;
 
-import javachip.DTO.LoginRequest;
-import javachip.DTO.LoginResponse;
-import javachip.Service.AuthService;
-import javachip.Service.AuthServiceFactory;
+import javachip.dto.LoginRequest;
+import javachip.dto.LoginResponse;
+import javachip.service.AuthService;
+import javachip.service.AuthServiceFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

@@ -7,14 +7,17 @@
 
 package javachip.service.impl;
 
+import jakarta.transaction.Transactional;
 import javachip.dto.ProductDto;
 import javachip.entity.Product;
+import javachip.repository.ProductImageRepository;
 import javachip.repository.ProductRepository;
 import javachip.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,6 +25,8 @@ import java.util.stream.Collectors;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository repository;
+    private final ProductImageRepository productImageRepository;
+    // 공동구매, 카트 등 나중에 생기면 얘네도 delete할때 먼저 지워야 함.
 
     @Override
     public List<ProductDto> getAllProducts() {
@@ -54,8 +59,20 @@ public class ProductServiceImpl implements ProductService {
         return ProductDto.fromEntity(repository.save(updated));
     }
 
-    @Override
+    @Transactional
     public void deleteProduct(Long id) {
+        Optional<Product> product = repository.findById(id);
+        if (product.isPresent()) {
+            System.out.println(">> 삭제 대상 존재, product = " + product.get());
+            repository.deleteById(id);
+        } else {
+            System.out.println(">> 삭제 대상 없음, id = " + id);
+        }
+
+        // 자식 엔티티 먼저 삭제
+        productImageRepository.deleteAllByProductId(id);
+
+        // 부모 엔티티 삭제
         repository.deleteById(id);
     }
 }

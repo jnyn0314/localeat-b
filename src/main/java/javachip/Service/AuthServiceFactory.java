@@ -1,4 +1,4 @@
-package javachip.Service;
+package javachip.service;
 
 import javachip.entity.UserRole;
 import org.hibernate.usertype.UserType;

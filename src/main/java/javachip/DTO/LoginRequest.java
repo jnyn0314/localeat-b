@@ -1,4 +1,4 @@
-package javachip.DTO;
+package javachip.dto;
 
 import javachip.entity.UserRole;
 

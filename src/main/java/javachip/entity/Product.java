@@ -60,4 +60,7 @@ public class Product {
     private Integer stock_quantity;
 
     private String seller_id;
+
+    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private ProductImage image_id;
 }

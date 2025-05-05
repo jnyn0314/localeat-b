@@ -6,11 +6,14 @@
 */
 package javachip.controller;
 
+import jakarta.transaction.Transactional;
 import javachip.dto.ProductDto;
 import javachip.entity.Product;
 import javachip.repository.ProductRepository;
 import javachip.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +24,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductController {
 
+    private final Logger log = LoggerFactory.getLogger(ProductController.class);
     private final ProductRepository productRepository;
     private final ProductService productService;
 
@@ -41,5 +45,13 @@ public class ProductController {
     public ResponseEntity<List<ProductDto>> getAllProducts() {
         List<ProductDto> products = productService.getAllProducts();
         return ResponseEntity.ok(products);
+    }
+
+    @Transactional
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
+        log.info("DELETE 요청 받음 - deleteProduct(), id = {}", id);
+        productService.deleteProduct(id);
+        return ResponseEntity.noContent().build();
     }
 }
