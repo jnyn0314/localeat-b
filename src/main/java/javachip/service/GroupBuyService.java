@@ -44,6 +44,7 @@ public class GroupBuyService {
                 .payCount(0)
                 .build();
 
+
         // 4. 첫 Participant 등록
         Participant participant = Participant.builder()
                 .consumer(consumer)
@@ -66,6 +67,9 @@ public class GroupBuyService {
                 .maxParticipants(product.getMax_participants())
                 .currentParticipants(groupBuy.getParticipants())
                 .status(groupBuy.getStatus())
+                .partiCount(groupBuy.getPartiCount())
+                .payCount(groupBuy.getPayCount())
+                .createdTime(groupBuy.getTime())
                 .build();
     }
 }
