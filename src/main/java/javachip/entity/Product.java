@@ -19,45 +19,56 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 public class Product {
-
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_seq_gen")
     @SequenceGenerator(name = "product_seq_gen", sequenceName = "PRODUCT_SEQ", allocationSize = 1)
     private Long id;
 
     @Column(name = "product_name", nullable = false, length = 100)
-    private String product_name;
+    private String productName;              // 이전: product_name
 
     private Integer price;
 
-    private Float grade_discount_rate;
+    @Column(name = "grade_discount_rate")
+    private Float gradeDiscountRate;         // 이전: grade_discount_rate
 
-    private Float subscription_discount_rate;
+    @Column(name = "subscription_discount_rate")
+    private Float subscriptionDiscountRate;  // 이전: subscription_discount_rate
 
-    private Boolean is_subscription;
+    @Column(name = "is_subscription")
+    private Boolean isSubscription;          // 이전: is_subscription
 
     @Enumerated(EnumType.STRING)
     private LocalType local;
 
     @Enumerated(EnumType.STRING)
-    private GradeBOption product_grade;
+    @Column(name = "product_grade")
+    private GradeBOption productGrade;       // 이전: product_grade
 
-    private Integer delivery_fee;
+    @Column(name = "delivery_fee")
+    private Integer deliveryFee;             // 이전: delivery_fee
 
     private String description;
 
-    private Long subscription_id;
+    @Column(name = "subscription_id")
+    private Long subscriptionId;             // 이전: subscription_id
 
     @Enumerated(EnumType.ORDINAL)
-    private GroupBuyOption is_group_buy;
+    @Column(name = "is_group_buy")
+    private GroupBuyOption groupBuy;         // 이전: is_group_buy
 
-    private Integer max_participants;
+    @Column(name = "max_participants")
+    private Integer maxParticipants;         // 이전: max_participants
 
-    private Long alarm_id;
+    @Column(name = "alarm_id")
+    private Long alarmId;                    // 이전: alarm_id
 
-    private Date create_at;
+    @Column(name = "create_at")
+    private Date createAt;                   // 이전: create_at
 
-    private Integer stock_quantity;
+    @Column(name = "stock_quantity")
+    private Integer stockQuantity;           // 이전: stock_quantity
 
-    private String seller_id;
+    @Column(name = "seller_id")
+    private String sellerId;                 // 이전: seller_id
 }
