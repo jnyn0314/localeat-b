@@ -1,7 +1,6 @@
 package javachip.dto;
 
 import javachip.entity.GradeBOption;
-import javachip.entity.GroupBuyOption;
 import javachip.entity.LocalType;
 import javachip.entity.Product;
 import javachip.entity.GroupBuyStatus;
@@ -15,46 +14,44 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class ProductDto {
-
     private Long id;
-    private String product_name;
+    private String productName;              // 이전: product_name
     private Integer price;
-    private Float grade_discount_rate;
-    private Float subscription_discount_rate;
-    private Boolean is_subscription;
-    private GroupBuyOption is_group_buy;
+    private Float gradeDiscountRate;         // 이전: grade_discount_rate
+    private Float subscriptionDiscountRate;  // 이전: subscription_discount_rate
+    private Boolean isSubscription;          // 이전: is_subscription
+    private Boolean isGroupBuy;         // 이전: is_group_buy
     private LocalType local;
-    private String product_grade;
-    private Integer delivery_fee;
+    private String productGrade;             // previous enum name
+    private Integer deliveryFee;             // 이전: delivery_fee
     private String description;
-    private Long subscription_id;
-    private GradeBOption groupbuy_id;
-    private Integer max_participants;
-    private Long alarm_id;
     private LocalDateTime createdAt;
-    private Integer stock_quantity;
-    private String seller_id;
     private GroupBuyStatus groupBuyStatus;  // 추가된 필드
+    private Long subscriptionId;             // 이전: subscription_id
+    private Integer maxParticipants;         // 이전: max_participants
+    private Long alarmId;                    // 이전: alarm_id
+    private Integer stockQuantity;           // 이전: stock_quantity
+    private String sellerId;                 // 이전: seller_id
 
     public static ProductDto fromEntity(Product product) {
         return ProductDto.builder()
                 .id(product.getId())
-                .product_name(product.getProduct_name())
+                .productName(product.getProductName())
                 .price(product.getPrice())
-                .grade_discount_rate(product.getGrade_discount_rate())
-                .subscription_discount_rate(product.getSubscription_discount_rate())
-                .is_subscription(product.getIs_subscription())
+                .gradeDiscountRate(product.getGradeDiscountRate())
+                .subscriptionDiscountRate(product.getSubscriptionDiscountRate())
+                .isSubscription(product.isSubscription())
+                .isGroupBuy(product.isGroupBuy())
                 .local(product.getLocal())
-                .is_group_buy(product.getIs_group_buy())
-                .product_grade(String.valueOf(product.getProduct_grade()))
-                .delivery_fee(product.getDelivery_fee())
+                .productGrade(product.getProductGrade().name())
+                .deliveryFee(product.getDeliveryFee())
                 .description(product.getDescription())
-                .subscription_id(product.getSubscription_id())
-                .max_participants(product.getMax_participants())
-                .alarm_id(product.getAlarm_id())
-                .createdAt(product.getCreate_At())
-                .stock_quantity(product.getStock_quantity())
-                .seller_id(product.getSeller() != null ? product.getSeller().getUserId() : null)  // seller_id를 getSeller().getId()로 수정
+                .subscriptionId(product.getSubscriptionId())
+                .maxParticipants(product.getMaxParticipants())
+                .alarmId(product.getAlarmId())
+                .createdAt(product.getCreatedAt())
+                .stockQuantity(product.getStockQuantity())
+                .sellerId(product.getSeller() != null ? product.getSeller().getUserId() : null)  // seller_id를 getSeller().getId()로 수정
                 .groupBuyStatus(product.getGroupBuy() != null ? product.getGroupBuy().getStatus() : null)
                 .build();
     }
@@ -62,21 +59,22 @@ public class ProductDto {
     public Product toEntity() {
         return Product.builder()
                 .id(id)
-                .product_name(product_name)
+                .productName(productName)
                 .price(price)
-                .grade_discount_rate(grade_discount_rate)
-                .subscription_discount_rate(subscription_discount_rate)
-                .is_subscription(is_subscription)
+                .gradeDiscountRate(gradeDiscountRate)
+                .subscriptionDiscountRate(subscriptionDiscountRate)
+                .isSubscription(isSubscription)
+                .isGroupBuy(isGroupBuy)
                 .local(local)
-                .product_grade(GradeBOption.valueOf(product_grade))
-                .delivery_fee(delivery_fee)
+                .productGrade(GradeBOption.valueOf(productGrade))
+                .deliveryFee(deliveryFee)
                 .description(description)
-                .max_participants(max_participants)
-                .alarm_id(alarm_id)
-                .create_At(createdAt)
-                .stock_quantity(stock_quantity)
-                .seller_id(seller_id)
-                .is_group_buy(is_group_buy)
+                .subscriptionId(subscriptionId)
+                .maxParticipants(maxParticipants)
+                .alarmId(alarmId)
+                .createdAt(createdAt)
+                .stockQuantity(stockQuantity)
+                .sellerId(sellerId)
                 .build();
     }
 }

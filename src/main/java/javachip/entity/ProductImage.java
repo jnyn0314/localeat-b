@@ -19,10 +19,10 @@ public class ProductImage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private Long product_id;
+    @Column(name = "product_id", nullable = false)
+    private Long productId;     // 이전: product_id
 
-    private String image_name;
+    private String imageName;   // 이전: image_name
 
-    private byte[] image_data;
+    private byte[] imageData;   // 이전: image_data
 }
