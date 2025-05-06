@@ -1,0 +1,13 @@
+package javachip.entity;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class ParticipantId {
+    private String consumer;     // Consumer.userId
+    private Long groupBuy;       // GroupBuy.id
+}

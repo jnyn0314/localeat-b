@@ -11,6 +11,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "PRODUCT")
@@ -70,12 +71,19 @@ public class Product {
     @Column(name = "stock_quantity")
     private Integer stockQuantity;           // 이전: stock_quantity
 
+
     // 변경: sellerId를 삭제하고 seller를 추가
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "seller_id")  // seller_id 컬럼을 기준으로 seller와 관계를 맺음
+
+    //김소망이 추가
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "seller_id")
+
     private Seller seller;
 
     //김소망이 추가
     @OneToOne(mappedBy = "product", cascade = CascadeType.ALL)
     private GroupBuy groupBuy;
+
 }
