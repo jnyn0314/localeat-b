@@ -8,11 +8,12 @@ package javachip.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "Product")
+@Table(name = "PRODUCT")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -62,12 +63,19 @@ public class Product {
     @Column(name = "alarm_id")
     private Long alarmId;                    // 이전: alarm_id
 
-    @Column(name = "create_at")
-    private Date createAt;                   // 이전: create_at
+    //김소망이 수정
+    @CreationTimestamp
+    private LocalDateTime createdAt;        // 이전: create_at
 
     @Column(name = "stock_quantity")
     private Integer stockQuantity;           // 이전: stock_quantity
 
-    @Column(name = "seller_id")
-    private String sellerId;                 // 이전: seller_id
+    // 변경: sellerId를 삭제하고 seller를 추가
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "seller_id")  // seller_id 컬럼을 기준으로 seller와 관계를 맺음
+    private Seller seller;
+
+    //김소망이 추가
+    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL)
+    private GroupBuy groupBuy;
 }
