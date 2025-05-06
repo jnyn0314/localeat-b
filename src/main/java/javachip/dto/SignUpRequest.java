@@ -1,6 +1,10 @@
 package javachip.dto;
 
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+
 public class SignUpRequest {
     private String userId;
     private String password;
@@ -10,8 +14,9 @@ public class SignUpRequest {
     private String address;
     private String local;
     private String birth;
-    private String business_id;
+    private String businessId;
 
+    @NotBlank(message = "{NotBlank.userId}")
     public String getUserId() {
         return userId;
     }
@@ -20,6 +25,7 @@ public class SignUpRequest {
         this.userId = userId;
     }
 
+    @NotBlank(message = "{NotBlank.password}")
     public String getPassword() {
         return password;
     }
@@ -28,6 +34,7 @@ public class SignUpRequest {
         this.password = password;
     }
 
+    @NotBlank(message = "{NotBlank.name}")
     public String getName() {
         return name;
     }
@@ -36,6 +43,7 @@ public class SignUpRequest {
         this.name = name;
     }
 
+    @Pattern(regexp = "^\\d{3}-\\d{3,4}-\\d{4}$", message = "{Pattern.phone}")
     public String getPhone() {
         return phone;
     }
@@ -44,6 +52,7 @@ public class SignUpRequest {
         this.phone = phone;
     }
 
+    @Email(message = "{Email.email}")
     public String getEmail() {
         return email;
     }
@@ -52,6 +61,7 @@ public class SignUpRequest {
         this.email = email;
     }
 
+    @NotBlank(message = "{NotBlank.address}")
     public String getAddress() {
         return address;
     }
@@ -60,6 +70,7 @@ public class SignUpRequest {
         this.address = address;
     }
 
+    @NotBlank(message = "{NotBlank.local}")
     public String getLocal() {
         return local;
     }
@@ -68,6 +79,7 @@ public class SignUpRequest {
         this.local = local;
     }
 
+    @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$", message = "{Pattern.birth}")
     public String getBirth() {
         return birth;
     }
@@ -76,11 +88,11 @@ public class SignUpRequest {
         this.birth = birth;
     }
 
-    public String getBusiness_id() {
-        return business_id;
+    public String getBusinessId() {
+        return businessId;
     }
 
-    public void setBusiness_id(String business_id) {
-        this.business_id = business_id;
+    public void setBusinessId(String businessId) {
+        this.businessId = businessId;
     }
 }

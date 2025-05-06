@@ -36,7 +36,7 @@ class AuthServiceSellerTest {
         request.setEmail("test@example.com");
         request.setAddress("인천 어딘가");
         request.setLocal("인천");
-        request.setBusiness_id("1990-01-01");
+        request.setBusinessId("1990-01-01");
 
         // when
         authServiceSeller.registerSeller(request);

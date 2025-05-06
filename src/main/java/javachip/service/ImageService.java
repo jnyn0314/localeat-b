@@ -20,24 +20,12 @@ public class ImageService {
     }
 
     public void saveImage(Long productId, MultipartFile file) throws IOException {
-        try {
-            if (file.isEmpty()) {
-                throw new IllegalArgumentException("파일이 비어 있습니다.");
-            }
-
-            ProductImage image = new ProductImage();
-            image.setProductId(productId);
-            image.setImage_name(file.getOriginalFilename());
-            image.setImage_data(file.getBytes());
-
-            System.out.println("▶ 저장 시도: " + image.getImage_name() + ", 크기=" + file.getSize());
-
-            repository.save(image);
-            System.out.println("저장 성공!");
-        } catch (Exception e) {
-            System.out.println("이미지 저장 실패: " + e.getMessage());
-            throw e;
-        }
+        ProductImage img = new ProductImage();
+        img.setId(productId); // ID 생성 방식 자유
+        img.setProductId(productId);
+        img.setImageName(file.getOriginalFilename());
+        img.setImageData(file.getBytes());
+        repository.save(img);
     }
 
     public void testInsertImageFromPath(Long productId, String filePath) throws IOException {
@@ -48,10 +36,10 @@ public class ImageService {
 
         ProductImage img = new ProductImage();
         img.setProductId(productId);
-        img.setImage_name(file.getName());
+        img.setImageName(file.getName());
 
         FileInputStream fis = new FileInputStream(file);
-        img.setImage_data(fis.readAllBytes());
+        img.setImageData(fis.readAllBytes());
 
         repository.save(img);
     }

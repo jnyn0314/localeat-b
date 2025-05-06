@@ -10,14 +10,14 @@ import jakarta.persistence.Table;
 @PrimaryKeyJoinColumn(name = "ID")
 public class Seller extends User {
 
-    @Column(name = "business_id")
-    private String business_id;
+    @Column(name = "businessId")
+    private String businessId;
 
-    public String getBusiness_id() {
-        return business_id;
+    public String getBusinessId() {
+        return businessId;
     }
 
-    public void setBusiness_id(String business_id) {
-        this.business_id = business_id;
+    public void setBusinessId(String businessId) {
+        this.businessId = businessId;
     }
 }
