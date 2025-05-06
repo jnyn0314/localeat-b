@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -49,14 +48,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductDto updateProduct(Long id, ProductDto dto) {
+    public void updateProduct(Long id, ProductDto dto) {
         Product existing = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
 
         Product updated = dto.toEntity();
         updated.setId(existing.getId());
 
-        return ProductDto.fromEntity(repository.save(updated));
+        ProductDto.fromEntity(repository.save(updated));
     }
 
     @Transactional
@@ -64,15 +63,13 @@ public class ProductServiceImpl implements ProductService {
         Optional<Product> product = repository.findById(id);
         if (product.isPresent()) {
             System.out.println(">> 삭제 대상 존재, product = " + product.get());
+            // 자식 엔티티 먼저 삭제
+            productImageRepository.deleteAllByProductId(id);
+
+            // 부모 엔티티 삭제
             repository.deleteById(id);
         } else {
             System.out.println(">> 삭제 대상 없음, id = " + id);
         }
-
-        // 자식 엔티티 먼저 삭제
-        productImageRepository.deleteAllByProductId(id);
-
-        // 부모 엔티티 삭제
-        repository.deleteById(id);
     }
 }

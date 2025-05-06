@@ -36,10 +36,10 @@ public class Product {
     private Float subscriptionDiscountRate;  // 이전: subscription_discount_rate
 
     @Column(name = "is_subscription", nullable = false)
-    private boolean isSubscription;          // 이전: is_subscription
+    private Boolean isSubscription;          // 이전: is_subscription
 
     @Column(name = "is_group_buy", nullable = false)
-    private boolean isGroupBuy;         // 이전: is_group_buy
+    private Boolean isGroupBuy;         // 이전: is_group_buy
 
     @Enumerated(EnumType.STRING)
     private LocalType local;

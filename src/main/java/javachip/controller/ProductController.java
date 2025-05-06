@@ -54,4 +54,11 @@ public class ProductController {
         productService.deleteProduct(id);
         return ResponseEntity.noContent().build();
     }
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateProduct(@PathVariable Long id, @RequestBody ProductDto dto) {
+        // 서비스에 위임해서 해당 id의 상품을 수정한다.
+        productService.updateProduct(id, dto);
+        return ResponseEntity.ok("상품 수정 완료");
+    }
+
 }
