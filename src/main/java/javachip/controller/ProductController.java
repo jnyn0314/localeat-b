@@ -6,11 +6,14 @@
 */
 package javachip.controller;
 
+import jakarta.transaction.Transactional;
 import javachip.dto.ProductDto;
 import javachip.entity.Product;
 import javachip.repository.ProductRepository;
 import javachip.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +24,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductController {
 
+    private final Logger log = LoggerFactory.getLogger(ProductController.class);
     private final ProductRepository productRepository;
     private final ProductService productService;
 
@@ -42,4 +46,19 @@ public class ProductController {
         List<ProductDto> products = productService.getAllProducts();
         return ResponseEntity.ok(products);
     }
+
+    @Transactional
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
+        log.info("DELETE 요청 받음 - deleteProduct(), id = {}", id);
+        productService.deleteProduct(id);
+        return ResponseEntity.noContent().build();
+    }
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateProduct(@PathVariable Long id, @RequestBody ProductDto dto) {
+        // 서비스에 위임해서 해당 id의 상품을 수정한다.
+        productService.updateProduct(id, dto);
+        return ResponseEntity.ok("상품 수정 완료");
+    }
+
 }

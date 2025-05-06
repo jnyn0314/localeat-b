@@ -1,84 +1,82 @@
-package javachip.dto;
+/*
+파일명 : Product.java
+파일설명 : Product 엔티티.
+작성자 : 정여진
+기간 : 2025-05.01.
+*/
+package javachip.entity;
 
-import javachip.entity.GradeBOption;
-import javachip.entity.LocalType;
-import javachip.entity.Product;
-import javachip.entity.GroupBuyStatus;
+import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "PRODUCT")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ProductDto {
+public class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_seq_gen")
+    @SequenceGenerator(name = "product_seq_gen", sequenceName = "PRODUCT_SEQ", allocationSize = 1)
     private Long id;
+
+    @Column(name = "product_name", nullable = false, length = 100)
     private String productName;              // 이전: product_name
+
     private Integer price;
+
+    @Column(name = "grade_discount_rate")
     private Float gradeDiscountRate;         // 이전: grade_discount_rate
+
+    @Column(name = "subscription_discount_rate")
     private Float subscriptionDiscountRate;  // 이전: subscription_discount_rate
+
+    @Column(name = "is_subscription", nullable = false)
     private Boolean isSubscription;          // 이전: is_subscription
+
+    @Column(name = "is_group_buy", nullable = false)
     private Boolean isGroupBuy;         // 이전: is_group_buy
+
+    @Enumerated(EnumType.STRING)
     private LocalType local;
-    private String productGrade;             // previous enum name
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "product_grade")
+    private GradeBOption productGrade;       // 이전: product_grade
+
+    @Column(name = "delivery_fee")
     private Integer deliveryFee;             // 이전: delivery_fee
+
     private String description;
-    private LocalDateTime createdAt;
-    private GroupBuyStatus groupBuyStatus;  // 추가된 필드
+
+    @Column(name = "subscription_id")
     private Long subscriptionId;             // 이전: subscription_id
+
+    @Column(name = "max_participants")
     private Integer maxParticipants;         // 이전: max_participants
+
+    @Column(name = "alarm_id")
     private Long alarmId;                    // 이전: alarm_id
+
+    //김소망이 수정
+    @CreationTimestamp
+    private LocalDateTime createdAt;        // 이전: create_at
+
+    @Column(name = "stock_quantity")
     private Integer stockQuantity;           // 이전: stock_quantity
-    private String sellerId;                 // 이전: seller_id
 
-    public static ProductDto fromEntity(Product product) {
-        return ProductDto.builder()
-                .id(product.getId())
-                .productName(product.getProductName())
-                .price(product.getPrice())
-                .gradeDiscountRate(product.getGradeDiscountRate())
-                .subscriptionDiscountRate(product.getSubscriptionDiscountRate())
-                .isSubscription(product.isSubscription())
-                .isGroupBuy(product.isGroupBuy())
-                .local(product.getLocal())
-                .productGrade(product.getProductGrade().name())
-                .deliveryFee(product.getDeliveryFee())
-                .description(product.getDescription())
-                .subscriptionId(product.getSubscriptionId())
-                .maxParticipants(product.getMaxParticipants())
-                .alarmId(product.getAlarmId())
-                .createdAt(product.getCreatedAt())
-                .stockQuantity(product.getStockQuantity())
-                .sellerId(product.getSeller() != null ? product.getSeller().getUserId() : null)  // seller_id를 getSeller().getId()로 수정
-                .groupBuyStatus(product.getGroupBuy() != null ? product.getGroupBuy().getStatus() : null)
-                .build();
-    }
+    // 변경: sellerId를 삭제하고 seller를 추가
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "seller_id")  // seller_id 컬럼을 기준으로 seller와 관계를 맺음
+    private Seller seller;
 
-    public Product toEntity() {
-        return Product.builder()
-                .id(id)
-                .productName(productName)
-                .price(price)
-                .gradeDiscountRate(gradeDiscountRate)
-                .subscriptionDiscountRate(subscriptionDiscountRate)
-                .isSubscription(isSubscription)
-                .isGroupBuy(isGroupBuy)
-                .local(local)
-                .productGrade(GradeBOption.valueOf(productGrade))
-                .deliveryFee(deliveryFee)
-                .description(description)
-                .subscriptionId(subscriptionId)
-                .maxParticipants(maxParticipants)
-                .alarmId(alarmId)
-                .createdAt(createdAt)
-                .stockQuantity(stockQuantity)
-                .sellerId(sellerId)
-                .build();
-    }
+    //김소망이 추가
+    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL)
+    private GroupBuy groupBuy;
+
 }
-
-// groupbuy랑연결해야하고,,
-// status도 없어요 아직
-//김소망이 연결하고 status도 추가함
