@@ -10,12 +10,16 @@ package javachip.service.impl;
 import jakarta.transaction.Transactional;
 import javachip.dto.ProductDto;
 import javachip.entity.Product;
+import javachip.entity.Seller;
+import javachip.entity.User;
 import javachip.repository.ProductImageRepository;
 import javachip.repository.ProductRepository;
+import javachip.repository.UserRepository;
 import javachip.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.swing.plaf.SliderUI;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,6 +29,8 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository repository;
     private final ProductImageRepository productImageRepository;
+    private final UserRepository userRepository;
+
     // 공동구매, 카트 등 나중에 생기면 얘네도 delete할때 먼저 지워야 함.
 
     @Override
@@ -43,7 +49,11 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDto saveProduct(ProductDto dto) {
-        Product saved = repository.save(dto.toEntity());
+        User user = userRepository.findById(dto.getSellerId())
+                .orElseThrow(() -> new RuntimeException("판매자 정보를 찾을 수 없습니다."));
+        Seller seller = (Seller) user;
+
+        Product saved = repository.save(dto.toEntity(seller));
         return ProductDto.fromEntity(saved);
     }
 
@@ -52,7 +62,11 @@ public class ProductServiceImpl implements ProductService {
         Product existing = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
 
-        Product updated = dto.toEntity();
+        User user = userRepository.findById(dto.getSellerId())
+                .orElseThrow(() -> new RuntimeException("판매자 정보를 찾을 수 없습니다."));
+
+        Seller seller = (Seller) user; // 다운캐스팅 해줘야 함.
+        Product updated = dto.toEntity(seller);
         updated.setId(existing.getId());
 
         ProductDto.fromEntity(repository.save(updated));

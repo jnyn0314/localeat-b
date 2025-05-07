@@ -28,8 +28,8 @@ public class GroupBuyService {
         Product product = productRepository.findById(request.getProductId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 상품이 존재하지 않습니다."));
 
-        if (product.getIs_group_buy() != GroupBuyOption.TRUE) {
-            throw new IllegalStateException("해당 상품은 공동구매 대상이 아닙니다.");
+        if (Boolean.FALSE.equals(product.getIsGroupBuy())) {
+            throw new IllegalStateException("공동구매 상품이 아닙니다.");
         }
 
         Consumer consumer = consumerRepository.findById(consumerId)
@@ -66,7 +66,7 @@ public class GroupBuyService {
                 .productId(product.getId())
                 .description(groupBuy.getDescription())
                 .deadline(groupBuy.getDeadline())
-                .maxParticipants(product.getMax_participants())
+                .maxParticipants(product.getMaxParticipants())
                 .local(product.getLocal().name())
                 .partiCount(groupBuy.getPartiCount())
                 .payCount(groupBuy.getPayCount())
