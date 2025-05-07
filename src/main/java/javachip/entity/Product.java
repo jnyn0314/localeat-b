@@ -66,7 +66,8 @@ public class Product {
 
     //김소망이 수정
     @CreationTimestamp
-    private LocalDateTime createdAt;        // 이전: create_at
+    @Column(name = "CREATE_AT")
+    private Date createdAt;        // 이전: create_at
 
     @Column(name = "stock_quantity")
     private Integer stockQuantity;           // 이전: stock_quantity
@@ -76,14 +77,9 @@ public class Product {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "seller_id")  // seller_id 컬럼을 기준으로 seller와 관계를 맺음
 
-    //김소망이 추가
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "seller_id")
-
     private Seller seller;
 
     //김소망이 추가
     @OneToOne(mappedBy = "product", cascade = CascadeType.ALL)
     private GroupBuy groupBuy;
-
 }
