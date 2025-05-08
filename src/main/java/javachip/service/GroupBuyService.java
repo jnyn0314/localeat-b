@@ -1,66 +1,64 @@
 package javachip.service;
 
-import jakarta.transaction.Transactional;
 import javachip.dto.GroupBuyCreateRequest;
 import javachip.dto.GroupBuyCreateResponse;
 import javachip.entity.*;
 import javachip.repository.ConsumerRepository;
 import javachip.repository.GroupBuyRepository;
-import javachip.repository.ParticipantRepository;
 import javachip.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class GroupBuyService {
+
     private final ProductRepository productRepository;
-    private final ConsumerRepository consumerRepository;
     private final GroupBuyRepository groupBuyRepository;
-    private final ParticipantRepository participantRepository;
+    private final ConsumerRepository consumerRepository;
 
-    @Transactional
-    public GroupBuyCreateResponse createGroupBuy(GroupBuyCreateRequest request, String consumerId) {
+    public GroupBuyCreateResponse createGroupBuy(GroupBuyCreateRequest request, String userId) {
+        // 1. 소비자 유효성 확인
+        Consumer consumer = consumerRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 소비자입니다."));
 
+        // 2. 상품 유효성 확인 및 공동구매 가능 여부 확인
         Product product = productRepository.findById(request.getProductId())
-                .orElseThrow(() -> new IllegalArgumentException("해당 상품이 존재하지 않습니다."));
+                .orElseThrow(() -> new RuntimeException("해당 상품이 존재하지 않습니다."));
 
         if (Boolean.FALSE.equals(product.getIsGroupBuy())) {
             throw new IllegalStateException("공동구매 상품이 아닙니다.");
+
         }
 
-        Consumer consumer = consumerRepository.findById(consumerId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 소비자가 존재하지 않습니다."));
-
+        // 3. GroupBuy 생성
         GroupBuy groupBuy = GroupBuy.builder()
                 .product(product)
                 .description(request.getDescription())
                 .deadline(request.getDeadline())
-                .partiCount(1)  // 생성자 본인도 참가자
-                .payCount(0)
                 .status(GroupBuyStatus.RECRUITING)
-                .participants(new ArrayList<>())
+                .time(LocalDateTime.now().plusDays(1)) // 예시: 마감시간 후 24시간 내 결제
+                .partiCount(1)
+                .payCount(0)
                 .build();
 
-        groupBuy = groupBuyRepository.save(groupBuy);
 
-        // 참가자 생성
+        // 4. 첫 Participant 등록
         Participant participant = Participant.builder()
                 .consumer(consumer)
+                .product(product)
                 .groupBuy(groupBuy)
                 .quantity(request.getQuantity())
                 .payment(false)
-                .product(product)
                 .build();
 
-        participantRepository.save(participant);
+        groupBuy.setParticipants(List.of(participant)); // 양방향 설정
+        groupBuyRepository.save(groupBuy);
 
-        // GroupBuy에 추가
-        groupBuy.getParticipants().add(participant);
-
+        // 5. 응답 반환
         return GroupBuyCreateResponse.builder()
                 .groupBuyId(groupBuy.getId())
                 .productId(product.getId())
@@ -70,7 +68,7 @@ public class GroupBuyService {
                 .local(product.getLocal().name())
                 .partiCount(groupBuy.getPartiCount())
                 .payCount(groupBuy.getPayCount())
-                .createdTime(LocalDateTime.now())
+                .createdTime(groupBuy.getTime())
                 .build();
     }
 }
