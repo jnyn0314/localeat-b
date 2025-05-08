@@ -3,6 +3,7 @@ package javachip.service;
 import javachip.dto.LoginRequest;
 import javachip.dto.LoginResponse;
 import javachip.dto.SignUpRequest;
+import javachip.entity.LocalType;
 import javachip.entity.Seller;
 import javachip.entity.UserRole;
 import javachip.repository.SellerRepository;
@@ -32,7 +33,7 @@ public class AuthServiceSeller implements AuthService {
         seller.setPhone(request.getPhone());
         seller.setEmail(request.getEmail());
         seller.setAddress(request.getAddress());
-        seller.setLocal(request.getLocal());
+        seller.setLocal(LocalType.fromDisplayName(request.getLocal()));
         seller.setBusinessId(request.getBusinessId());
         seller.setRole(UserRole.SELLER);
 

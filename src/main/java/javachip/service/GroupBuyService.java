@@ -3,13 +3,14 @@ package javachip.service;
 import javachip.dto.GroupBuyCreateRequest;
 import javachip.dto.GroupBuyCreateResponse;
 import javachip.entity.*;
-import javachip.repository.ConsumerRepository;
-import javachip.repository.GroupBuyRepository;
-import javachip.repository.ProductRepository;
+import javachip.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -19,7 +20,9 @@ public class GroupBuyService {
     private final ProductRepository productRepository;
     private final GroupBuyRepository groupBuyRepository;
     private final ConsumerRepository consumerRepository;
-
+    private final OrderItemRepository orderItemRepository;
+    private final OrdersRepository orderRepository;
+    @Transactional
     public GroupBuyCreateResponse createGroupBuy(GroupBuyCreateRequest request, String userId) {
         // 1. 소비자 유효성 확인
         Consumer consumer = consumerRepository.findById(userId)
@@ -34,19 +37,19 @@ public class GroupBuyService {
 
         }
 
-        // 3. GroupBuy 생성
+        // 1. GroupBuy 생성
         GroupBuy groupBuy = GroupBuy.builder()
                 .product(product)
                 .description(request.getDescription())
                 .deadline(request.getDeadline())
                 .status(GroupBuyStatus.RECRUITING)
-                .time(LocalDateTime.now().plusDays(1)) // 예시: 마감시간 후 24시간 내 결제
+                .time(request.getDeadline().atTime(23, 59))
                 .partiCount(1)
                 .payCount(0)
+                .participants(new ArrayList<>()) // 이건 있어야 함
                 .build();
 
-
-        // 4. 첫 Participant 등록
+// 2. Participant 생성
         Participant participant = Participant.builder()
                 .consumer(consumer)
                 .product(product)
@@ -55,20 +58,26 @@ public class GroupBuyService {
                 .payment(false)
                 .build();
 
-        groupBuy.setParticipants(List.of(participant)); // 양방향 설정
-        groupBuyRepository.save(groupBuy);
+// 3. 양방향 관계 명시적 설정
+        groupBuy.getParticipants().add(participant); // ✅ 꼭 필요
+// participant.setGroupBuy(groupBuy); // 이미 builder에 있음
+
+// 4. 저장
+        groupBuyRepository.save(groupBuy); // CascadeType.ALL로 participant도 같이 저장됨
 
         // 5. 응답 반환
         return GroupBuyCreateResponse.builder()
-                .groupBuyId(groupBuy.getId())
+                .groupBuyId(Long.valueOf(groupBuy.getId()))
                 .productId(product.getId())
                 .description(groupBuy.getDescription())
                 .deadline(groupBuy.getDeadline())
                 .maxParticipants(product.getMaxParticipants())
-                .local(product.getLocal().name())
+                .currentParticipants(groupBuy.getParticipants())
+                .local(product.getLocal())
                 .partiCount(groupBuy.getPartiCount())
                 .payCount(groupBuy.getPayCount())
                 .createdTime(groupBuy.getTime())
+                .status(groupBuy.getStatus())
                 .build();
     }
 }

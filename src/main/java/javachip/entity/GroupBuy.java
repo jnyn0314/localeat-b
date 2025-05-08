@@ -21,7 +21,7 @@ public class GroupBuy {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "groupbuy_seq_gen")
     @SequenceGenerator(name = "groupbuy_seq_gen", sequenceName = "GROUPBUY_SEQ", allocationSize = 1)
     @Column(name = "ID")
-    private Long id; // groupBuyId
+    private Integer id; // groupBuyId
 
     @OneToOne
     @JoinColumn(name = "PRODUCT_ID", nullable = false, unique = true)
@@ -50,7 +50,7 @@ public class GroupBuy {
     private List<Participant> participants = new ArrayList<>();
 
     @OneToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "id", nullable = true)//나증에 false로 고쳐야함!
     private OrderItem orderItem;
 
     /*@OneToOne

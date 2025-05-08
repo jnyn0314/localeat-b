@@ -4,6 +4,7 @@ import javachip.dto.LoginRequest;
 import javachip.dto.LoginResponse;
 import javachip.dto.SignUpRequest;
 import javachip.entity.Consumer;
+import javachip.entity.LocalType;
 import javachip.entity.UserRole;
 import javachip.repository.ConsumerRepository;
 import javachip.repository.SellerRepository;
@@ -32,7 +33,7 @@ public class AuthServiceConsumer implements javachip.service.AuthService {
         consumer.setPhone(request.getPhone());
         consumer.setEmail(request.getEmail());
         consumer.setAddress(request.getAddress());
-        consumer.setLocal(request.getLocal());
+        consumer.setLocal(LocalType.fromDisplayName(request.getLocal()));
         consumer.setBirth(request.getBirth());
         consumer.setRole(UserRole.CONSUMER);
 
