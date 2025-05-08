@@ -33,7 +33,8 @@ public class AuthServiceConsumer implements javachip.service.AuthService {
         consumer.setPhone(request.getPhone());
         consumer.setEmail(request.getEmail());
         consumer.setAddress(request.getAddress());
-        consumer.setLocal(LocalType.fromDisplayName(request.getLocal()));        consumer.setBirth(request.getBirth());
+        consumer.setLocal(LocalType.fromDisplayName(request.getLocal()));
+        consumer.setBirth(request.getBirth());
         consumer.setRole(UserRole.CONSUMER);
 
         consumerRepository.save(consumer);
