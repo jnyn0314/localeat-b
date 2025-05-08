@@ -10,15 +10,17 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@IdClass(ParticipantId.class)
 public class Participant {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "participant_seq")
+    @SequenceGenerator(name = "participant_seq", sequenceName = "PARTICIPANT_SEQ", allocationSize = 1)
+    private Long id;
+
     @ManyToOne
     @JoinColumn(name = "userId", nullable = false)
     private Consumer consumer;
 
-    @Id
     @ManyToOne
     @JoinColumn(name = "groupBuyId", nullable = false)
     private GroupBuy groupBuy;

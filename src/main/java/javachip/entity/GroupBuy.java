@@ -50,7 +50,7 @@ public class GroupBuy {
     private List<Participant> participants = new ArrayList<>();
 
     @OneToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "id", nullable = true)//나증에 false로 고쳐야함!
     private OrderItem orderItem;
 
     /*@OneToOne
