@@ -13,16 +13,24 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@Table(name = "PRODUCTIMAGE")
 public class ProductImage {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_image_seq_gen")
+    @SequenceGenerator(name = "product_image_seq_gen", sequenceName = "PRODUCTIMAGE_SEQ", allocationSize = 1)
     private Long id;
 
-    @Column(nullable = false)
-    private Long product_id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id", nullable = false)
+    private Product product;
 
-    private String image_name;
+    private String imageName;   // 이전: image_name
 
-    private byte[] image_data;
+    @Lob
+    @Column(name = "image_data", columnDefinition = "CLOB")
+    private String imageData;  // Base64로 인코딩된 문자열
+
+    @Column(name = "image_type")
+    private String imageType;
 }

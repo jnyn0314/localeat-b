@@ -21,59 +21,65 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 public class Product {
-
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_seq_gen")
     @SequenceGenerator(name = "product_seq_gen", sequenceName = "PRODUCT_SEQ", allocationSize = 1)
     private Long id;
 
     @Column(name = "product_name", nullable = false, length = 100)
-    private String product_name;
+    private String productName;              // 이전: product_name
 
     private Integer price;
 
-    private Float grade_discount_rate;
+    @Column(name = "grade_discount_rate")
+    private Float gradeDiscountRate;         // 이전: grade_discount_rate
 
-    private Float subscription_discount_rate;
+    @Column(name = "subscription_discount_rate")
+    private Float subscriptionDiscountRate;  // 이전: subscription_discount_rate
 
-    private Boolean is_subscription;
+    @Column(name = "is_subscription", nullable = false)
+    private Boolean isSubscription;          // 이전: is_subscription
+
+    @Column(name = "is_group_buy", nullable = false)
+    private Boolean isGroupBuy;         // 이전: is_group_buy
 
     @Enumerated(EnumType.STRING)
     private LocalType local;
 
     @Enumerated(EnumType.STRING)
-    private GradeBOption product_grade;
+    @Column(name = "product_grade")
+    private GradeBOption productGrade;       // 이전: product_grade
 
-    private Integer delivery_fee;
+    @Column(name = "delivery_fee")
+    private Integer deliveryFee;             // 이전: delivery_fee
 
     private String description;
 
-    private Long subscription_id;
+    @Column(name = "subscription_id")
+    private Long subscriptionId;             // 이전: subscription_id
 
-    @Enumerated(EnumType.ORDINAL)
-    private GroupBuyOption is_group_buy;
+    @Column(name = "max_participants")
+    private Integer maxParticipants;         // 이전: max_participants
 
-    private Integer max_participants;
-
-    private Long alarm_id;
+    @Column(name = "alarm_id")
+    private Long alarmId;                    // 이전: alarm_id
 
     //김소망이 수정
     @CreationTimestamp
-    private LocalDateTime create_At;
+    @Column(name = "CREATE_AT")
+    private Date createdAt;        // 이전: create_at
 
-    private Integer stock_quantity;
+    @Column(name = "stock_quantity")
+    private Integer stockQuantity;           // 이전: stock_quantity
 
-    @Column(name = "seller_id", insertable = false, updatable = false)
-    private String seller_id;
 
-    //김소망이 추가
+    // 변경: sellerId를 삭제하고 seller를 추가
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "seller_id")
+    @JoinColumn(name = "seller_id")  // seller_id 컬럼을 기준으로 seller와 관계를 맺음
+
     private Seller seller;
 
     //김소망이 추가
     @OneToOne(mappedBy = "product", cascade = CascadeType.ALL)
     private GroupBuy groupBuy;
-
-
 }

@@ -29,8 +29,9 @@ public class GroupBuyService {
         Product product = productRepository.findById(request.getProductId())
                 .orElseThrow(() -> new RuntimeException("해당 상품이 존재하지 않습니다."));
 
-        if (product.getIs_group_buy() != GroupBuyOption.FALSE) {
-            throw new RuntimeException("해당 상품은 공동구매가 불가능합니다.");
+        if (Boolean.FALSE.equals(product.getIsGroupBuy())) {
+            throw new IllegalStateException("공동구매 상품이 아닙니다.");
+
         }
 
         // 3. GroupBuy 생성
@@ -63,10 +64,8 @@ public class GroupBuyService {
                 .productId(product.getId())
                 .description(groupBuy.getDescription())
                 .deadline(groupBuy.getDeadline())
-                .local(product.getLocal().toString())
-                .maxParticipants(product.getMax_participants())
-                .currentParticipants(groupBuy.getParticipants())
-                .status(groupBuy.getStatus())
+                .maxParticipants(product.getMaxParticipants())
+                .local(product.getLocal().name())
                 .partiCount(groupBuy.getPartiCount())
                 .payCount(groupBuy.getPayCount())
                 .createdTime(groupBuy.getTime())
