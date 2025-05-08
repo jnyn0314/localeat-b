@@ -29,7 +29,6 @@ public class Participant {
     @Column(nullable = false)
     private Boolean payment = false;
 
-    // 상품 정보도 필요한 경우
     @ManyToOne
     @JoinColumn(name = "productId", nullable = false)
     private Product product;

@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ParticipantId {
     private String consumer;     // Consumer.userId
-    private Long groupBuy;       // GroupBuy.id
+    private Integer groupBuy;       // GroupBuy.id
 }

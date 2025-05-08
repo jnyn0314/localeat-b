@@ -8,8 +8,10 @@ import javachip.repository.GroupBuyRepository;
 import javachip.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -20,6 +22,7 @@ public class GroupBuyService {
     private final GroupBuyRepository groupBuyRepository;
     private final ConsumerRepository consumerRepository;
 
+    @Transactional
     public GroupBuyCreateResponse createGroupBuy(GroupBuyCreateRequest request, String userId) {
         // 1. 소비자 유효성 확인
         Consumer consumer = consumerRepository.findById(userId)
@@ -40,11 +43,11 @@ public class GroupBuyService {
                 .description(request.getDescription())
                 .deadline(request.getDeadline())
                 .status(GroupBuyStatus.RECRUITING)
-                .time(LocalDateTime.now().plusDays(1)) // 예시: 마감시간 후 24시간 내 결제
+                .time(request.getDeadline().atTime(23, 59)) //마감시간 후 24시간 내 결제
                 .partiCount(1)
                 .payCount(0)
+                .participants(new ArrayList<>())
                 .build();
-
 
         // 4. 첫 Participant 등록
         Participant participant = Participant.builder()
@@ -55,20 +58,22 @@ public class GroupBuyService {
                 .payment(false)
                 .build();
 
-        groupBuy.setParticipants(List.of(participant)); // 양방향 설정
+        groupBuy.getParticipants().add(participant); // 명시적 양방향 설정
         groupBuyRepository.save(groupBuy);
 
         // 5. 응답 반환
         return GroupBuyCreateResponse.builder()
-                .groupBuyId(groupBuy.getId())
+                .groupBuyId(Long.valueOf(groupBuy.getId()))
                 .productId(product.getId())
                 .description(groupBuy.getDescription())
                 .deadline(groupBuy.getDeadline())
                 .maxParticipants(product.getMaxParticipants())
+                .currentParticipants(groupBuy.getParticipants())
                 .local(product.getLocal().name())
                 .partiCount(groupBuy.getPartiCount())
                 .payCount(groupBuy.getPayCount())
                 .createdTime(groupBuy.getTime())
+                .status(groupBuy.getStatus())
                 .build();
     }
 }
