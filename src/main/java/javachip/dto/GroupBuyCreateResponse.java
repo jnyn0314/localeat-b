@@ -1,5 +1,8 @@
 package javachip.dto;
 
+import javachip.entity.GroupBuyStatus;
+import javachip.entity.LocalType;
+import javachip.entity.Participant;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -7,6 +10,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -18,8 +22,10 @@ public class GroupBuyCreateResponse {
     private String description;
     private LocalDate deadline;
     private int maxParticipants;
-    private String local;
+    private List<Participant> currentParticipants;
+    private LocalType local;
     private int partiCount;
     private int payCount;
     private LocalDateTime createdTime;
+    private GroupBuyStatus status;
 }

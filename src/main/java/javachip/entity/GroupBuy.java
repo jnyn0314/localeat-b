@@ -20,37 +20,41 @@ public class GroupBuy {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "groupbuy_seq_gen")
     @SequenceGenerator(name = "groupbuy_seq_gen", sequenceName = "GROUPBUY_SEQ", allocationSize = 1)
-    private Long id; // groupBuyId
+    @Column(name = "ID")
+    private Integer id; // groupBuyId
 
     @OneToOne
-    @JoinColumn(name = "productId", nullable = false, unique = true)
+    @JoinColumn(name = "PRODUCT_ID", nullable = false, unique = true)
     private Product product;
 
-    @Column(length = 100)
+    @Column(name = "DESCRIPTION")
     private String description;
 
-    @Column(nullable = false)
+    @Column(name = "DEADLINE")
     private LocalDate deadline;
 
-    @Column(nullable = false)
+    @Column(name = "PARTI_COUNT")
     private Integer partiCount = 0;
 
-    @Column(nullable = false)
+    @Column(name = "PAY_COUNT")
     private Integer payCount = 0;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "STATUS")
     private GroupBuyStatus status;
 
+    @Column(name = "TIME")
     private LocalDateTime time;
 
     @OneToMany(mappedBy = "groupBuy", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Participant> participants = new ArrayList<>();
 
-    // 필요시 알림, 주문 항목 연관관계도 추가
-    // @OneToOne
-    // private OrderItem orderItem;
+    @OneToOne
+    @JoinColumn(name = "id", nullable = true)//나증에 false로 고쳐야함!
+    private OrderItem orderItem;
 
-    // @OneToOne
-    // private GroupBuyAlarm gbAlarm;
-
+    /*@OneToOne
+    @Column(name = "GB_ALARM_ID")
+    private GroupBuyAlarm gbAlarm;
+*/
 }

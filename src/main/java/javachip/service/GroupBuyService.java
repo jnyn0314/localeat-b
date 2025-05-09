@@ -1,76 +1,83 @@
 package javachip.service;
 
-import jakarta.transaction.Transactional;
 import javachip.dto.GroupBuyCreateRequest;
 import javachip.dto.GroupBuyCreateResponse;
 import javachip.entity.*;
-import javachip.repository.ConsumerRepository;
-import javachip.repository.GroupBuyRepository;
-import javachip.repository.ParticipantRepository;
-import javachip.repository.ProductRepository;
+import javachip.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class GroupBuyService {
+
     private final ProductRepository productRepository;
-    private final ConsumerRepository consumerRepository;
     private final GroupBuyRepository groupBuyRepository;
-    private final ParticipantRepository participantRepository;
-
+    private final ConsumerRepository consumerRepository;
+    private final OrderItemRepository orderItemRepository;
+    private final OrdersRepository orderRepository;
     @Transactional
-    public GroupBuyCreateResponse createGroupBuy(GroupBuyCreateRequest request, String consumerId) {
+    public GroupBuyCreateResponse createGroupBuy(GroupBuyCreateRequest request, String userId) {
+        // 1. 소비자 유효성 확인
+        Consumer consumer = consumerRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 소비자입니다."));
 
+        // 2. 상품 유효성 확인 및 공동구매 가능 여부 확인
         Product product = productRepository.findById(request.getProductId())
-                .orElseThrow(() -> new IllegalArgumentException("해당 상품이 존재하지 않습니다."));
+                .orElseThrow(() -> new RuntimeException("해당 상품이 존재하지 않습니다."));
 
         if (Boolean.FALSE.equals(product.getIsGroupBuy())) {
             throw new IllegalStateException("공동구매 상품이 아닙니다.");
+
         }
 
-        Consumer consumer = consumerRepository.findById(consumerId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 소비자가 존재하지 않습니다."));
-
+        // 1. GroupBuy 생성
         GroupBuy groupBuy = GroupBuy.builder()
                 .product(product)
                 .description(request.getDescription())
                 .deadline(request.getDeadline())
-                .partiCount(1)  // 생성자 본인도 참가자
-                .payCount(0)
                 .status(GroupBuyStatus.RECRUITING)
-                .participants(new ArrayList<>())
+                .time(request.getDeadline().atTime(23, 59))
+                .partiCount(1)
+                .payCount(0)
+                .participants(new ArrayList<>()) // 이건 있어야 함
                 .build();
 
-        groupBuy = groupBuyRepository.save(groupBuy);
-
-        // 참가자 생성
+// 2. Participant 생성
         Participant participant = Participant.builder()
                 .consumer(consumer)
+                .product(product)
                 .groupBuy(groupBuy)
                 .quantity(request.getQuantity())
                 .payment(false)
-                .product(product)
                 .build();
 
-        participantRepository.save(participant);
+// 3. 양방향 관계 명시적 설정
+        groupBuy.getParticipants().add(participant); // ✅ 꼭 필요
+// participant.setGroupBuy(groupBuy); // 이미 builder에 있음
 
-        // GroupBuy에 추가
-        groupBuy.getParticipants().add(participant);
+// 4. 저장
+        groupBuyRepository.save(groupBuy); // CascadeType.ALL로 participant도 같이 저장됨
 
+        // 5. 응답 반환
         return GroupBuyCreateResponse.builder()
-                .groupBuyId(groupBuy.getId())
+                .groupBuyId(Long.valueOf(groupBuy.getId()))
                 .productId(product.getId())
                 .description(groupBuy.getDescription())
                 .deadline(groupBuy.getDeadline())
                 .maxParticipants(product.getMaxParticipants())
-                .local(product.getLocal().name())
+                .currentParticipants(groupBuy.getParticipants())
+                .local(product.getLocal())
                 .partiCount(groupBuy.getPartiCount())
                 .payCount(groupBuy.getPayCount())
-                .createdTime(LocalDateTime.now())
+                .createdTime(groupBuy.getTime())
+                .status(groupBuy.getStatus())
                 .build();
     }
 }
