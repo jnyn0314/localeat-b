@@ -61,4 +61,20 @@ public class ImageController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @GetMapping("/by-product/{productId}")
+    public ResponseEntity<byte[]> getImageByProductId(@PathVariable Long productId) {
+        List<ProductImage> imageList = imageRepository.findByProductId(productId);
+        if (!imageList.isEmpty()) {
+            ProductImage image = imageList.get(0);
+            byte[] decodedImage = Base64.getDecoder().decode(image.getImageData());
+
+            return ResponseEntity.ok()
+                    .contentType(MediaType.parseMediaType(image.getImageType()))
+                    .body(decodedImage);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }

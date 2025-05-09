@@ -1,5 +1,7 @@
 package javachip.entity;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 public enum LocalType {
         SGI,
         GANGWON,
@@ -8,5 +10,14 @@ public enum LocalType {
         JNGJ,
         DGGB,
         GNBNUL,
-        JEJU,
+        JEJU;
+
+        @JsonCreator
+        public static LocalType from(String value) {
+                if (value == null || value.trim().isEmpty()) {
+                        return null;
+                }
+                return LocalType.valueOf(value);
+        }
+
 }
