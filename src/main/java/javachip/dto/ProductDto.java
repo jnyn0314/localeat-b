@@ -1,3 +1,9 @@
+/*
+파일명 : ProductDto.java
+파일설명 : 상품 정보를 주고받기 위한 DTO 클래스. Entity ↔ DTO 변환 포함.
+작성자 : 정여진
+기간 : 2025-05-01.
+*/
 package javachip.dto;
 
 import jakarta.validation.constraints.NotBlank;

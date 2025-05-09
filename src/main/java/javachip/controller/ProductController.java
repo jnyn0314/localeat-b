@@ -1,6 +1,6 @@
 /*
 파일명 : ProductController.java
-파일설명 : ProductController
+파일설명 : 상품 조회, 등록, 수정, 삭제 및 폼 옵션 제공
 작성자 : 정여진
 기간 : 2025-05-03
 */
@@ -36,6 +36,11 @@ public class ProductController {
     private final ProductRepository productRepository;
     private final ProductService productService;
 
+    /**
+     * 상품 단건 조회 (이미지 포함)
+     * @param id 상품 ID
+     * @return ProductDto (존재하지 않으면 404 Not Found)
+     */
     @GetMapping("/{id:[\\d]+}")
     public ResponseEntity<ProductDto> getProductById(@PathVariable Long id) {
         return productRepository.findWithImagesById(id)
@@ -43,6 +48,14 @@ public class ProductController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    /**
+     * 상품 등록
+     * - Validation 검증 포함
+     * - 오류 시 필드별 에러 메시지 반환
+     * @param dto 상품 데이터
+     * @param bindingResult 유효성 검증 결과
+     * @return 저장된 상품 정보 또는 에러 메시지
+     */
     @PostMapping
     public ResponseEntity<?> createProduct(@Valid @RequestBody ProductDto dto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -57,12 +70,22 @@ public class ProductController {
         return ResponseEntity.ok(saved);
     }
 
+
+    /**
+     * 모든 상품 리스트 조회
+     * @return 상품 리스트
+     */
     @GetMapping
     public ResponseEntity<List<ProductDto>> getAllProducts() {
         List<ProductDto> products = productService.getAllProducts();
         return ResponseEntity.ok(products);
     }
 
+    /**
+     * 상품 삭제
+     * - 이미지 등 연관 엔티티도 함께 삭제됨
+     * @param id 상품 ID
+     */
     @Transactional
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
@@ -70,6 +93,12 @@ public class ProductController {
         productService.deleteProduct(id);
         return ResponseEntity.noContent().build();
     }
+
+    /**
+     * 상품 수정
+     * @param id 수정 대상 상품 ID
+     * @param dto 수정할 상품 정보
+     */
     @PutMapping("/{id}")
     public ResponseEntity<?> updateProduct(@PathVariable Long id, @RequestBody ProductDto dto) {
         // 서비스에 위임해서 해당 id의 상품을 수정한다.
@@ -77,6 +106,11 @@ public class ProductController {
         return ResponseEntity.ok("상품 수정 완료");
     }
 
+    /**
+     * 상품 등록/수정 폼을 위한 옵션 값 제공
+     * - 지역(LocalType), 공동구매 옵션, 등급 옵션
+     * @return Enum 값을 문자열로 구성한 맵
+     */
     @GetMapping("/form-options")
     public ResponseEntity<Map<String, List<String>>> getFormOptions() {
         Map<String, List<String>> result = new HashMap<>();
@@ -86,4 +120,8 @@ public class ProductController {
         return ResponseEntity.ok(result);
     }
 
+    @GetMapping("/latest")
+    public ResponseEntity<List<ProductDto>> getLatestProducts() {
+        return ResponseEntity.ok(productService.getLatestProducts());
+    }
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 
 public enum LocalType {
         SGI,
+        GYEONGGI,
         GANGWON,
         CHUNGCHEONG,
         JEONBUK,
