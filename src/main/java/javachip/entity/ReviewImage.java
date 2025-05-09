@@ -19,7 +19,8 @@ import lombok.*;
 public class ReviewImage {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "review_image_seq")
+    @SequenceGenerator(name = "review_image_seq", sequenceName = "review_image_seq", allocationSize = 1)
     @Column(name = "id")
     private Long id;
 

@@ -25,7 +25,6 @@ public class ReviewServiceImpl implements ReviewService {
     private final OrderItemRepository  orderItemRepository;
     private final ProductRepository    productRepository;
     private final UserRepository       userRepository;
-    private final ConsumerRepository   consumerRepository;
 
     @Override
     @Transactional
@@ -37,15 +36,16 @@ public class ReviewServiceImpl implements ReviewService {
             throw new IllegalStateException("Cannot review this item");
         }
 
-
+        System.out.println("💬 서비스 로직 진입 - ReviewDto: " + dto);
         Product p = productRepository.findById(dto.getProductId())
                 .orElseThrow(() -> new IllegalArgumentException("Product not found"));
 
-        Consumer c = consumerRepository.findById(dto.getUserId())
-                .orElseThrow(() -> new IllegalArgumentException("Consumer not found"));
+        User u = userRepository.findById(dto.getUserId())
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        System.out.println("💬 유저 조회 성공 - userId: " + u.getUserId());
 
         // 3) DTO → Entity
-        Review newReview = dto.toEntity(oi, p, c);
+        Review newReview = dto.toEntity(oi, p, u);
         Review saved     = reviewRepository.save(newReview);
 
         // 주문항목 리뷰 상태 업데이트
