@@ -11,7 +11,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/groupbuys")
+@RequestMapping("/groupBuy/create")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:3000") // 필요 시 프론트 연동
 public class GroupBuyController {

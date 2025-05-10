@@ -23,7 +23,7 @@ public class GroupBuy {
     @Column(name = "ID")
     private Integer id; // groupBuyId
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "PRODUCT_ID", nullable = false, unique = true)
     private Product product;
 
