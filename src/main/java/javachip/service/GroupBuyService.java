@@ -2,6 +2,7 @@ package javachip.service;
 
 import javachip.dto.GroupBuyCreateRequest;
 import javachip.dto.GroupBuyCreateResponse;
+import javachip.dto.ParticipantResponse;
 import javachip.entity.*;
 import javachip.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -66,18 +68,27 @@ public class GroupBuyService {
         groupBuyRepository.save(groupBuy); // CascadeType.ALL로 participant도 같이 저장됨
 
         // 5. 응답 반환
+        List<ParticipantResponse> participantResponses = groupBuy.getParticipants().stream()
+                .map(p -> ParticipantResponse.builder()
+                        .consumerId(p.getConsumer().getUserId())
+                        .quantity(p.getQuantity())
+                        .payment(p.getPayment())
+                        .build())
+                .collect(Collectors.toList());
+
         return GroupBuyCreateResponse.builder()
                 .groupBuyId(Long.valueOf(groupBuy.getId()))
                 .productId(product.getId())
                 .description(groupBuy.getDescription())
                 .deadline(groupBuy.getDeadline())
                 .maxParticipants(product.getMaxParticipants())
-                .currentParticipants(groupBuy.getParticipants())
+                .currentParticipants(participantResponses)
                 .local(product.getLocal())
                 .partiCount(groupBuy.getPartiCount())
                 .payCount(groupBuy.getPayCount())
                 .createdTime(groupBuy.getTime())
                 .status(groupBuy.getStatus())
                 .build();
+
     }
 }

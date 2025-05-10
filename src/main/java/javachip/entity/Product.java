@@ -79,11 +79,4 @@ public class Product {
     @JoinColumn(name = "seller_id")  // seller_id 컬럼을 기준으로 seller와 관계를 맺음
     private Seller seller;
 
-    //김소망이 추가
-    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL)
-    @JsonIgnore // 양방향 무한순환 문제 해결 -> Product → GroupBuy → 다시 Product로 참조하고 있는 문제 해결.
-    private GroupBuy groupBuy;
-
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<ProductImage> productImages;
 }

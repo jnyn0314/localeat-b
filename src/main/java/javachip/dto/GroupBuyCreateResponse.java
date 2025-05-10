@@ -22,7 +22,7 @@ public class GroupBuyCreateResponse {
     private String description;
     private LocalDate deadline;
     private int maxParticipants;
-    private List<Participant> currentParticipants;
+    private List<ParticipantResponse> currentParticipants; //  DTO로 교체
     private LocalType local;
     private int partiCount;
     private int payCount;
