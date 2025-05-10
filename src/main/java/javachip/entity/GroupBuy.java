@@ -24,7 +24,7 @@ public class GroupBuy {
     private Integer id; // groupBuyId
 
     @ManyToOne
-    @JoinColumn(name = "PRODUCT_ID", nullable = false, unique = true)
+    @JoinColumn(name = "PRODUCT_ID", nullable = false)
     private Product product;
 
     @Column(name = "DESCRIPTION")
@@ -50,7 +50,7 @@ public class GroupBuy {
     private List<Participant> participants = new ArrayList<>();
 
     @OneToOne
-    @JoinColumn(name = "id", nullable = true)//나증에 false로 고쳐야함!
+    @JoinColumn(name = "order_item_id", referencedColumnName = "id")
     private OrderItem orderItem;
 
     /*@OneToOne

@@ -79,7 +79,4 @@ public class Product {
 
     private Seller seller;
 
-    //김소망이 추가
-    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL)
-    private GroupBuy groupBuy;
 }
