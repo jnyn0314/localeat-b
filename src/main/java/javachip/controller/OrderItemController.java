@@ -6,14 +6,16 @@
 */
 package javachip.controller;
 
+import javachip.dto.OrderItemDto;
 import javachip.entity.OrderItem;
 import javachip.repository.OrderItemRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/order-items")
+@RequestMapping("/api/order-items")
 public class OrderItemController {
 
     private final OrderItemRepository orderItemRepository;
@@ -30,7 +32,11 @@ public class OrderItemController {
 
     // 특정 ID 주문 항목 조회
     @GetMapping("/{id}")
-    public OrderItem getOrderItemById(@PathVariable Long id) {
-        return orderItemRepository.findById(id).orElse(null);
+    public ResponseEntity<OrderItemDto> getOrderItemById(@PathVariable Long id) {
+
+        OrderItem oi = orderItemRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("OrderItem not found"));
+
+        return ResponseEntity.ok(OrderItemDto.fromEntity(oi));
     }
 }

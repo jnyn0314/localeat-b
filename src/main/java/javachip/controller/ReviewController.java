@@ -30,6 +30,10 @@ public class ReviewController {
             @ModelAttribute ReviewDto reviewDto,
             @RequestParam(value = "images", required = false) List<MultipartFile> images
     ) {
+        // 👇 디버깅용 출력 추가
+        System.out.println("💬 수신된 ReviewDto: " + reviewDto);
+        System.out.println("💬 수신된 이미지 수: " + (images != null ? images.size() : 0));
+
         if (images != null && !images.isEmpty()) {
             List<String> urls = images.stream()
                     .filter(f -> !f.isEmpty())
