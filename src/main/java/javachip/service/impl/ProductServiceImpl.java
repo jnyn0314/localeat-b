@@ -9,6 +9,7 @@ package javachip.service.impl;
 
 import jakarta.transaction.Transactional;
 import javachip.dto.ProductDto;
+import javachip.entity.LocalType;
 import javachip.entity.Product;
 import javachip.entity.Seller;
 import javachip.entity.User;
@@ -25,6 +26,7 @@ import org.springframework.stereotype.Service;
 import javax.swing.plaf.SliderUI;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -33,6 +35,7 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository repository;
     private final ProductImageRepository productImageRepository;
     private final UserRepository userRepository;
+    private final ProductRepository productRepository;
 
     // 공동구매, 카트 등 나중에 생기면 얘네도 delete할때 먼저 지워야 함.
 
@@ -120,4 +123,34 @@ public class ProductServiceImpl implements ProductService {
                 .map(ProductDto::fromEntity)
                 .toList();
     }
+
+    @Override
+    public List<ProductDto> searchProducts(String keyword, String tag) {
+        List<Product> products;
+
+        LocalType localType = null;
+        if (tag != null) {
+            try {
+                localType = LocalType.valueOf(tag);
+                System.out.println("💡 전달받은 tag = " + tag);
+            } catch (IllegalArgumentException e) {
+                throw new IllegalArgumentException("유효하지 않은 지역 코드입니다: " + tag);
+            }
+        }
+
+        if (localType != null && (keyword == null || keyword.isBlank())) {
+            products = productRepository.findByLocal(localType);
+        } else if (localType != null && keyword != null && !keyword.isBlank()) {
+            products = productRepository.findByProductNameContainingIgnoreCaseAndLocal(keyword, localType);
+        } else if (keyword != null && !keyword.isBlank()) {
+            products = productRepository.findByProductNameContainingIgnoreCase(keyword);
+        } else {
+            products = List.of(); // or 전체 리스트
+        }
+
+        return products.stream()
+                .map(ProductDto::fromEntity)
+                .collect(Collectors.toList());
+    }
+
 }

@@ -16,4 +16,5 @@ public interface ProductService {
     void updateProduct(Long id, ProductDto dto);
     void deleteProduct(Long id);
     List<ProductDto> getLatestProducts();
+    List<ProductDto> searchProducts(String keyword, String tag);
 }
