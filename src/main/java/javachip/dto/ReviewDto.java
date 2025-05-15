@@ -18,6 +18,8 @@ public class ReviewDto {
     private LocalDateTime createdAt;
     private List<String> imageUrls; // ReviewImage.imageUrl 리스트
 
+    private String productName;
+
     /** Entity → DTO */
     public static ReviewDto fromEntity(Review r) {
         return ReviewDto.builder()
@@ -31,6 +33,7 @@ public class ReviewDto {
                 .imageUrls(r.getImageList().stream()
                         .map(ReviewImage::getImageUrl)
                         .collect(Collectors.toList()))
+                .productName(r.getProduct().getProductName())
                 .build();
     }
 
