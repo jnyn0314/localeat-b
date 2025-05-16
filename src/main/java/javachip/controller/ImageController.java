@@ -49,7 +49,7 @@ public class ImageController {
     // ✅ 이미지 조회 (Base64 → byte[] 변환 후 반환)
     @GetMapping("/{productId}")
     public ResponseEntity<byte[]> getImage(@PathVariable Long productId) {
-        List<ProductImage> imageList = imageRepository.findByProductId(productId);
+        List<ProductImage> imageList = imageRepository.findByProduct_Id(productId);
         if (!imageList.isEmpty()) {
             ProductImage image = imageList.get(0);
             byte[] decodedImage = Base64.getDecoder().decode(image.getImageData());
@@ -64,7 +64,7 @@ public class ImageController {
 
     @GetMapping("/by-product/{productId}")
     public ResponseEntity<byte[]> getImageByProductId(@PathVariable Long productId) {
-        List<ProductImage> imageList = imageRepository.findByProductId(productId);
+        List<ProductImage> imageList = imageRepository.findByProduct_Id(productId);
         if (!imageList.isEmpty()) {
             ProductImage image = imageList.get(0);
             byte[] decodedImage = Base64.getDecoder().decode(image.getImageData());

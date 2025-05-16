@@ -124,4 +124,14 @@ public class ProductController {
     public ResponseEntity<List<ProductDto>> getLatestProducts() {
         return ResponseEntity.ok(productService.getLatestProducts());
     }
+
+    // 검색과 필터
+    @GetMapping("/search/filter")
+    public ResponseEntity<List<ProductDto>> searchProductsWithFilter(
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) String tag
+    ) {
+        List<ProductDto> result = productService.searchProducts(keyword, tag);
+        return ResponseEntity.ok(result);
+    }
 }
