@@ -56,7 +56,6 @@ public class ProductDto {
 
     private String imageUrl;
 
-
     public static ProductDto fromEntity(Product p) {
         String imageUrl = null;
         if (p.getProductImages() != null && !p.getProductImages().isEmpty()) {

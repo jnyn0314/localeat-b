@@ -10,12 +10,16 @@ public class OrderItemDto {
     private Long id;
     private String productName;
     private Long productId;
+    private String status;
+    private boolean isReviewed;
 
-    public static OrderItemDto fromEntity(OrderItem oi) {
+    public static OrderItemDto fromEntity(OrderItem item) {
         return OrderItemDto.builder()
-                .id(oi.getId())
-                .productName(oi.getProduct().getProductName())
-                .productId(oi.getProduct().getId())
+                .id(item.getId())
+                .productName(item.getProduct().getProductName())
+                .productId(item.getProduct().getId())
+                .status(item.getStatus().name())
+                .isReviewed(item.isReviewed())
                 .build();
     }
 }

@@ -36,15 +36,13 @@ public class ReviewServiceImpl implements ReviewService {
             throw new IllegalStateException("Cannot review this item");
         }
 
-        System.out.println("💬 서비스 로직 진입 - ReviewDto: " + dto);
         Product p = productRepository.findById(dto.getProductId())
                 .orElseThrow(() -> new IllegalArgumentException("Product not found"));
 
         User u = userRepository.findById(dto.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
-        System.out.println("💬 유저 조회 성공 - userId: " + u.getUserId());
 
-        // 3) DTO → Entity
+        // DTO → Entity
         Review newReview = dto.toEntity(oi, p, u);
         Review saved     = reviewRepository.save(newReview);
 

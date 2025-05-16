@@ -1,11 +1,13 @@
 package javachip.entity;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import lombok.Getter;
+
 import java.util.Arrays;
+@Getter
 public enum LocalType {
        
         SGI("서울/경기/인천"),
-        GYEONGGI("경기"),
         GANGWON("강원"),
         CHUNGCHEONG("충청"),
         JEONBUK("전북"),
@@ -19,20 +21,19 @@ public enum LocalType {
                 if (value == null || value.trim().isEmpty()) {
                         return null;
                 }
-                return LocalType.valueOf(value);
+                try {
+                        return LocalType.valueOf(value);
+                } catch (IllegalArgumentException e) {
+                        return null; // 또는 throw new CustomException("지원하지 않는 지역");
+                }
         }
-
         private final String displayName;
 
         LocalType(String displayName) {
                 this.displayName = displayName;
         }
 
-        public String getDisplayName() {
-                return displayName;
-        }
-
-        public static LocalType fromDisplayName(String displayName) {
+    public static LocalType fromDisplayName(String displayName) {
                 return Arrays.stream(values())
                         .filter(e -> e.displayName.equals(displayName))
                         .findFirst()

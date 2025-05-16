@@ -1,5 +1,12 @@
+/*
+파일명 : ProductRepository.java
+파일설명 : 상품 등록 리포지토리(interface)
+작성자 : 정여진
+작성일 : 2025.05.13.
+*/
 package javachip.repository;
 
+import javachip.entity.LocalType;
 import javachip.entity.Product;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -17,4 +24,14 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query("SELECT p FROM Product p ORDER BY p.createdAt DESC")
     List<Product> findTop8ByOrderByCreatedAtDesc(Pageable pageable);
+
+    // 키워드 검색
+    List<Product> findByProductNameContainingIgnoreCase(String keyword);
+
+    // 태그만으로 검색
+    List<Product> findByLocal(LocalType local);
+
+    // 태그 + 키워드 동시 검색
+    List<Product> findByProductNameContainingIgnoreCaseAndLocal(String keyword, LocalType local);
+
 }
