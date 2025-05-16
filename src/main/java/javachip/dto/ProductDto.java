@@ -53,10 +53,15 @@ public class ProductDto {
 
     @NotNull(message = "{product.sellerId.notNull}")
     private String sellerId;                 // 이전: seller_id
-
     private String imageUrl;
 
-    public static ProductDto fromEntity(Product p) {
+    private Boolean isWished; // 찜 여부
+    private Long wishId;      // 찜 엔티티 ID
+
+    /**
+     * Product 엔티티 → ProductDto 변환 (찜 정보 포함)
+     */
+    public static ProductDto fromEntity(Product p, Boolean isWished, Long wishId) {
         String imageUrl = null;
         if (p.getProductImages() != null && !p.getProductImages().isEmpty()) {
             imageUrl = "/api/images/" + p.getProductImages().get(0).getId(); // 썸네일처럼 첫 번째 이미지 사용
@@ -80,8 +85,21 @@ public class ProductDto {
                 .stockQuantity(p.getStockQuantity())
                 .sellerId(p.getSeller() != null ? p.getSeller().getUserId() : null)  // seller_id를 getSeller().getId()로 수정
                 .imageUrl(imageUrl)
+                .isWished(isWished)  // 찜 여부 (null 허용)
+                .wishId(wishId)      // 찜 ID (null 허용)
                 .build();
     }
+
+    /**
+     * Product 엔티티 → ProductDto 변환 (찜 정보 없이 기본 변환)
+     */
+    public static ProductDto fromEntity(Product p) {
+        return fromEntity(p, null, null);
+    }
+
+    /**
+     * ProductDto → Product 엔티티로 변환
+     */
     public Product toEntity(User seller) {
         return Product.builder()
                 .id(id)
