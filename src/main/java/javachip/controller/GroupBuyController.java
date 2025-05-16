@@ -4,11 +4,15 @@ import jakarta.validation.Valid;
 import javachip.dto.GroupBuyParticipationRequest;
 import javachip.dto.groupbuy.GroupBuyCreateRequest;
 import javachip.dto.groupbuy.GroupBuyCreateResponse;
+import javachip.dto.groupbuy.GroupBuyDetailResponse;
+import javachip.dto.groupbuy.GroupBuyListResponse;
 import javachip.service.GroupBuyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/groupBuy")
@@ -17,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 public class GroupBuyController {
 
     private final GroupBuyService groupBuyService;
+    private final GroupBuyService gbService;
 
     /**
      * 공동구매 생성 (소비자)
@@ -37,5 +42,20 @@ public class GroupBuyController {
             @RequestHeader("X-USER-ID") String userId) {
         groupBuyService.participateInGroupBuy(request.getGroupBuyId(), userId, request.getQuantity());
         return ResponseEntity.ok().build();
+    }
+
+    //상세조회
+    @GetMapping("/{id}")
+    public ResponseEntity<GroupBuyDetailResponse> getDetail(@PathVariable("id") Long id) {
+        GroupBuyDetailResponse resp = gbService.getDetail(id);
+        return ResponseEntity.ok(resp);
+    }
+
+    // 공동구매 리스트 조회 (상품 id로)
+    @GetMapping("/list")
+    public ResponseEntity<List<GroupBuyListResponse>> getGroupBuyListByProductId(
+            @RequestParam("productId") Long productId) {
+        List<GroupBuyListResponse> list = groupBuyService.getGroupBuyListByProductId(productId);
+        return ResponseEntity.ok(list);
     }
 }
