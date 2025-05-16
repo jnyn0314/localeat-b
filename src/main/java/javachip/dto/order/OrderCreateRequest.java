@@ -11,18 +11,15 @@ import lombok.Setter;
 public class OrderCreateRequest {
     private Long productId;
     private int quantity;
+    private int price;
 
-    // 최종 가격 계산 결과를 받아 OrderItem 생성
-    public OrderItem toOrderItem(Product product, Orders order, int originalPrice, int finalPrice, float gradeDiscountRate, float subscriptionDiscountRate) {
+    public OrderItem toOrderItem(Product product, Orders order) {
         return OrderItem.builder()
                 .order(order)
                 .product(product)
                 .quantity(quantity)
                 .isSubscription(false)
-                .originalPrice(originalPrice)
-                .finalPrice(finalPrice)
-                .gradeDiscountRate(gradeDiscountRate)
-                .subscriptionDiscountRate(subscriptionDiscountRate)
+                .price(price)
                 .build();
     }
 }
