@@ -115,7 +115,7 @@ public class GroupBuyService {
 
         // 남은 시간 계산
         Duration d = Duration.between(LocalDateTime.now(), gb.getTime());
-        long hours   = d.toHours();
+        long hours = d.toHours();
         long minutes = d.toMinutesPart();
         long seconds = d.toSecondsPart();
         String remaining = String.format("%02d:%02d:%02d", hours, minutes, seconds);
@@ -139,5 +139,18 @@ public class GroupBuyService {
                 .status(gb.getStatus())
                 .participants(participants)
                 .build();
+    }
+
+    public List<GroupBuyListResponse> getGroupBuyListByProductId(Long productId) {
+        List<GroupBuy> groupBuys = groupBuyRepository.findByProduct_Id(productId);
+        return groupBuys.stream()
+                .map(gb -> new GroupBuyListResponse(
+                        gb.getId(),
+                        gb.getProduct().getProductName(),
+                        gb.getProduct().getLocal(),
+                        gb.getProduct().getMaxParticipants(),
+                        gb.getPartiCount()
+                ))
+                .collect(Collectors.toList());
     }
 }
