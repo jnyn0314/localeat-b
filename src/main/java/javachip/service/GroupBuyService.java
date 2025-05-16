@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,7 +22,9 @@ public class GroupBuyService {
     private final GroupBuyRepository groupBuyRepository;
     private final ConsumerRepository consumerRepository;
     private final OrderItemRepository orderItemRepository;
+    private  final ParticipantRepository participantRepository;
     private final OrderRepository orderRepository;
+    
     @Transactional
     public GroupBuyCreateResponse createGroupBuy(GroupBuyCreateRequest request, String userId) {
         // 1. 소비자 유효성 확인
@@ -59,8 +62,7 @@ public class GroupBuyService {
                 .build();
 
 // 3. 양방향 관계 명시적 설정
-        groupBuy.getParticipants().add(participant); // ✅ 꼭 필요
-// participant.setGroupBuy(groupBuy); // 이미 builder에 있음
+        groupBuy.getParticipants().add(participant);
 
 // 4. 저장
         groupBuyRepository.save(groupBuy); // CascadeType.ALL로 participant도 같이 저장됨
@@ -89,4 +91,36 @@ public class GroupBuyService {
                 .build();
 
     }
+    @Transactional
+    public void participateInGroupBuy(Long groupBuyId, String userId, int quantity) {
+        // 1. 소비자 조회
+        Consumer consumer = consumerRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("해당 소비자가 존재하지 않습니다."));
+
+        // 2. 공동구매 조회
+        GroupBuy groupBuy = groupBuyRepository.findById(groupBuyId)
+                .orElseThrow(() -> new RuntimeException("해당 공동구매가 존재하지 않습니다."));
+
+        // 3. 중복 참여 여부 확인
+        Optional<Participant> existing = participantRepository.findByConsumerAndGroupBuy(consumer, groupBuy);
+        if (existing.isPresent()) {
+            throw new IllegalStateException("이미 해당 공동구매에 참여하였습니다.");
+        }
+
+        // 4. Participant 생성
+        Participant participant = Participant.builder()
+                .consumer(consumer)
+                .groupBuy(groupBuy)
+                .product(groupBuy.getProduct())
+                .quantity(quantity)
+                .payment(false)
+                .build();
+
+        participantRepository.save(participant);
+
+        // 5. 공동구매 참여 수 증가
+        groupBuy.setPartiCount(groupBuy.getPartiCount() + 1);
+        groupBuyRepository.save(groupBuy);
+    }
+
 }
