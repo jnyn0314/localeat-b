@@ -46,6 +46,7 @@ public class GroupBuy {
     @Column(name = "TIME")
     private LocalDateTime time;
 
+    @Builder.Default
     @OneToMany(mappedBy = "groupBuy", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Participant> participants = new ArrayList<>();
 
