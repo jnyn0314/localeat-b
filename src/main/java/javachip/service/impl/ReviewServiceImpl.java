@@ -7,7 +7,7 @@
 */
 package javachip.service.impl;
 
-import javachip.dto.ReviewDto;
+import javachip.dto.review.ReviewDto;
 import javachip.entity.*;
 import javachip.repository.*;
 import javachip.service.ReviewService;

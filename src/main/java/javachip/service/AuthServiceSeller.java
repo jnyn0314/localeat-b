@@ -1,14 +1,13 @@
 package javachip.service;
 
-import javachip.dto.LoginRequest;
-import javachip.dto.LoginResponse;
-import javachip.dto.SignUpRequest;
+import javachip.dto.user.LoginRequest;
+import javachip.dto.user.LoginResponse;
+import javachip.dto.user.SignUpRequest;
 import javachip.entity.LocalType;
 import javachip.entity.Seller;
 import javachip.entity.UserRole;
 import javachip.repository.SellerRepository;
 import javachip.repository.UserRepository;
-import javachip.service.AuthService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

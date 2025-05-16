@@ -6,7 +6,7 @@
 */
 package javachip.controller;
 
-import javachip.dto.OrderItemDto;
+import javachip.dto.order.OrderItemDto;
 import javachip.entity.OrderItem;
 import javachip.repository.OrderItemRepository;
 import org.springframework.http.ResponseEntity;

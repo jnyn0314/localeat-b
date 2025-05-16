@@ -1,7 +1,7 @@
 package javachip.service;
 
-import javachip.dto.LoginRequest;
-import javachip.dto.LoginResponse;
+import javachip.dto.user.LoginRequest;
+import javachip.dto.user.LoginResponse;
 
 public interface  AuthService {
     LoginResponse login(LoginRequest request);

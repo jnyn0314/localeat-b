@@ -1,6 +1,6 @@
 package javachip;
 
-import javachip.dto.SignUpRequest;
+import javachip.dto.user.SignUpRequest;
 import javachip.service.AuthServiceSeller;
 import javachip.entity.Seller;
 import javachip.repository.SellerRepository;

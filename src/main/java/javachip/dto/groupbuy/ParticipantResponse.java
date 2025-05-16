@@ -1,4 +1,4 @@
-package javachip.dto;
+package javachip.dto.groupbuy;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

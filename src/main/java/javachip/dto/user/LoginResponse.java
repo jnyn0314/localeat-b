@@ -1,4 +1,4 @@
-package javachip.dto;
+package javachip.dto.user;
 
 public class LoginResponse {
     private String userId;

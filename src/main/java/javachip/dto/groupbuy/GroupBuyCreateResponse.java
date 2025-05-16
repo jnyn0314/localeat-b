@@ -1,8 +1,7 @@
-package javachip.dto;
+package javachip.dto.groupbuy;
 
 import javachip.entity.GroupBuyStatus;
 import javachip.entity.LocalType;
-import javachip.entity.Participant;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

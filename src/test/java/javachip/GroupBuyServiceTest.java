@@ -1,18 +1,13 @@
 package javachip;
 
-import javachip.dto.GroupBuyCreateRequest;
-import javachip.dto.GroupBuyCreateResponse;
+import javachip.dto.groupbuy.GroupBuyCreateRequest;
+import javachip.dto.groupbuy.GroupBuyCreateResponse;
 import javachip.entity.*;
 import javachip.repository.ConsumerRepository;
 import javachip.repository.GroupBuyRepository;
 import javachip.repository.ProductRepository;
 import javachip.service.GroupBuyService;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,10 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.Optional;
 
-import static org.hamcrest.Matchers.any;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @Transactional
