@@ -149,7 +149,9 @@ public class GroupBuyService {
                         gb.getProduct().getProductName(),
                         gb.getProduct().getLocal(),
                         gb.getProduct().getMaxParticipants(),
-                        gb.getPartiCount()
+                        gb.getPartiCount(),
+                        gb.getDescription(),
+                        gb.getDeadline()
                 ))
                 .collect(Collectors.toList());
     }

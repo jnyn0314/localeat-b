@@ -3,6 +3,9 @@ package javachip.dto.groupbuy;
 import javachip.entity.LocalType;
 import lombok.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @Builder
@@ -14,4 +17,6 @@ public class GroupBuyListResponse {
     private LocalType local;
     private Integer maxParticipants;
     private Integer partiCount;
+    private String description;
+    private LocalDate deadline;
 }
