@@ -1,7 +1,7 @@
 package javachip.controller;
 
-import javachip.dto.LoginRequest;
-import javachip.dto.LoginResponse;
+import javachip.dto.user.LoginRequest;
+import javachip.dto.user.LoginResponse;
 import javachip.service.AuthService;
 import javachip.service.AuthServiceFactory;
 import org.springframework.http.ResponseEntity;

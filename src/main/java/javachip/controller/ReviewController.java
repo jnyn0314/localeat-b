@@ -6,7 +6,7 @@
 */
 package javachip.controller;
 
-import javachip.dto.ReviewDto;
+import javachip.dto.review.ReviewDto;
 import javachip.service.FileStorageService;
 import javachip.service.ReviewService;
 import lombok.RequiredArgsConstructor;

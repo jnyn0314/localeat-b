@@ -1,4 +1,4 @@
-package javachip.dto;
+package javachip.dto.review;
 
 import javachip.entity.*;
 import lombok.*;
@@ -20,7 +20,6 @@ public class ReviewDto {
 
     private String productName;
 
-    /** Entity → DTO */
     public static ReviewDto fromEntity(Review r) {
         return ReviewDto.builder()
                 .id(r.getId())
@@ -37,7 +36,6 @@ public class ReviewDto {
                 .build();
     }
 
-    /** DTO → Entity (연관관계 객체는 인자로 받음) */
     public Review toEntity(OrderItem orderItem, Product product, User user) {
         Review r = Review.builder()
                 .orderItem(orderItem)
@@ -48,7 +46,6 @@ public class ReviewDto {
                 .createdAt(createdAt != null ? createdAt : LocalDateTime.now())
                 .build();
 
-        // cascade=ALL, orphanRemoval=true 가 잡힌 imageList 필드에 세팅
         if (imageUrls != null) {
             List<ReviewImage> imgs = imageUrls.stream()
                     .map(url -> ReviewImage.builder()

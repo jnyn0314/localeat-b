@@ -29,54 +29,51 @@ public class Product {
     private Long id;
 
     @Column(name = "product_name", nullable = false, length = 100)
-    private String productName;              // 이전: product_name
+    private String productName;
 
     private Integer price;
 
     @Column(name = "grade_discount_rate")
-    private Float gradeDiscountRate;         // 이전: grade_discount_rate
+    private Float gradeDiscountRate = 0.1f;
 
     @Column(name = "subscription_discount_rate")
-    private Float subscriptionDiscountRate;  // 이전: subscription_discount_rate
-
-    @Column(name = "is_subscription", nullable = false)
-    private Boolean isSubscription;          // 이전: is_subscription
+    private Float subscriptionDiscountRate = 0.2f;
 
     @Column(name = "is_group_buy", nullable = false)
-    private Boolean isGroupBuy;         // 이전: is_group_buy
+    private Boolean isGroupBuy;
 
     @Enumerated(EnumType.STRING)
     private LocalType local;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "product_grade")
-    private GradeBOption productGrade;       // 이전: product_grade
+    private GradeBOption productGrade;
 
     @Column(name = "delivery_fee")
-    private Integer deliveryFee;             // 이전: delivery_fee
+    private Integer deliveryFee = 3000;
 
     private String description;
 
     @Column(name = "subscription_id")
-    private Long subscriptionId;             // 이전: subscription_id
+    private Long subscriptionId;
 
     @Column(name = "max_participants")
-    private Integer maxParticipants;         // 이전: max_participants. 공동구매 참여자 수
+    private Integer maxParticipants;
 
     @Column(name = "alarm_id")
-    private Long alarmId;                    // 이전: alarm_id
+    private Long alarmId;
 
     //김소망이 수정
     @CreationTimestamp
     @Column(name = "CREATE_AT")
-    private Date createdAt;        // 이전: create_at
+    private Date createdAt;
 
     @Column(name = "stock_quantity")
-    private Integer stockQuantity;           // 이전: stock_quantity
+    private Integer stockQuantity;
 
     // 변경: sellerId를 삭제하고 seller를 추가
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "seller_id")  // seller_id 컬럼을 기준으로 seller와 관계를 맺음
+    @JoinColumn(name = "seller_id")
     private Seller seller;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

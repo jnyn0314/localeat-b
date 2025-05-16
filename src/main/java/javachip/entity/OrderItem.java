@@ -52,4 +52,9 @@ public class OrderItem {
 
     @Column(name = "is_reviewed", nullable = false)
     private boolean isReviewed = false;
+
+    private int originalPrice;
+    private int finalPrice;
+    private float gradeDiscountRate;
+    private float subscriptionDiscountRate;
 }

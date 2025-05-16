@@ -1,11 +1,10 @@
-package javachip.dto;
+package javachip.dto.user;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-import javachip.entity.LocalType;
 import lombok.Getter;
 
 public class SignUpRequest {

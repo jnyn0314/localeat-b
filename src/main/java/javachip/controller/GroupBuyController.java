@@ -1,14 +1,13 @@
 package javachip.controller;
 
 import jakarta.validation.Valid;
-import javachip.dto.GroupBuyCreateRequest;
-import javachip.dto.GroupBuyCreateResponse;
 import javachip.dto.GroupBuyParticipationRequest;
+import javachip.dto.groupbuy.GroupBuyCreateRequest;
+import javachip.dto.groupbuy.GroupBuyCreateResponse;
 import javachip.service.GroupBuyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

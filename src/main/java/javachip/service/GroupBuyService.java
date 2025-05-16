@@ -1,16 +1,14 @@
 package javachip.service;
 
-import javachip.dto.GroupBuyCreateRequest;
-import javachip.dto.GroupBuyCreateResponse;
-import javachip.dto.ParticipantResponse;
+import javachip.dto.groupbuy.GroupBuyCreateRequest;
+import javachip.dto.groupbuy.GroupBuyCreateResponse;
+import javachip.dto.groupbuy.ParticipantResponse;
 import javachip.entity.*;
 import javachip.repository.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -24,9 +22,9 @@ public class GroupBuyService {
     private final GroupBuyRepository groupBuyRepository;
     private final ConsumerRepository consumerRepository;
     private final OrderItemRepository orderItemRepository;
-    private final OrdersRepository orderRepository;
     private  final ParticipantRepository participantRepository;
-
+    private final OrderRepository orderRepository;
+    
     @Transactional
     public GroupBuyCreateResponse createGroupBuy(GroupBuyCreateRequest request, String userId) {
         // 1. 소비자 유효성 확인
