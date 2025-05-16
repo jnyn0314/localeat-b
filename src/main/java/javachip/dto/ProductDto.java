@@ -68,7 +68,6 @@ public class ProductDto {
                 .price(p.getPrice())
                 .gradeDiscountRate(p.getGradeDiscountRate() != null ? p.getGradeDiscountRate() : 0.1f) // 10% 고정.
                 .subscriptionDiscountRate(p.getSubscriptionDiscountRate() != null ? p.getSubscriptionDiscountRate() : 0.2f) // 20% 로 고정
-                .isSubscription(p.getIsSubscription())
                 .isGroupBuy(p.getIsGroupBuy())
                 .local(p.getLocal())
                 .productGrade(p.getProductGrade() != null ? p.getProductGrade().name() : null)
@@ -90,7 +89,6 @@ public class ProductDto {
                 .price(price)
                 .gradeDiscountRate(gradeDiscountRate)
                 .subscriptionDiscountRate(subscriptionDiscountRate)
-                .isSubscription(isSubscription)
                 .isGroupBuy(isGroupBuy)
                 .local(local)
                 .productGrade(productGrade != null ? GradeBOption.valueOf(productGrade) : null)
