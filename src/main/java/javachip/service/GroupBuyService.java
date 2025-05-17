@@ -4,6 +4,7 @@ import javachip.dto.groupbuy.*;
 import javachip.entity.*;
 import javachip.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +22,8 @@ public class GroupBuyService {
     private final GroupBuyRepository groupBuyRepository;
     private final ConsumerRepository consumerRepository;
     private final ParticipantRepository participantRepository;
+    private final CartItemRepository cartItemRepository;
+    private final GroupBuyCartItemRepository groupBuyCartItemRepository;
 
     @Transactional
     public GroupBuyCreateResponse createGroupBuy(GroupBuyCreateRequest request, String userId) {
@@ -90,11 +93,10 @@ public class GroupBuyService {
         GroupBuy groupBuy = groupBuyRepository.findById(groupBuyId)
                 .orElseThrow(() -> new RuntimeException("해당 공동구매가 존재하지 않습니다."));
 
-        Optional<Participant> existing = participantRepository.findByConsumerAndGroupBuy(consumer, groupBuy);
-        if (existing.isPresent()) {
-            throw new IllegalStateException("이미 해당 공동구매에 참여하였습니다.");
-        }
+        participantRepository.findByConsumerAndGroupBuy(consumer, groupBuy)
+                .ifPresent(p -> { throw new IllegalStateException("이미 참여한 공동구매입니다."); });
 
+        //Participant 저장
         Participant participant = Participant.builder()
                 .consumer(consumer)
                 .groupBuy(groupBuy)
@@ -104,6 +106,7 @@ public class GroupBuyService {
                 .build();
         participantRepository.save(participant);
 
+        //partiCount 증가
         groupBuy.setPartiCount(groupBuy.getPartiCount() + 1);
 
         if (groupBuy.getPartiCount() >= groupBuy.getProduct().getMaxParticipants()) {
@@ -111,6 +114,13 @@ public class GroupBuyService {
         }
 
         groupBuyRepository.save(groupBuy);
+
+        //모집 완료 시 장바구니 이동
+        if (groupBuy.getPartiCount().equals(groupBuy.getProduct().getMaxParticipants())) {
+            moveParticipantsToCart(groupBuy);
+            groupBuy.setStatus(GroupBuyStatus.PAYMENT_PENDING);
+            groupBuyRepository.save(groupBuy);
+        }
     }
 
     @Transactional(readOnly = true)
@@ -159,5 +169,28 @@ public class GroupBuyService {
                         gb.getDeadline()
                 ))
                 .collect(Collectors.toList());
+    }
+
+    /** 모집이 완료된 모든 참가자를 CartItem → GroupBuyCartItem 으로 이동 */
+    private void moveParticipantsToCart(GroupBuy gb) {
+        List<Participant> parts = gb.getParticipants();
+        for (Participant p : parts) {
+            // 1) CartItem 생성
+            CartItem base = CartItem.builder()
+                    .product(gb.getProduct())
+                    .quantity(p.getQuantity())
+                    .isSelected(true)
+                    .cart(p.getConsumer().getCart())
+                    .build();
+            cartItemRepository.save(base);
+
+            // 2) GroupBuyCartItem 생성 (addedAt, expiresAt는 @PrePersist)
+            GroupBuyCartItem gci = new GroupBuyCartItem();
+            // 부모 필드 복사
+            BeanUtils.copyProperties(base, gci);
+            gci.setGroupBuy(gb);
+            groupBuyCartItemRepository.save(gci);
+        }
+        // (나중에) 고객에게 “결제 대기 중” 알림 전송
     }
 }

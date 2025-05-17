@@ -3,41 +3,36 @@ package javachip.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import jakarta.persistence.Transient;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "GROUPBUYCARTITEM")
+@PrimaryKeyJoinColumn(name = "cartitem_id")//이것도 이름 고쳐야하고
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class GroupBuyCartItem {
-    @EmbeddedId
-    private GroupBuyCartItemId id;
-
-    @OneToOne
-    @MapsId("cartItemId")//GroupBuyCartItemId의 cartItemId와 연결
-    @JoinColumn(name = "cartItemId")
-    private CartItem cartItem;
-
-    @ManyToOne
-    @MapsId("groupBuyId")// @MapsId는 GroupBuyCartItemId의 groupBuyId와 연결
-    @JoinColumn(name = "groupBuyId")
+@SuperBuilder
+public class GroupBuyCartItem extends CartItem{
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "group_buy_id", nullable = false)
     private GroupBuy groupBuy;
 
-
-    @Transient //이거 나중에 지워야함 이거 있음 db에 안들어감
+    @Column(name = "added_at", nullable = false)
     private LocalDateTime addedAt;
 
-    @Transient
+    @Column(name = "expires_at", nullable = false)
     private LocalDateTime expiresAt;
 
-    // 생성 시 자동 계산
-    /*@PrePersist
+    @Enumerated(EnumType.STRING)
+    @Column(name = "payment_status", nullable = false)
+    private PaymentStatus paymentStatus = PaymentStatus.PENDING;
+
+    @PrePersist
     public void prePersist() {
-        this.addedAt = LocalDateTime.now();
+        this.addedAt   = LocalDateTime.now();
         this.expiresAt = this.addedAt.plusHours(24);
-    }*/
+    }
 }
