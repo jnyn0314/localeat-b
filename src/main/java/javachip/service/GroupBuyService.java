@@ -106,14 +106,10 @@ public class GroupBuyService {
                 .payment(false)
                 .build();
         participantRepository.save(participant);
+        groupBuy.getParticipants().add(participant);
 
         //partiCount 증가
         groupBuy.setPartiCount(groupBuy.getPartiCount() + 1);
-
-        if (groupBuy.getPartiCount() >= groupBuy.getProduct().getMaxParticipants()) {
-            groupBuy.setStatus(GroupBuyStatus.COMPLETED);
-        }
-
         groupBuyRepository.save(groupBuy);
 
         //모집 완료 시 장바구니 이동
@@ -158,7 +154,16 @@ public class GroupBuyService {
     }
 
     public List<GroupBuyListResponse> getGroupBuyListByProductId(Long productId) {
-        List<GroupBuy> groupBuys = groupBuyRepository.findByProduct_IdAndStatus(productId, GroupBuyStatus.RECRUITING);
+        LocalDateTime now = LocalDateTime.now();
+
+        // 마감 시간이 아직 안 지난, 모집 중인 공구만 조회
+        List<GroupBuy> groupBuys = groupBuyRepository
+                .findByProduct_IdAndStatusAndTimeAfter(
+                        productId,
+                        GroupBuyStatus.RECRUITING,
+                        now
+                );
+
         return groupBuys.stream()
                 .map(gb -> new GroupBuyListResponse(
                         gb.getId(),
