@@ -2,15 +2,15 @@ package javachip.controller;
 
 import javachip.dto.groupbuy.CartItemPayRequest;
 import javachip.dto.groupbuy.GroupBuyCartItemResponse;
-import javachip.entity.GroupBuy;
-import javachip.entity.GroupBuyCartItem;
-import javachip.entity.PaymentStatus;
+import javachip.entity.*;
 import javachip.repository.GroupBuyCartItemRepository;
 import javachip.repository.GroupBuyRepository;
+import javachip.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,6 +21,7 @@ public class GroupBuyCartController {
 
     private final GroupBuyCartItemRepository groupBuyCartItemRepository;
     private final GroupBuyRepository groupBuyRepository;
+    private final OrderRepository ordersRepository;
 
     /**
      * 1. 내 장바구니(공구) 전체 조회
@@ -95,5 +96,50 @@ public class GroupBuyCartController {
         // 권한 체크 생략…
         groupBuyCartItemRepository.delete(item);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/order")
+    public ResponseEntity<Void> createOrder(
+            @RequestHeader("X-USER-ID") String userId,
+            @RequestBody List<Long> cartItemIds // 프론트에서 체크한 cartItemId 리스트
+    ) {
+        // 1. 장바구니 아이템 조회
+        List<GroupBuyCartItem> cartItems = groupBuyCartItemRepository.findAllById(cartItemIds);
+
+        // 2. Orders 생성
+        Orders order = Orders.builder()
+                .createdAt(LocalDateTime.now())
+                .userId(userId)
+                .build();
+
+        // 3. OrderItem 생성
+        List<OrderItem> orderItems = cartItems.stream().map(cartItem -> {
+            CartItem baseCartItem = cartItem.getCartItem(); // cartItem 필드 접근
+            OrderItem orderItem = OrderItem.builder()
+                    .quantity(baseCartItem.getQuantity())
+                    .status(OrderStatus.PAID) // 결제완료 상태로
+                    .isSubscription(false) // 공동구매는 false
+                    .isGroupBuy(true)
+                    .product(baseCartItem.getProduct())
+                    .order(order)
+                    .userId(userId)
+                    .isReviewed(false)
+                    .price(baseCartItem.getProduct().getPrice())
+                    .build();
+            return orderItem;
+        }).collect(Collectors.toList());
+
+        order.setOrderItems(orderItems);
+
+        // 4. 주문 저장 (Order, OrderItem 모두 저장됨)
+        ordersRepository.save(order);
+
+        // 5. 장바구니 아이템 결제완료 처리
+        for (GroupBuyCartItem cartItem : cartItems) {
+            cartItem.setPaymentStatus(PaymentStatus.COMPLETED);
+            groupBuyCartItemRepository.save(cartItem);
+        }
+
+        return ResponseEntity.ok().build();
     }
 }
