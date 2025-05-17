@@ -47,7 +47,7 @@ public class OrdersServiceImpl implements OrdersService {
 
     @Override
     public List<OrderHistoryResponse> getUserOrders(String userId) {
-        return orderRepository.findByUserId(userId).stream()
+        return orderRepository.findByUserIdOrderByCreatedAtDesc(userId).stream()
                 .map(OrderHistoryResponse::fromEntity)
                 .collect(Collectors.toList());
     }
