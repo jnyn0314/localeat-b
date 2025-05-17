@@ -3,6 +3,7 @@ package javachip.dto.review;
 import javachip.entity.*;
 import lombok.*;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,9 +30,13 @@ public class ReviewDto {
                 .rating      (r.getRating())
                 .content     (r.getContent())
                 .createdAt   (r.getCreatedAt())
-                .imageUrls(r.getImageList().stream()
+                .imageUrls(r.getImageList() != null
+                        ? r.getImageList().stream()
                         .map(ReviewImage::getImageUrl)
-                        .collect(Collectors.toList()))
+                        .collect(Collectors.toList())
+                        : Collections.emptyList()
+                )
+
                 .productName(r.getProduct().getProductName())
                 .build();
     }

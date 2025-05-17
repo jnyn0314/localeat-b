@@ -21,6 +21,8 @@ import java.util.List;
 @Builder
 public class Orders {
     @Id
+    @SequenceGenerator(name = "order_seq", sequenceName = "order_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_seq")
     private Long id;
 
     @Column(name = "CREATED_AT", nullable = false)

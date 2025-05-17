@@ -6,7 +6,6 @@ import javachip.dto.order.OrderHistoryResponse;
 import javachip.entity.OrderItem;
 import javachip.entity.Orders;
 import javachip.entity.Product;
-import javachip.entity.GradeBOption;
 import javachip.repository.OrderItemRepository;
 import javachip.repository.OrderRepository;
 import javachip.repository.ProductRepository;
@@ -33,6 +32,7 @@ public class OrdersServiceImpl implements OrdersService {
 
         // 주문 생성
         Orders order = Orders.builder()
+                .userId(request.getUserId())
                 .createdAt(LocalDateTime.now())
                 .build();
         orderRepository.save(order);
