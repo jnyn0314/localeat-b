@@ -3,6 +3,10 @@ package javachip.controller;
 import javachip.dto.groupbuy.CartItemPayRequest;
 import javachip.dto.groupbuy.GroupBuyCartItemResponse;
 import javachip.entity.*;
+import javachip.entity.GroupBuy;
+import javachip.entity.GroupBuyCartItem;
+import javachip.entity.GroupBuyStatus;
+import javachip.entity.PaymentStatus;
 import javachip.repository.GroupBuyCartItemRepository;
 import javachip.repository.GroupBuyRepository;
 import javachip.repository.OrderRepository;
@@ -22,6 +26,7 @@ public class GroupBuyCartController {
     private final GroupBuyCartItemRepository groupBuyCartItemRepository;
     private final GroupBuyRepository groupBuyRepository;
     private final OrderRepository ordersRepository;
+    private final GroupBuyRepository     groupBuyRepository;
 
     /**
      * 1. 내 장바구니(공구) 전체 조회
@@ -32,7 +37,10 @@ public class GroupBuyCartController {
     ) {
         // PENDING 상태인 아이템만 조회
         List<GroupBuyCartItem> items =
-                groupBuyCartItemRepository.findByCartItem_Cart_Consumer_UserIdAndPaymentStatus(userId, PaymentStatus.PENDING);
+                groupBuyCartItemRepository
+                        .findByCartItem_Cart_Consumer_UserIdAndPaymentStatus(
+                                userId, PaymentStatus.PENDING
+                        );
 
         List<GroupBuyCartItemResponse> dto = items.stream()
                 .map(GroupBuyCartItemResponse::fromEntity)
@@ -50,33 +58,36 @@ public class GroupBuyCartController {
             @RequestHeader("X-USER-ID") String userId,
             @RequestBody CartItemPayRequest req
     ) {
-        // Repository 필드를 사용
         GroupBuyCartItem item = groupBuyCartItemRepository.findById(cartItemId)
                 .orElseThrow(() -> new RuntimeException("장바구니 아이템이 없습니다."));
 
-// 1. 현재 상태가 PENDING이 아니면 예외 발생
+        // 1) 이미 처리된 건인지 확인
         if (item.getPaymentStatus() != PaymentStatus.PENDING) {
             throw new RuntimeException("이미 처리된 주문입니다.");
         }
 
         try {
-            // 2. 실제 결제 처리 로직 (예: PG사 연동)
+            // 2) 결제 상태 값(enum) 변환
             PaymentStatus status = PaymentStatus.valueOf(req.getPaymentStatus());
 
-            // 3. 결제 결과에 따른 상태 업데이트
+            //  3) 결제 결과 반영
             item.setPaymentStatus(status);
             groupBuyCartItemRepository.save(item);
 
-            // 4. 결제 완료 시에만 GroupBuy.payCount 증가
+            // 4) 결제 완료 시에만 payCount++ 및 SUCCESS 전환
             if (status == PaymentStatus.COMPLETED) {
                 GroupBuy gb = item.getGroupBuy();
                 gb.setPayCount(gb.getPayCount() + 1);
+                if (gb.getPayCount().equals(gb.getPartiCount())) {
+                    gb.setStatus(GroupBuyStatus.SUCCESS);
+                }
                 groupBuyRepository.save(gb);
             }
 
             return ResponseEntity.ok().build();
+
         } catch (Exception e) {
-            // 5. 결제 실패 시 EXPIRED 상태로 변경
+            // 5) 내부 오류 시 EXPIRED 상태로
             item.setPaymentStatus(PaymentStatus.EXPIRED);
             groupBuyCartItemRepository.save(item);
             throw new RuntimeException("결제 처리 중 오류가 발생했습니다: " + e.getMessage());
@@ -93,7 +104,7 @@ public class GroupBuyCartController {
     ) {
         GroupBuyCartItem item = groupBuyCartItemRepository.findById(cartItemId)
                 .orElseThrow(() -> new RuntimeException("장바구니 아이템이 없습니다."));
-        // 권한 체크 생략…
+        
         groupBuyCartItemRepository.delete(item);
         return ResponseEntity.noContent().build();
     }
