@@ -186,10 +186,13 @@ public class GroupBuyService {
 
             // 2) GroupBuyCartItem 생성 (addedAt, expiresAt는 @PrePersist)
             GroupBuyCartItem gci = new GroupBuyCartItem();
-            // 부모 필드 복사
-            BeanUtils.copyProperties(base, gci);
+            gci.setProduct(base.getProduct());
+            gci.setQuantity(base.getQuantity());
+            gci.setSelected(base.isSelected());
+            gci.setCart(base.getCart());
             gci.setGroupBuy(gb);
             groupBuyCartItemRepository.save(gci);
+
         }
         // (나중에) 고객에게 “결제 대기 중” 알림 전송
     }

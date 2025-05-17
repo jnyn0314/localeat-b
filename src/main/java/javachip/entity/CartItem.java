@@ -15,7 +15,8 @@ import lombok.experimental.SuperBuilder;
 public class CartItem {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cartitem_seq")
+    @SequenceGenerator(name = "cartitem_seq", sequenceName = "CARTITEM_SEQ", allocationSize = 1)
     @Column(name = "ID")
     private Long cartItemId;
 
