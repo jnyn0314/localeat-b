@@ -22,6 +22,7 @@ public class GroupBuyService {
     private final GroupBuyRepository groupBuyRepository;
     private final ConsumerRepository consumerRepository;
     private final ParticipantRepository participantRepository;
+    private final CartRepository cartRepository;
     private final CartItemRepository cartItemRepository;
     private final GroupBuyCartItemRepository groupBuyCartItemRepository;
 
@@ -171,29 +172,34 @@ public class GroupBuyService {
                 .collect(Collectors.toList());
     }
 
-    /** 모집이 완료된 모든 참가자를 CartItem → GroupBuyCartItem 으로 이동 */
     private void moveParticipantsToCart(GroupBuy gb) {
-        List<Participant> parts = gb.getParticipants();
-        for (Participant p : parts) {
-            // 1) CartItem 생성
+        for (Participant p : gb.getParticipants()) {
+            // 1) Cart 생성(또는 조회)
+            Cart cart = p.getConsumer().getCart();
+            if (cart == null) {
+                cart = new Cart();
+                cartRepository.save(cart);
+                p.getConsumer().setCart(cart);
+                consumerRepository.save(p.getConsumer());
+            }
+
+            // 2) CartItem 생성
             CartItem base = CartItem.builder()
                     .product(gb.getProduct())
                     .quantity(p.getQuantity())
                     .isSelected(true)
-                    .cart(p.getConsumer().getCart())
+                    .cart(cart)
                     .build();
             cartItemRepository.save(base);
 
-            // 2) GroupBuyCartItem 생성 (addedAt, expiresAt는 @PrePersist)
-            GroupBuyCartItem gci = new GroupBuyCartItem();
-            gci.setProduct(base.getProduct());
-            gci.setQuantity(base.getQuantity());
-            gci.setSelected(base.isSelected());
-            gci.setCart(base.getCart());
-            gci.setGroupBuy(gb);
+            // 3) GroupBuyCartItem 생성 — cartItem 만 연결
+            GroupBuyCartItem gci = GroupBuyCartItem.builder()
+                    .cartItem(base)     // ← 핵심: CartItem 관계 설정
+                    .groupBuy(gb)       // 공동구매 관계 설정
+                    // paymentStatus 기본값(PENDING)과 addedAt/prePersist 처리됨
+                    .build();
             groupBuyCartItemRepository.save(gci);
-
         }
-        // (나중에) 고객에게 “결제 대기 중” 알림 전송
+        // (필요 시) 고객에게 “결제 대기 중” 알림 전송
     }
 }
