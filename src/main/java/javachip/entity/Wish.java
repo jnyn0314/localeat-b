@@ -20,8 +20,9 @@ import java.time.LocalDateTime;
 public class Wish {
     // PK: 찜 고유 ID
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
 
     // 찜한 사용자 (ManyToOne: 사용자 1명이 여러 찜 가능)
     @ManyToOne(fetch = FetchType.LAZY)

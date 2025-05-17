@@ -105,6 +105,11 @@ public class GroupBuyService {
         participantRepository.save(participant);
 
         groupBuy.setPartiCount(groupBuy.getPartiCount() + 1);
+
+        if (groupBuy.getPartiCount() >= groupBuy.getProduct().getMaxParticipants()) {
+            groupBuy.setStatus(GroupBuyStatus.COMPLETED);
+        }
+
         groupBuyRepository.save(groupBuy);
     }
 
@@ -142,7 +147,7 @@ public class GroupBuyService {
     }
 
     public List<GroupBuyListResponse> getGroupBuyListByProductId(Long productId) {
-        List<GroupBuy> groupBuys = groupBuyRepository.findByProduct_Id(productId);
+        List<GroupBuy> groupBuys = groupBuyRepository.findByProduct_IdAndStatus(productId, GroupBuyStatus.RECRUITING);
         return groupBuys.stream()
                 .map(gb -> new GroupBuyListResponse(
                         gb.getId(),
