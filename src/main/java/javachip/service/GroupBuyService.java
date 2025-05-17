@@ -106,14 +106,10 @@ public class GroupBuyService {
                 .payment(false)
                 .build();
         participantRepository.save(participant);
+        groupBuy.getParticipants().add(participant);
 
         //partiCount 증가
         groupBuy.setPartiCount(groupBuy.getPartiCount() + 1);
-
-        if (groupBuy.getPartiCount() >= groupBuy.getProduct().getMaxParticipants()) {
-            groupBuy.setStatus(GroupBuyStatus.COMPLETED);
-        }
-
         groupBuyRepository.save(groupBuy);
 
         //모집 완료 시 장바구니 이동
