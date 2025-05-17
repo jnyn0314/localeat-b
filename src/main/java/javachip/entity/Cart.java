@@ -22,8 +22,20 @@ import java.util.List;
 @Builder
 public class Cart {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "cart_seq_gen"
+    )
+    @SequenceGenerator(
+            name = "cart_seq_gen",
+            sequenceName = "CART_SEQ",
+            allocationSize = 1
+    )
+    @Column(name = "ID")
     private Long id;
+
+    @OneToOne(mappedBy = "cart", fetch = FetchType.LAZY)
+    private Consumer consumer;
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
     private List<CartItem> items;

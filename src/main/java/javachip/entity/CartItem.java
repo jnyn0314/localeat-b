@@ -2,19 +2,22 @@ package javachip.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Table(name = "CARTITEM")
+@Inheritance(strategy = InheritanceType.JOINED)
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 public class CartItem {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cartitem_seq")
+    @SequenceGenerator(name = "cartitem_seq", sequenceName = "CARTITEM_SEQ", allocationSize = 1)
+    @Column(name = "ID")
     private Long cartItemId;
 
     private int quantity;

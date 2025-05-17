@@ -3,6 +3,7 @@ package javachip.service;
 import javachip.dto.user.LoginRequest;
 import javachip.dto.user.LoginResponse;
 import javachip.dto.user.SignUpRequest;
+import javachip.entity.Cart;
 import javachip.entity.Consumer;
 import javachip.entity.LocalType;
 import javachip.entity.UserRole;
@@ -35,6 +36,9 @@ public class AuthServiceConsumer implements javachip.service.AuthService {
         consumer.setLocal(LocalType.fromDisplayName(request.getLocal()));
         consumer.setBirth(request.getBirth());
         consumer.setRole(UserRole.CONSUMER);
+
+        Cart cart = new Cart();
+        consumer.setCart(cart);
 
         consumerRepository.save(consumer);
     }

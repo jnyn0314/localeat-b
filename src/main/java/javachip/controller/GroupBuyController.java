@@ -17,7 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/groupBuy")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000") // 필요 시 프론트 연동
+@CrossOrigin(origins = "http://localhost:3000")
 public class GroupBuyController {
 
     private final GroupBuyService groupBuyService;
