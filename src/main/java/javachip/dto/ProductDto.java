@@ -11,7 +11,6 @@ import jakarta.validation.constraints.NotNull;
 import javachip.entity.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
@@ -27,11 +26,8 @@ public class ProductDto {
 
     @NotNull(message = "{product.price.notNull}")
     private Integer price;
-    private Float gradeDiscountRate;         // 이전: grade_discount_rate
-    private Float subscriptionDiscountRate;  // 이전: subscription_discount_rate
-
-    @NotNull(message = "{product.isSubscription.notNull}")
-    private Boolean isSubscription;          // 이전: is_subscription
+    private Float gradeDiscountRate;
+    private Float subscriptionDiscountRate;
 
     @NotNull(message = "{product.isGroupBuy.notNull}")
     private Boolean isGroupBuy;         // 이전: is_group_buy
@@ -40,19 +36,19 @@ public class ProductDto {
     private LocalType local;
 
     @NotBlank(message = "{product.productGrade.notBlank}")
-    private String productGrade;             // previous enum name
-    private Integer deliveryFee;             // 이전: delivery_fee
+    private String productGrade;
+    private Integer deliveryFee;
 
     @NotBlank(message = "{product.description.notBlank}")
     private String description;
-    private Long subscriptionId;             // 이전: subscription_id
-    private Integer maxParticipants;         // 이전: max_participants
-    private Long alarmId;                    // 이전: alarm_id
-    private Date createAt;                   // 이전: create_at
-    private Integer stockQuantity;           // 이전: stock_quantity
+    private Long subscriptionId;
+    private Integer maxParticipants;
+    private Long alarmId;
+    private Date createAt;
+    private Integer stockQuantity;
 
     @NotNull(message = "{product.sellerId.notNull}")
-    private String sellerId;                 // 이전: seller_id
+    private String sellerId;
     private String imageUrl;
 
     private Boolean isWished; // 찜 여부

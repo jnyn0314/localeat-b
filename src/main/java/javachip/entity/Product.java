@@ -6,12 +6,11 @@
 */
 package javachip.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import jakarta.persistence.Transient;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -33,11 +32,12 @@ public class Product {
 
     private Integer price;
 
-    @Column(name = "grade_discount_rate")
+    @Transient
     private Float gradeDiscountRate = 0.1f;
-
-    @Column(name = "subscription_discount_rate")
+    @Transient
     private Float subscriptionDiscountRate = 0.2f;
+    @Transient
+    private Integer deliveryFee = 3000;
 
     @Column(name = "is_group_buy", nullable = false)
     private Boolean isGroupBuy;
@@ -48,9 +48,6 @@ public class Product {
     @Enumerated(EnumType.STRING)
     @Column(name = "product_grade")
     private GradeBOption productGrade;
-
-    @Column(name = "delivery_fee")
-    private Integer deliveryFee = 3000;
 
     private String description;
 
