@@ -26,7 +26,6 @@ public class GroupBuyCartController {
     private final GroupBuyCartItemRepository groupBuyCartItemRepository;
     private final GroupBuyRepository groupBuyRepository;
     private final OrderRepository ordersRepository;
-    private final GroupBuyRepository     groupBuyRepository;
 
     /**
      * 1. 내 장바구니(공구) 전체 조회
@@ -104,7 +103,7 @@ public class GroupBuyCartController {
     ) {
         GroupBuyCartItem item = groupBuyCartItemRepository.findById(cartItemId)
                 .orElseThrow(() -> new RuntimeException("장바구니 아이템이 없습니다."));
-        
+
         groupBuyCartItemRepository.delete(item);
         return ResponseEntity.noContent().build();
     }
