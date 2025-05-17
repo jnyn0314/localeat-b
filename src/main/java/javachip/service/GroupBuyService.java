@@ -207,4 +207,32 @@ public class GroupBuyService {
         }
         // (필요 시) 고객에게 “결제 대기 중” 알림 전송
     }
+
+    //내가 참여한 공동구매 현황 조회
+    @Transactional(readOnly = true)
+    public List<MyGroupBuyStatusResponse> getMyParticipations(String userId) {
+        List<Participant> parts = participantRepository.findAllByConsumerUserId(userId);
+
+        LocalDateTime now = LocalDateTime.now();
+
+        return parts.stream()
+                .map(Participant::getGroupBuy)
+                // ① 상태가 RECRUITING 또는 PAYMENT_PENDING 이고
+                // ② 마감 시간이 현재(now) 이후인 것만 남긴다
+                .filter(gb ->
+                        (gb.getStatus() == GroupBuyStatus.RECRUITING
+                                || gb.getStatus() == GroupBuyStatus.PAYMENT_PENDING)
+                                && gb.getTime().isAfter(now)
+                )
+                .distinct()
+                .map(gb -> MyGroupBuyStatusResponse.builder()
+                        .groupBuyId(gb.getId().longValue())
+                        .productId(gb.getProduct().getId())
+                        .productName(gb.getProduct().getProductName())
+                        .currentCount(gb.getPartiCount())
+                        .maxParticipants(gb.getProduct().getMaxParticipants())
+                        .deadline(gb.getDeadline())
+                        .build())
+                .collect(Collectors.toList());
+    }
 }

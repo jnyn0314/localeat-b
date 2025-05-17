@@ -2,10 +2,7 @@ package javachip.controller;
 
 import jakarta.validation.Valid;
 import javachip.dto.GroupBuyParticipationRequest;
-import javachip.dto.groupbuy.GroupBuyCreateRequest;
-import javachip.dto.groupbuy.GroupBuyCreateResponse;
-import javachip.dto.groupbuy.GroupBuyDetailResponse;
-import javachip.dto.groupbuy.GroupBuyListResponse;
+import javachip.dto.groupbuy.*;
 import javachip.service.GroupBuyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -56,6 +53,15 @@ public class GroupBuyController {
     public ResponseEntity<List<GroupBuyListResponse>> getGroupBuyListByProductId(
             @RequestParam("productId") Long productId) {
         List<GroupBuyListResponse> list = groupBuyService.getGroupBuyListByProductId(productId);
+        return ResponseEntity.ok(list);
+    }
+
+    /**  내가 참여한 공동구매 현황 */
+    @GetMapping("/my")
+    public ResponseEntity<List<MyGroupBuyStatusResponse>> getMyParticipations(
+            @RequestHeader("X-USER-ID") String userId
+    ) {
+        List<MyGroupBuyStatusResponse> list = groupBuyService.getMyParticipations(userId);
         return ResponseEntity.ok(list);
     }
 }
