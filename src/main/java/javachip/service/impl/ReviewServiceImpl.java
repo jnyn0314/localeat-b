@@ -29,6 +29,11 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     @Transactional
     public ReviewDto createReview(ReviewDto dto) {
+
+        if (reviewRepository.existsByUser_UserIdAndProduct_Id(dto.getUserId(), dto.getProductId())) {
+            throw new IllegalStateException("이미 이 상품에 대한 리뷰를 작성하셨습니다.");
+        }
+
         // 주문항목 검증
         OrderItem oi = orderItemRepository.findById(dto.getOrderItemId())
                 .orElseThrow(() -> new IllegalArgumentException("OrderItem not found"));
@@ -64,6 +69,11 @@ public class ReviewServiceImpl implements ReviewService {
         orderItemRepository.save(oi);
         // cascade/orphanRemoval 로 이미지 자동 삭제
         reviewRepository.delete(r);
+    }
+
+    @Override
+    public List<Long> getReviewedProductIds(String userId) {
+        return reviewRepository.findReviewedProductIdsByUserId(userId);
     }
 
     @Override

@@ -12,6 +12,7 @@ import java.util.List;
 public interface ReviewService {
     ReviewDto createReview(ReviewDto dto);
     void deleteReview(Long reviewId);
+    List<Long> getReviewedProductIds(String userId);
     List<ReviewDto> getReviewsByProduct(Long productId, String sortBy, String currentUserId);
     List<ReviewDto> getMyReviews(String userId);
 }

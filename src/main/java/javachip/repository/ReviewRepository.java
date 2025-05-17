@@ -3,6 +3,7 @@ package javachip.repository;
 import javachip.entity.Review;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -12,6 +13,10 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
             "CASE WHEN :sortBy = 'latest' THEN r.createdAt END DESC")
     List<Review> findByProductId(Long productId, String sortBy);
 
-    // User.userId 가 String 이므로
+    boolean existsByUser_UserIdAndProduct_Id(String userId, Long productId);
+
+    @Query("SELECT DISTINCT r.product.id FROM Review r WHERE r.user.userId = :userId")
+    List<Long> findReviewedProductIdsByUserId(@Param("userId") String userId);
+
     List<Review> findByUser_UserId(String userId);
 }

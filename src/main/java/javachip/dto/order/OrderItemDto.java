@@ -10,6 +10,7 @@ public class OrderItemDto {
     private Long id;
     private String productName;
     private Long productId;
+    private int quantity;
     private Integer price;
     private String status;
     private boolean isReviewed;
@@ -19,6 +20,7 @@ public class OrderItemDto {
                 .id(item.getId())
                 .productName(item.getProduct().getProductName())
                 .productId(item.getProduct().getId())
+                .quantity(item.getQuantity())
                 .price(item.getPrice())
                 .status(item.getStatus().name())
                 .isReviewed(item.isReviewed())

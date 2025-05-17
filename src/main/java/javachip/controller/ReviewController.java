@@ -62,6 +62,11 @@ public class ReviewController {
         return ResponseEntity.ok(reviews);
     }
 
+    @GetMapping("/user/{userId}/products")
+    public ResponseEntity<List<Long>> getReviewedProductIds(@PathVariable String userId) {
+        return ResponseEntity.ok(reviewService.getReviewedProductIds(userId));
+    }
+
     // 리뷰 목록 조회
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<ReviewDto>> getMyReviews(
