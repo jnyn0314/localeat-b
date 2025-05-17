@@ -35,6 +35,7 @@ public class GroupBuyCartItem {
     @Column(name = "EXPIRES_AT", nullable = false)
     private LocalDateTime expiresAt;
 
+    @Builder.Default
     @Enumerated(EnumType.STRING)
     @Column(name = "PAYMENT_STATUS", nullable = false)
     private PaymentStatus paymentStatus = PaymentStatus.PENDING;

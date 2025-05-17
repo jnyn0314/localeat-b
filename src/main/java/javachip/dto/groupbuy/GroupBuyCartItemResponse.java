@@ -17,10 +17,10 @@ public class GroupBuyCartItemResponse {
 
     public static GroupBuyCartItemResponse fromEntity(GroupBuyCartItem e) {
         var r = new GroupBuyCartItemResponse();
-        r.cartItemId    = e.getCartItemId();
+        r.cartItemId    = e.getId();
         r.groupBuyId    = e.getGroupBuy().getId().longValue();
-        r.productId     = e.getProduct().getId();
-        r.quantity      = e.getQuantity();
+        r.productId     = e.getGroupBuy().getProduct().getId();
+        r.quantity      = e.getCartItem().getQuantity();
         r.paymentStatus = e.getPaymentStatus().name();
         r.addedAt       = e.getAddedAt();
         r.expiresAt     = e.getExpiresAt();
