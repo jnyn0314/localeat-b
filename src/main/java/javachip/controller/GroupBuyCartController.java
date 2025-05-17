@@ -29,8 +29,9 @@ public class GroupBuyCartController {
     public ResponseEntity<List<GroupBuyCartItemResponse>> getMyCart(
             @RequestHeader("X-USER-ID") String userId
     ) {
+        // PENDING 상태인 아이템만 조회
         List<GroupBuyCartItem> items =
-                groupBuyCartItemRepository.findByCartItem_Cart_Consumer_UserId(userId);
+                groupBuyCartItemRepository.findByCartItem_Cart_Consumer_UserIdAndPaymentStatus(userId, PaymentStatus.PENDING);
 
         List<GroupBuyCartItemResponse> dto = items.stream()
                 .map(GroupBuyCartItemResponse::fromEntity)
@@ -52,20 +53,33 @@ public class GroupBuyCartController {
         GroupBuyCartItem item = groupBuyCartItemRepository.findById(cartItemId)
                 .orElseThrow(() -> new RuntimeException("장바구니 아이템이 없습니다."));
 
-        PaymentStatus status = PaymentStatus.valueOf(req.getPaymentStatus());
-
-        // 결제 상태 업데이트
-        item.setPaymentStatus(status);
-        groupBuyCartItemRepository.save(item);
-
-        // 결제 완료 시 GroupBuy.payCount 증가
-        if (status == PaymentStatus.COMPLETED) {
-            GroupBuy gb = item.getGroupBuy();
-            gb.setPayCount(gb.getPayCount() + 1);
-            groupBuyRepository.save(gb);
+// 1. 현재 상태가 PENDING이 아니면 예외 발생
+        if (item.getPaymentStatus() != PaymentStatus.PENDING) {
+            throw new RuntimeException("이미 처리된 주문입니다.");
         }
 
-        return ResponseEntity.ok().build();
+        try {
+            // 2. 실제 결제 처리 로직 (예: PG사 연동)
+            PaymentStatus status = PaymentStatus.valueOf(req.getPaymentStatus());
+
+            // 3. 결제 결과에 따른 상태 업데이트
+            item.setPaymentStatus(status);
+            groupBuyCartItemRepository.save(item);
+
+            // 4. 결제 완료 시에만 GroupBuy.payCount 증가
+            if (status == PaymentStatus.COMPLETED) {
+                GroupBuy gb = item.getGroupBuy();
+                gb.setPayCount(gb.getPayCount() + 1);
+                groupBuyRepository.save(gb);
+            }
+
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            // 5. 결제 실패 시 EXPIRED 상태로 변경
+            item.setPaymentStatus(PaymentStatus.EXPIRED);
+            groupBuyCartItemRepository.save(item);
+            throw new RuntimeException("결제 처리 중 오류가 발생했습니다: " + e.getMessage());
+        }
     }
 
     /**
