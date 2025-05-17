@@ -154,7 +154,16 @@ public class GroupBuyService {
     }
 
     public List<GroupBuyListResponse> getGroupBuyListByProductId(Long productId) {
-        List<GroupBuy> groupBuys = groupBuyRepository.findByProduct_IdAndStatus(productId, GroupBuyStatus.RECRUITING);
+        LocalDateTime now = LocalDateTime.now();
+
+        // 마감 시간이 아직 안 지난, 모집 중인 공구만 조회
+        List<GroupBuy> groupBuys = groupBuyRepository
+                .findByProduct_IdAndStatusAndTimeAfter(
+                        productId,
+                        GroupBuyStatus.RECRUITING,
+                        now
+                );
+
         return groupBuys.stream()
                 .map(gb -> new GroupBuyListResponse(
                         gb.getId(),
