@@ -1,4 +1,4 @@
-package javachip.service;
+package javachip.repository;
 
 import javachip.entity.CartItem;
 import org.springframework.data.jpa.repository.JpaRepository;
