@@ -6,6 +6,7 @@
 */
 package javachip.repository;
 
+import javachip.entity.GradeBOption;
 import javachip.entity.LocalType;
 import javachip.entity.Product;
 import org.springframework.data.domain.Pageable;
@@ -34,4 +35,15 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     // 태그 + 키워드 동시 검색
     List<Product> findByProductNameContainingIgnoreCaseAndLocal(String keyword, LocalType local);
 
+    // 태그 + 공동구매 키워드
+    List<Product> findByProductNameContainingIgnoreCaseAndProductGrade(String keyword, GradeBOption grade);
+
+    // b급 상품 필터링
+    List<Product> findByProductGrade(GradeBOption grade);
+
+    // 공동구매
+    List<Product> findByIsGroupBuy(boolean isGroupBuy);
+
+    // 공동구매
+    List<Product> findByProductNameContainingIgnoreCaseAndIsGroupBuy(String keyword, boolean isGroupBuy);
 }

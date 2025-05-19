@@ -4,7 +4,7 @@
 작성자 : 정여진
 기간 : 2025-05-01.
 */
-package javachip.dto;
+package javachip.dto.product;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
