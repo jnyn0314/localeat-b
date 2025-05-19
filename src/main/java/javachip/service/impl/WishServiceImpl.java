@@ -16,6 +16,7 @@ import javachip.repository.WishRepository;
 import javachip.service.WishService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -56,5 +57,17 @@ public class WishServiceImpl implements WishService {
         return wishRepository.findAllByUser(user).stream()
                 .map(w -> ProductDto.fromEntity(w.getProduct(), true, w.getId())) // fromEntity 확장 필요
                 .collect(Collectors.toList());
+    }
+
+    // 찜 지우기 (user id 와 product id가 그 기준)
+    @Transactional
+    @Override
+    public void deleteByUserAndProduct(String userId, Long productId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다."));
+
+        wishRepository.deleteByUserAndProduct(user, product);
     }
 }

@@ -2,7 +2,7 @@
 파일명 : WishService.java
 파일설명 : 찜 기능의 서비스 계층 인터페이스입니다.
 작성자 : 정여진
-작성일 : 2025-05-17.
+작성일 : 2025-05-18.
 */
 package javachip.service;
 
@@ -16,4 +16,7 @@ public interface WishService {
 
     // 사용자가 찜한 상품 목록 조회
     List<ProductDto> getWishedProducts(String userId);
+
+    // 찜 지우기
+    void deleteByUserAndProduct(String userId, Long productId);
 }

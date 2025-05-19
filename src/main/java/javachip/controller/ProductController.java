@@ -10,7 +10,6 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import javachip.dto.product.ProductDto;
 import javachip.entity.LocalType;
-import javachip.entity.Product;
 import javachip.repository.ProductRepository;
 import javachip.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -41,11 +40,15 @@ public class ProductController {
      * @param id 상품 ID
      * @return ProductDto (존재하지 않으면 404 Not Found)
      */
-    @GetMapping("/{id:[\\d]+}")
-    public ResponseEntity<ProductDto> getProductById(@PathVariable Long id) {
-        return productRepository.findWithImagesById(id)
-                .map(product -> ResponseEntity.ok(ProductDto.fromEntity(product)))
-                .orElse(ResponseEntity.notFound().build());
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductDto> getProduct(
+            @PathVariable Long id,
+            @RequestParam(required = false) String userId
+    ) {
+        ProductDto dto = (userId == null)
+                ? productService.getProductById(id)
+                : productService.getProductById(id, userId);
+        return ResponseEntity.ok(dto);
     }
 
     /**
