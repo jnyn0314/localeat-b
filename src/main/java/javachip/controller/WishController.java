@@ -6,7 +6,7 @@
 */
 package javachip.controller;
 
-import javachip.dto.ProductDto;
+import javachip.dto.product.ProductDto;
 import javachip.service.WishService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -34,4 +34,15 @@ public class WishController {
     public ResponseEntity<List<ProductDto>> getWishedList(@RequestParam String userId) {
         return ResponseEntity.ok(wishService.getWishedProducts(userId));
     }
+
+    // 찜 지우기. (사용자 id + 상품 id조합)
+    @DeleteMapping
+    public ResponseEntity<Void> deleteWish(
+            @RequestParam String userId,
+            @RequestParam Long productId
+    ) {
+        wishService.deleteByUserAndProduct(userId, productId);
+        return ResponseEntity.ok().build();
+    }
+
 }

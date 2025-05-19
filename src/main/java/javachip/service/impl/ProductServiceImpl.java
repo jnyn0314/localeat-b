@@ -8,14 +8,12 @@
 package javachip.service.impl;
 
 import jakarta.transaction.Transactional;
-import javachip.dto.ProductDto;
-import javachip.entity.LocalType;
-import javachip.entity.Product;
-import javachip.entity.Seller;
-import javachip.entity.User;
+import javachip.dto.product.ProductDto;
+import javachip.entity.*;
 import javachip.repository.ProductImageRepository;
 import javachip.repository.ProductRepository;
 import javachip.repository.UserRepository;
+import javachip.repository.WishRepository;
 import javachip.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -23,7 +21,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import javax.swing.plaf.SliderUI;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -36,6 +33,7 @@ public class ProductServiceImpl implements ProductService {
     private final ProductImageRepository productImageRepository;
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
+    private final WishRepository wishRepository;
 
     // 공동구매, 카트 등 나중에 생기면 얘네도 delete할때 먼저 지워야 함.
 
@@ -58,7 +56,32 @@ public class ProductServiceImpl implements ProductService {
     public ProductDto getProductById(Long id) {
         Product product = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
-        return ProductDto.fromEntity(product);
+        return ProductDto.fromEntity(product); // 여긴 찜 정보 없음
+    }
+
+    /**
+     * 상품 id와 userId로 상품 조회
+     * 찜 정보를 가져오기 위함.
+     * */
+    @Override
+    public ProductDto getProductById(Long id, String userId) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("상품을 찾을 수 없습니다."));
+
+        boolean isWished = false;
+        Long wishId = null;
+
+        if (userId != null) {
+            User user = userRepository.findById(userId)
+                    .orElseThrow(() -> new IllegalArgumentException("사용자 없음"));
+            Optional<Wish> wishOpt = wishRepository.findByUserAndProduct(user, product);
+            if (wishOpt.isPresent()) {
+                isWished = true;
+                wishId = wishOpt.get().getId();
+            }
+        }
+
+        return ProductDto.fromEntity(product, isWished, wishId);
     }
 
     /**
@@ -126,31 +149,55 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductDto> searchProducts(String keyword, String tag) {
-        List<Product> products;
+        List<Product> products = List.of();
 
-        LocalType localType = null;
         if (tag != null) {
+            // 1. tag가 등급 코드인지 시도
             try {
-                localType = LocalType.valueOf(tag);
-                System.out.println("💡 전달받은 tag = " + tag);
-            } catch (IllegalArgumentException e) {
-                throw new IllegalArgumentException("유효하지 않은 지역 코드입니다: " + tag);
+                GradeBOption grade = GradeBOption.valueOf(tag); // tag = "A" or "B"
+                if (keyword != null && !keyword.isBlank()) {
+                    products = productRepository.findByProductNameContainingIgnoreCaseAndProductGrade(keyword, grade);
+                } else {
+                    products = productRepository.findByProductGrade(grade);
+                }
+                return products.stream()
+                        .map(ProductDto::fromEntity)
+                        .toList();
+            } catch (IllegalArgumentException ignored) {
+                // 등급이 아님 → 지역 코드로 간주
             }
-        }
 
-        if (localType != null && (keyword == null || keyword.isBlank())) {
-            products = productRepository.findByLocal(localType);
-        } else if (localType != null && keyword != null && !keyword.isBlank()) {
-            products = productRepository.findByProductNameContainingIgnoreCaseAndLocal(keyword, localType);
+            // 2. 공동구매 필터
+            if (tag.equalsIgnoreCase("GROUP_BUY")) {
+                if (keyword != null && !keyword.isBlank()) {
+                    products = productRepository.findByProductNameContainingIgnoreCaseAndIsGroupBuy(keyword, true);
+                } else {
+                    products = productRepository.findByIsGroupBuy(true);
+                }
+                return products.stream().map(ProductDto::fromEntity).toList();
+            }
+
+            // 2. tag가 지역 코드인지 시도
+            try {
+                LocalType localType = LocalType.valueOf(tag);
+                if (keyword != null && !keyword.isBlank()) {
+                    products = productRepository.findByProductNameContainingIgnoreCaseAndLocal(keyword, localType);
+                } else {
+                    products = productRepository.findByLocal(localType);
+                }
+            } catch (IllegalArgumentException e) {
+                throw new IllegalArgumentException("유효하지 않은 tag입니다 (지역 또는 등급): " + tag);
+            }
+
         } else if (keyword != null && !keyword.isBlank()) {
+            // 태그 없고 키워드만 있을 때
             products = productRepository.findByProductNameContainingIgnoreCase(keyword);
-        } else {
-            products = List.of(); // or 전체 리스트
         }
 
         return products.stream()
                 .map(ProductDto::fromEntity)
-                .collect(Collectors.toList());
+                .toList();
     }
+
 
 }
