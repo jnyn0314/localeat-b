@@ -30,4 +30,7 @@ public class CartItem {
     @ManyToOne
     @JoinColumn(name = "CART_ID")
     private Cart cart;
+
+    @OneToOne(mappedBy = "cartItem", cascade = CascadeType.ALL, orphanRemoval = true)
+    private GeneralCartItem generalCartItem;
 }

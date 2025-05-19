@@ -6,7 +6,7 @@
 */
 package javachip.controller;
 
-import javachip.dto.ProductDto;
+import javachip.dto.product.ProductDto;
 import javachip.service.WishService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

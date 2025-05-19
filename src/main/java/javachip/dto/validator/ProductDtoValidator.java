@@ -1,6 +1,6 @@
 package javachip.dto.validator;
 
-import javachip.dto.ProductDto;
+import javachip.dto.product.ProductDto;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator; // jakarta가 아니라 얘는 springframework로 시작하는 거 import해야 오류안나요

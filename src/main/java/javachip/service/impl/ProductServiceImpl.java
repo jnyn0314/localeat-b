@@ -8,7 +8,7 @@
 package javachip.service.impl;
 
 import jakarta.transaction.Transactional;
-import javachip.dto.ProductDto;
+import javachip.dto.product.ProductDto;
 import javachip.entity.LocalType;
 import javachip.entity.Product;
 import javachip.entity.Seller;

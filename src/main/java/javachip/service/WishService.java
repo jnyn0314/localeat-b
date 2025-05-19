@@ -6,7 +6,7 @@
 */
 package javachip.service;
 
-import javachip.dto.ProductDto;
+import javachip.dto.product.ProductDto;
 
 import java.util.List;
 

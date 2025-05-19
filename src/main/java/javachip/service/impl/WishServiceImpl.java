@@ -6,7 +6,7 @@
 */
 package javachip.service.impl;
 
-import javachip.dto.ProductDto;
+import javachip.dto.product.ProductDto;
 import javachip.entity.Product;
 import javachip.entity.User;
 import javachip.entity.Wish;

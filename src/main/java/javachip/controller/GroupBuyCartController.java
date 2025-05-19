@@ -16,7 +16,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/cart")
+@RequestMapping("/api/group-buy-cart")
 @RequiredArgsConstructor
 public class GroupBuyCartController {
 

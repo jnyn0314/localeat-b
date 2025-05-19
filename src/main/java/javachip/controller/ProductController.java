@@ -8,7 +8,7 @@ package javachip.controller;
 
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import javachip.dto.ProductDto;
+import javachip.dto.product.ProductDto;
 import javachip.entity.LocalType;
 import javachip.entity.Product;
 import javachip.repository.ProductRepository;
