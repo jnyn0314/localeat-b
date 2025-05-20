@@ -18,4 +18,9 @@ public class OrderCreateResponse {
         this.price = orderItem.getPrice();
         this.status = orderItem.getStatus().name();
     }
+
+    public static OrderCreateResponse fromEntity(OrderItem orderItem) {
+        return new OrderCreateResponse(orderItem);
+    }
+
 }
