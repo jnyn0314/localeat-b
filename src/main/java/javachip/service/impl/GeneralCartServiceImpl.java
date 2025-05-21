@@ -5,11 +5,7 @@ import javachip.dto.order.CartItemResponse;
 import javachip.dto.order.CartOrderRequest;
 import javachip.dto.order.OrderCreateResponse;
 import javachip.entity.*;
-import javachip.repository.CartItemRepository;
-import javachip.repository.CartRepository;
-import javachip.repository.GeneralCartItemRepository;
-import javachip.repository.OrderRepository;
-import javachip.repository.ProductRepository;
+import javachip.repository.*;
 import javachip.service.GeneralCartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,7 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +25,7 @@ public class GeneralCartServiceImpl implements GeneralCartService {
     private final CartItemRepository cartItemRepository;
     private final GeneralCartItemRepository generalCartItemRepository;
     private final OrderRepository orderRepository;
+    private final OrderItemRepository orderItemRepository;
     private final ProductRepository productRepository;
 
     /**
@@ -77,7 +75,7 @@ public class GeneralCartServiceImpl implements GeneralCartService {
         return cartItemRepository.findAllByCartId(cart.getId()).stream()
                 .filter(item -> item.getGeneralCartItem() != null)  // 일반구매만 필터링
                 .map(CartItemResponse::fromEntity)
-                .collect(Collectors.toList());
+                .collect(toList());
     }
 
     /**
@@ -97,34 +95,28 @@ public class GeneralCartServiceImpl implements GeneralCartService {
     @Override
     @Transactional
     public List<OrderCreateResponse> orderFromCart(String userId, CartOrderRequest request) {
-        Cart cart = cartRepository.findByConsumer_UserId(userId)
-                .orElseThrow(() -> new IllegalArgumentException("장바구니가 존재하지 않습니다."));
-
         Orders order = Orders.builder()
                 .userId(userId)
                 .createdAt(LocalDateTime.now())
-                .orderItems(new ArrayList<>())   // 빈 리스트 초기화
+                .orderItems(new ArrayList<>())
                 .build();
-
-        orderRepository.save(order); // 우선 저장 후 id 생성
+        orderRepository.save(order);
 
         List<OrderItem> orderItems = request.getCartItemIds().stream()
                 .map(cartItemId -> cartItemRepository.findById(cartItemId)
                         .orElseThrow(() -> new IllegalArgumentException("장바구니 항목이 존재하지 않습니다.")))
                 .map(cartItem -> {
                     OrderItem orderItem = OrderItem.fromCartItem(cartItem);
-                    orderItem.setOrder(order);  // 주문 객체 설정
+                    orderItem.setOrder(order);
                     return orderItem;
                 })
-                .collect(Collectors.toList());
+                .toList();
 
-        order.setOrderItems(orderItems);
-        orderRepository.save(order);
-
+        orderItems.forEach(orderItemRepository::save);
         request.getCartItemIds().forEach(cartItemRepository::deleteById);
 
         return orderItems.stream()
                 .map(OrderCreateResponse::fromEntity)
-                .collect(Collectors.toList());
+                .toList();
     }
 }
