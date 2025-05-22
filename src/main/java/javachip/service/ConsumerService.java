@@ -15,16 +15,22 @@ public class ConsumerService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 소비자를 찾을 수 없습니다."));
     }
 
-    public Consumer updateConsumer(String userId, Consumer updateInfo) {
-        Consumer consumer = getConsumerById(userId);
+    public Consumer updateConsumer(String userId, Consumer updatedInfo) {
+        Consumer consumer = consumerRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("사용자 없음"));
 
-        consumer.setName(updateInfo.getName());
-        consumer.setEmail(updateInfo.getEmail());
-        consumer.setPhone(updateInfo.getPhone());
-        consumer.setAddress(updateInfo.getAddress());
-        consumer.setLocal(updateInfo.getLocal());
-        consumer.setPassword(updateInfo.getPassword()); // 암호화 고려
+        consumer.setName(updatedInfo.getName());
+        consumer.setPhone(updatedInfo.getPhone());
+        consumer.setEmail(updatedInfo.getEmail());
+        consumer.setAddress(updatedInfo.getAddress());
+        consumer.setLocal(updatedInfo.getLocal());
+
+        // ✅ 비밀번호가 입력된 경우에만 업데이트
+        if (updatedInfo.getPassword() != null && !updatedInfo.getPassword().isBlank()) {
+            consumer.setPassword(updatedInfo.getPassword()); // 🔐 보안상 bcrypt 암호화 필요
+        }
 
         return consumerRepository.save(consumer);
     }
+
 }

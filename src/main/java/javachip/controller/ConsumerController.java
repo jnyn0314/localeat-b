@@ -1,5 +1,6 @@
 package javachip.controller;
 
+import javachip.dto.user.ConsumerDto;
 import javachip.entity.Consumer;
 import javachip.service.ConsumerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +14,20 @@ public class ConsumerController {
     private ConsumerService consumerService;
 
     @GetMapping("/profile")
-    public ResponseEntity<Consumer> getProfile(@RequestParam String userId) {
-        return ResponseEntity.ok(consumerService.getConsumerById(userId));
+    public ResponseEntity<ConsumerDto> getConsumerProfile(@RequestParam String userId) {
+        Consumer consumer = consumerService.getConsumerById(userId);
+
+        ConsumerDto dto = new ConsumerDto(
+                consumer.getUserId(),
+                consumer.getName(),
+                consumer.getPhone(),
+                consumer.getEmail(),
+                consumer.getAddress(),
+                consumer.getLocal(),
+                consumer.getBirth()
+        );
+
+        return ResponseEntity.ok(dto);
     }
 
     @PutMapping("/profile")
