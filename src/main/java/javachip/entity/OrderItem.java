@@ -59,22 +59,4 @@ public class OrderItem {
     @Column(name = "price")
     private Integer price;
 
-
-    /**
-     * 장바구니 아이템(CartItem) 기반으로 주문 아이템(OrderItem) 생성 메서드
-     * - 일반구매 장바구니 주문 처리 시 사용
-     */
-    public static OrderItem fromCartItem(CartItem cartItem) {
-        return OrderItem.builder()
-                .product(cartItem.getProduct())
-                .quantity(cartItem.getQuantity())
-                .isSubscription(false) // 일반구매
-                .isGroupBuy(false)     // 일반구매
-                .userId(cartItem.getCart().getConsumer().getUserId())
-                .status(OrderStatus.PAID)
-                .isReviewed(false)
-                .price(cartItem.getProduct().getPrice()) // 필요 시 할인 반영 가능
-                .build();
-    }
-
 }

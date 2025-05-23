@@ -1,4 +1,4 @@
-package javachip.dto.order;
+package javachip.dto.order.consumer;
 
 import javachip.entity.OrderItem;
 import lombok.Getter;

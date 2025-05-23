@@ -1,9 +1,9 @@
 package javachip.controller;
 
-import javachip.dto.order.CartItemRequest;
-import javachip.dto.order.CartItemResponse;
-import javachip.dto.order.CartOrderRequest;
-import javachip.dto.order.OrderCreateResponse;
+import javachip.dto.order.consumer.CartItemRequest;
+import javachip.dto.order.consumer.CartItemResponse;
+import javachip.dto.order.consumer.CartOrderRequest;
+import javachip.dto.order.consumer.OrderCreateResponse;
 import javachip.service.GeneralCartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

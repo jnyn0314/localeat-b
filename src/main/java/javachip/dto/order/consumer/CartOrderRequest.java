@@ -1,4 +1,4 @@
-package javachip.dto.order;
+package javachip.dto.order.consumer;
 
 import lombok.*;
 

@@ -1,9 +1,10 @@
 package javachip.service.impl;
 
-import javachip.dto.order.CartItemRequest;
-import javachip.dto.order.CartItemResponse;
-import javachip.dto.order.CartOrderRequest;
-import javachip.dto.order.OrderCreateResponse;
+import javachip.dto.order.consumer.CartItemRequest;
+import javachip.dto.order.consumer.CartItemResponse;
+import javachip.dto.order.consumer.CartOrderRequest;
+import javachip.dto.order.consumer.OrderCreateResponse;
+import javachip.dto.order.consumer.OrderCreateRequest;
 import javachip.entity.*;
 import javachip.repository.*;
 import javachip.service.GeneralCartService;
@@ -106,9 +107,9 @@ public class GeneralCartServiceImpl implements GeneralCartService {
                 .map(cartItemId -> cartItemRepository.findById(cartItemId)
                         .orElseThrow(() -> new IllegalArgumentException("장바구니 항목이 존재하지 않습니다.")))
                 .map(cartItem -> {
-                    OrderItem orderItem = OrderItem.fromCartItem(cartItem);
-                    orderItem.setOrder(order);
-                    return orderItem;
+                    OrderItem item = OrderCreateRequest.fromCartItem(cartItem);
+                    item.setOrder(order);
+                    return item;
                 })
                 .toList();
 

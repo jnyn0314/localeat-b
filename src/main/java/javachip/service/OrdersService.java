@@ -1,8 +1,8 @@
 package javachip.service;
 
-import javachip.dto.order.OrderCreateRequest;
-import javachip.dto.order.OrderCreateResponse;
-import javachip.dto.order.OrderHistoryResponse;
+import javachip.dto.order.consumer.OrderCreateRequest;
+import javachip.dto.order.consumer.OrderCreateResponse;
+import javachip.dto.order.consumer.OrderHistoryResponse;
 
 import java.util.List;
 
