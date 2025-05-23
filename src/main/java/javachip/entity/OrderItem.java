@@ -24,8 +24,6 @@ public class OrderItem {
     @SequenceGenerator(name = "orderitem_seq_gen", sequenceName = "ORDERITEM_SEQ", allocationSize = 1)
     private Long id;
 
-
-
     @Column(nullable = false)
     private int quantity;
 
