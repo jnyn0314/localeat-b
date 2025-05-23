@@ -48,7 +48,7 @@ public class AuthServiceSeller implements AuthService {
             throw new RuntimeException("비밀번호가 일치하지 않습니다.");
         }
 
-        return new LoginResponse(user.getUserId(), user.getPassword(), user.getRole());
+        return new LoginResponse(user.getUserId(), user.getPassword(), user.getRole(), user.getLocal());
     }
 
     public boolean isUserIdDuplicate(String userId) {
