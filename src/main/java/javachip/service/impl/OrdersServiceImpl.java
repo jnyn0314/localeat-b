@@ -9,6 +9,7 @@ import javachip.entity.Product;
 import javachip.repository.OrderItemRepository;
 import javachip.repository.OrderRepository;
 import javachip.repository.ProductRepository;
+import javachip.service.AlarmService;
 import javachip.service.OrdersService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,7 @@ public class OrdersServiceImpl implements OrdersService {
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
     private final ProductRepository productRepository;
+    private final AlarmService alarmService;//
 
     @Override
     public OrderCreateResponse createSingleOrder(OrderCreateRequest request) {
@@ -40,6 +42,9 @@ public class OrdersServiceImpl implements OrdersService {
         // 프론트 최종 가격 그대로 저장
         OrderItem orderItem = request.toOrderItem(product, order);
         orderItemRepository.save(orderItem);
+
+        // 알림 생성 (판매자에게) 김소망이 추가함
+        alarmService.notifySellerOnOrder(orderItem);
 
         // 응답 반환
         return new OrderCreateResponse(orderItem);
