@@ -6,6 +6,7 @@ import javachip.entity.*;
 import javachip.repository.GroupBuyCartItemRepository;
 import javachip.repository.GroupBuyRepository;
 import javachip.repository.OrderRepository;
+import javachip.service.AlarmService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,8 +24,9 @@ public class GroupBuyCartController {
     private final GroupBuyCartItemRepository cartItemRepo;
     private final GroupBuyRepository       groupBuyRepo;
     private final OrderRepository          orderRepo;
+    private final AlarmService alarmService;
 
-    /** 1. 내 장바구니(공구) 전체 조회 */
+    /**내 장바구니(공구) 전체 조회 */
     @GetMapping
     public ResponseEntity<List<GroupBuyCartItemResponse>> getMyCart(
             @RequestHeader("X-USER-ID") String userId
@@ -39,7 +41,7 @@ public class GroupBuyCartController {
         return ResponseEntity.ok(dto);
     }
 
-    /** 2. 단건 결제 처리 (여전히 지원) */
+    /** 단건 결제 처리 */
     @PostMapping("/{cartItemId}/pay")
     public ResponseEntity<Void> payCartItem(
             @PathVariable Long cartItemId,
@@ -66,22 +68,20 @@ public class GroupBuyCartController {
         return ResponseEntity.ok().build();
     }
 
-    /**
-     * 3. 전체 주문(장바구니 -> 주문) 처리
-     */
+    /**전체 주문(장바구니 -> 주문) 처리*/
     @PostMapping("/order")
     @Transactional
     public ResponseEntity<Void> createOrder(
             @RequestHeader("X-USER-ID") String userId,
             @RequestBody List<Long> cartItemIds
     ) {
-        // 1) 장바구니 아이템 조회
+        //장바구니 아이템 조회
         List<GroupBuyCartItem> cartItems = cartItemRepo.findAllById(cartItemIds);
         if (cartItems.isEmpty()) {
             throw new RuntimeException("선택된 장바구니가 없습니다.");
         }
 
-        // 2) Order, OrderItem 생성
+        //Order, OrderItem 생성
         Orders order = Orders.builder()
                 .createdAt(LocalDateTime.now())
                 .userId(userId)
@@ -102,16 +102,20 @@ public class GroupBuyCartController {
                     .build();
         }).collect(Collectors.toList());
         order.setOrderItems(orderItems);
-        orderRepo.save(order);
+        orderRepo.save(order);// 주문 저장
 
-        // 3) payCount 증감 집계: key=그룹바이ID, value=증가할 카운트
+        // 알림 생성 (판매자에게)
+        orderItems.forEach(orderItem -> alarmService.notifySellerOnOrder(orderItem));
+
+
+        //payCount 증감 집계: key=그룹바이ID, value=증가할 카운트
         Map<Long,Integer> increments = new HashMap<>();
         for (var ci : cartItems) {
             long gbId = ci.getGroupBuy().getId().longValue();
             increments.put(gbId, increments.getOrDefault(gbId, 0) + 1);
         }
 
-        // 4) 각 GroupBuy에 반영
+        //각 GroupBuy에 반영
         for (var entry : increments.entrySet()) {
             GroupBuy gb = groupBuyRepo.findById(entry.getKey())
                     .orElseThrow();
@@ -122,7 +126,7 @@ public class GroupBuyCartController {
             groupBuyRepo.save(gb);
         }
 
-        // 5) cartItem 상태도 모두 COMPLETED로
+        //cartItem 상태도 모두 COMPLETED로
         for (var ci : cartItems) {
             ci.setPaymentStatus(PaymentStatus.COMPLETED);
             cartItemRepo.save(ci);
@@ -131,7 +135,7 @@ public class GroupBuyCartController {
         return ResponseEntity.ok().build();
     }
 
-    /** 4. (선택) cartItem 직접 삭제 */
+    /** cartItem 직접 삭제 */
     @DeleteMapping("/{cartItemId}")
     public ResponseEntity<Void> deleteCartItem(
             @PathVariable Long cartItemId,

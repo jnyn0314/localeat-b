@@ -7,6 +7,7 @@ import javachip.dto.order.consumer.OrderCreateResponse;
 import javachip.dto.order.consumer.OrderCreateRequest;
 import javachip.entity.*;
 import javachip.repository.*;
+import javachip.service.AlarmService;
 import javachip.service.GeneralCartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,7 @@ public class GeneralCartServiceImpl implements GeneralCartService {
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
     private final ProductRepository productRepository;
+    private final AlarmService alarmService;//김소망이 추가함
 
     /**
      * 일반구매 장바구니 항목 추가
@@ -91,7 +93,7 @@ public class GeneralCartServiceImpl implements GeneralCartService {
     }
 
     /**
-     * 일반구매 장바구니 주문 처리
+     * 일반구매 장바구니 주문 처리 이 부분 알림 기능 때문에 김소망이 수정 및 추가 함 달라졌다고 의문ㄴㄴ
      */
     @Override
     @Transactional
@@ -114,6 +116,10 @@ public class GeneralCartServiceImpl implements GeneralCartService {
                 .toList();
 
         orderItems.forEach(orderItemRepository::save);
+
+        // 알림 생성 (판매자에게)
+        orderItems.forEach(orderItem -> alarmService.notifySellerOnOrder(orderItem));
+
         request.getCartItemIds().forEach(cartItemRepository::deleteById);
 
         return orderItems.stream()
