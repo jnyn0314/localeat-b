@@ -2,6 +2,8 @@ package javachip.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "ORDERALARM")
@@ -19,6 +21,7 @@ public class OrderAlarm {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "alarm_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Alarm alarm;
 
     @ManyToOne(fetch = FetchType.LAZY)

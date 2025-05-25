@@ -31,6 +31,7 @@ public class AlarmController {
         }
     }
 
+    // 알림 읽음 처리
     @PostMapping("/read/{alarmId}")
     public ResponseEntity<Void> markAlarmAsRead(@PathVariable Long alarmId) {
         try {
@@ -39,6 +40,18 @@ public class AlarmController {
         } catch (Exception e) {
             System.out.println("❌ 알림 읽음 처리 실패: " + e.getMessage());
             throw new RuntimeException("알림 읽음 처리 실패", e);
+        }
+    }
+
+    // 알림 삭제
+    @DeleteMapping("/{alarmId}")
+    public ResponseEntity<Void> deleteAlarm(@PathVariable Long alarmId) {
+        try {
+            alarmService.deleteAlarm(alarmId);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            System.out.println("❌ 알림 삭제 실패: " + e.getMessage());
+            throw new RuntimeException("알림 삭제 실패", e);
         }
     }
 }

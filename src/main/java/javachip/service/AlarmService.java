@@ -96,5 +96,24 @@ public class AlarmService {
                 .orElseThrow(() -> new RuntimeException("알림을 찾을 수 없습니다."));
         alarm.setIsRead("Y");
         alarmRepository.save(alarm);
+        System.out.println("✅ 알림 읽음 처리 완료: alarmId=" + alarmId);
+    }
+
+    @Transactional
+    public void deleteAlarm(Long alarmId) {
+        try {
+            // OrderAlarm 먼저 삭제
+            orderAlarmRepository.deleteByAlarmId(alarmId);
+
+            // 그 다음 Alarm 삭제
+            Alarm alarm = alarmRepository.findById(alarmId)
+                    .orElseThrow(() -> new RuntimeException("알림을 찾을 수 없습니다."));
+            alarmRepository.delete(alarm);
+
+            System.out.println("✅ 알림 삭제 완료: alarmId=" + alarmId);
+        } catch (Exception e) {
+            System.out.println("❌ 알림 삭제 실패: " + e.getMessage());
+            throw new RuntimeException("알림 삭제 실패", e);
+        }
     }
 }

@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface OrderAlarmRepository extends JpaRepository<OrderAlarm, Long> {
+    void deleteByAlarmId(Long alarmId);
 }
