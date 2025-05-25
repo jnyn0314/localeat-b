@@ -1,5 +1,6 @@
 package javachip.service;
 
+import jakarta.transaction.Transactional;
 import javachip.entity.*;
 import javachip.repository.AlarmRepository;
 import javachip.repository.OrderAlarmRepository;
@@ -15,6 +16,7 @@ public class AlarmService {
 
     private final AlarmRepository alarmRepository;
     private final OrderAlarmRepository orderAlarmRepository; // 추가
+    private final FcmService fcmService;
 
     public void notifySellerOnOrder(OrderItem orderItem) {
         System.out.println("💡 알림 생성 시작 for OrderItem ID: " + orderItem.getId());
@@ -32,16 +34,16 @@ public class AlarmService {
         NotificationType type = getTypeFromOrderItem(orderItem);
         String message = generateMessage(orderItem);
 
-        Alarm alarm = Alarm.builder()
-                .type(type)
-                .message(message)
-                .timestamp(LocalDateTime.now())
-                .user(seller)
-                .order(orderItem.getOrder())
-                .build();
-        alarm.setIsRead("N");
-
         try {
+            Alarm alarm = Alarm.builder()
+                    .type(type)
+                    .message(message)
+                    .timestamp(LocalDateTime.now())
+                    .user(seller)
+                    .order(orderItem.getOrder())
+                    .build();
+            alarm.setIsRead("N");
+
             alarmRepository.save(alarm);
 
             OrderAlarm orderAlarm = OrderAlarm.builder()
@@ -51,10 +53,19 @@ public class AlarmService {
                     .build();
             orderAlarmRepository.save(orderAlarm);
 
-            System.out.println("✅ 알림 생성 및 연결 완료 - " + alarm.getMessage());
+            // 2. FCM 푸시 알림 전송
+            fcmService.sendNotificationToUser(
+                    seller.getUserId(),
+                    "새로운 주문 알림",
+                    message
+            );
+
+            System.out.println("✅ 알림 생성, DB 저장, FCM 전송 완료 - " + alarm.getMessage());
+
 
         } catch (Exception e) {
             System.out.println("❌ 알림 저장 실패: " + e.getMessage());
+            throw new RuntimeException("알림 처리 실패", e);
         }
     }
 
@@ -74,13 +85,35 @@ public class AlarmService {
         }
     }
 
-    public void markAsRead(Long alarmId) {
-        Alarm alarm = alarmRepository.findById(alarmId)
-                .orElseThrow(() -> new RuntimeException("알림을 찾을 수 없습니다."));
-        alarm.setIsRead("N");
+    public List<Alarm> getUserAlarms(String userId) {
+        // 메서드명 변경
+        return alarmRepository.findByUserUserIdOrderByTimestampDesc(userId);
     }
 
-    public List<Alarm> getUserAlarms(String userId) {
-        return alarmRepository.findByUser_UserIdOrderByTimestampDesc(userId);
+    @Transactional
+    public void markAlarmAsRead(Long alarmId) {
+        Alarm alarm = alarmRepository.findById(alarmId)
+                .orElseThrow(() -> new RuntimeException("알림을 찾을 수 없습니다."));
+        alarm.setIsRead("Y");
+        alarmRepository.save(alarm);
+        System.out.println("✅ 알림 읽음 처리 완료: alarmId=" + alarmId);
+    }
+
+    @Transactional
+    public void deleteAlarm(Long alarmId) {
+        try {
+            // OrderAlarm 먼저 삭제
+            orderAlarmRepository.deleteByAlarmId(alarmId);
+
+            // 그 다음 Alarm 삭제
+            Alarm alarm = alarmRepository.findById(alarmId)
+                    .orElseThrow(() -> new RuntimeException("알림을 찾을 수 없습니다."));
+            alarmRepository.delete(alarm);
+
+            System.out.println("✅ 알림 삭제 완료: alarmId=" + alarmId);
+        } catch (Exception e) {
+            System.out.println("❌ 알림 삭제 실패: " + e.getMessage());
+            throw new RuntimeException("알림 삭제 실패", e);
+        }
     }
 }
