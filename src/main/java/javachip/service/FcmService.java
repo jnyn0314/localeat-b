@@ -2,10 +2,11 @@ package javachip.service;
 
 import javachip.repository.FcmTokenRepository;
 import lombok.RequiredArgsConstructor;
-import oracle.jdbc.driver.Message;
 import org.springframework.stereotype.Service;
-
-import javax.management.Notification;
+import com.google.firebase.messaging.Message;
+import com.google.firebase.messaging.Notification;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.FirebaseMessagingException;
 
 @Service
 @RequiredArgsConstructor

@@ -7,5 +7,5 @@ import lombok.Setter;
 @Setter
 public class FcmTokenRequest {
     private String userId;
-    private String fcmToken;
+    private String token;
 }
