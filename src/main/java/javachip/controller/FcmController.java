@@ -22,12 +22,7 @@ public class FcmController {
 
     @PostMapping("/token")
     public ResponseEntity<Void> saveToken(@RequestBody FcmTokenRequest request) {
-        System.out.println("Received request: " + request);  // 로그 추가
-        FcmToken token = new FcmToken();
-        token.setUserId(request.getUserId());
-        token.setToken(request.getToken());
-        System.out.println("Saving token: " + token);  // 로그 추가
-        tokenRepository.save(token);
+        fcmService.saveOrUpdateToken(request.getUserId(), request.getToken());
         return ResponseEntity.ok().build();
     }
 
