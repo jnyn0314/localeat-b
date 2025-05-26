@@ -1,4 +1,4 @@
-package javachip.dto;
+package javachip.dto.alarm;
 
 import lombok.Getter;
 import lombok.Setter;

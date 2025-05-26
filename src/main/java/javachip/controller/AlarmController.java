@@ -1,6 +1,6 @@
 package javachip.controller;
 
-import javachip.dto.AlarmResponseDTO;
+import javachip.dto.alarm.AlarmResponseDTO;
 import javachip.entity.Alarm;
 import javachip.service.AlarmService;
 import lombok.RequiredArgsConstructor;

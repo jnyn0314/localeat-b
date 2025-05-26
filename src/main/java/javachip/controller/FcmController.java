@@ -1,8 +1,7 @@
 package javachip.controller;
 
 import com.google.firebase.messaging.FirebaseMessagingException;
-import javachip.dto.FcmTokenRequest;
-import javachip.entity.FcmToken;
+import javachip.dto.alarm.FcmTokenRequest;
 import javachip.repository.FcmTokenRepository;
 import javachip.service.FcmService;
 import lombok.RequiredArgsConstructor;

@@ -57,4 +57,12 @@ public class OrderItem {
     @Column(name = "price")
     private Integer price;
 
+    @Column(name = "delivery_cycle_type")
+    private String deliveryCycleType;
+
+    @Column(name = "delivery_cycle_value")
+    private Integer deliveryCycleValue;
+
+    @Column(name = "delivery_period_months")
+    private Integer deliveryPeriodInMonths;
 }

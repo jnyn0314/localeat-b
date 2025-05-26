@@ -1,7 +1,6 @@
 package javachip.controller;
 
-import jakarta.validation.Valid;
-import javachip.dto.GroupBuyParticipationRequest;
+import javachip.dto.groupbuy.GroupBuyParticipationRequest;
 import javachip.dto.groupbuy.*;
 import javachip.service.GroupBuyService;
 import lombok.RequiredArgsConstructor;

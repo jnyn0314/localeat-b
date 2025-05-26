@@ -1,4 +1,4 @@
-package javachip.dto;
+package javachip.dto.alarm;
 
 import javachip.entity.Alarm;
 import javachip.entity.NotificationType;
