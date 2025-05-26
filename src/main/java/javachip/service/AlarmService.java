@@ -171,5 +171,34 @@ public class AlarmService {
         };
     }
 
+    @Transactional
+    public void notifyGroupBuyCompletion(Consumer consumer, GroupBuy groupBuy) {
+        String message = String.format("[공동구매 모집 완료] 장바구니에서 결제를 진행해주세요.",
+                groupBuy.getProduct().getProductName());
 
+        try {
+            Alarm alarm = Alarm.builder()
+                    .type(NotificationType.GROUP_BUY)
+                    .message(message)
+                    .timestamp(LocalDateTime.now())
+                    .user(consumer)
+                    .build();
+            alarm.setIsRead("N");
+
+            alarmRepository.save(alarm);
+
+            // FCM 푸시 알림 전송
+            fcmService.sendNotificationToUser(
+                    consumer.getUserId(),
+                    "공동구매 모집 완료",
+                    message
+            );
+
+            System.out.println("✅ 공동구매 완료 알림 생성 및 전송 완료 - " + alarm.getMessage());
+
+        } catch (Exception e) {
+            System.out.println("❌ 공동구매 완료 알림 저장 실패: " + e.getMessage());
+            throw new RuntimeException("공동구매 완료 알림 처리 실패", e);
+        }
+    }
 }
