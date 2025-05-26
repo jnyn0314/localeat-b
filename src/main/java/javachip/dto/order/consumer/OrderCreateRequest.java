@@ -14,6 +14,7 @@ public class OrderCreateRequest {
     private OrderStatus status = OrderStatus.PAID;
 
     public OrderItem toOrderItem(Product product, Orders order) {
+        System.out.println("[DEBUG] toOrderItem 호출됨: " + order.getUserId());
         return OrderItem.builder()
                 .userId(userId)
                 .order(order)

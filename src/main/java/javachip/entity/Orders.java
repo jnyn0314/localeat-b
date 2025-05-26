@@ -10,6 +10,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -33,6 +34,23 @@ public class Orders {
 
     @Getter
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrderItem> orderItems;
+    private List<OrderItem> orderItems  = new ArrayList<>();
 
+    @Column(name = "is_subscription", nullable = false)
+    private boolean isSubscription;
+
+    @PrePersist
+    public void prePersist() {
+        if (createdAt == null) {
+            createdAt = LocalDateTime.now();
+        }
+    } // 자동 생성.
+
+    public void addOrderItem(OrderItem orderItem) {
+        if (orderItems == null) {
+            orderItems = new java.util.ArrayList<>();
+        }
+        orderItems.add(orderItem);
+        orderItem.setOrder(this); // 양방향 연관관계 설정
+    }
 }
