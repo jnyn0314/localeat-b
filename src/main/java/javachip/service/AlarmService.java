@@ -69,6 +69,83 @@ public class AlarmService {
         }
     }
 
+    //공동구매 성공 알림(판매자)
+    public void notifySellerOnGroupBuyOrderSuccess(OrderItem orderItem, GroupBuy groupBuy) {
+        Product product = orderItem.getProduct();
+        Seller seller = product.getSeller();
+
+        if (seller == null) {
+            System.out.println("❌ 판매자 정보 없음. 알림 생략.");
+            return;
+        }
+        String message = String.format("[공동 구매 주문] '%s' 상품이 주문되었습니다.",
+                product.getProductName());
+
+        try {
+            Alarm alarm = Alarm.builder()
+                    .type(NotificationType.GROUP_BUY)
+                    .message(message)
+                    .timestamp(LocalDateTime.now())
+                    .user(seller)
+                    .order(orderItem.getOrder())
+                    .isRead("N")
+                    .build();
+
+            alarmRepository.save(alarm);
+
+            OrderAlarm orderAlarm = OrderAlarm.builder()
+                    .alarm(alarm)
+                    .order(orderItem.getOrder())
+                    .product(product)
+                    .build();
+
+            orderAlarmRepository.save(orderAlarm);
+
+            fcmService.sendNotificationToUser(
+                    seller.getUserId(),
+                    "공동구매 주문 성공 알림",
+                    message
+            );
+
+            System.out.println("✅ 공동구매 주문 성공 알림 전송 완료");
+
+        } catch (Exception e) {
+            System.out.println("❌ 공동구매 주문 성공 알림 실패: " + e.getMessage());
+            throw new RuntimeException("공동구매 알림 실패", e);
+        }
+    }
+
+    //공동구매 성공알림(구매자에게)
+    public void notifyGroupBuySuccessToBuyer(Consumer consumer, GroupBuy groupBuy) {
+        String message = String.format("[공동구매 주문] '%s' 상품 공동구매가 성공적으로 완료되었습니다.",
+                groupBuy.getProduct().getProductName());
+
+        try {
+            Alarm alarm = Alarm.builder()
+                    .type(NotificationType.GROUP_BUY)
+                    .message(message)
+                    .timestamp(LocalDateTime.now())
+                    .user(consumer)
+                    .isRead("N")
+                    .build();
+
+            alarmRepository.save(alarm);
+
+            fcmService.sendNotificationToUser(
+                    consumer.getUserId(),
+                    "공동구매 주문 완료",
+                    message
+            );
+
+            System.out.println("✅ 공동구매 성공 알림 (구매자) 전송 완료");
+
+        } catch (Exception e) {
+            System.out.println("❌ 공동구매 성공 알림 (구매자) 실패: " + e.getMessage());
+            throw new RuntimeException("공동구매 성공 알림 실패", e);
+        }
+    }
+
+
     private NotificationType getTypeFromOrderItem(OrderItem item) {
         if (item.isSubscription()) return NotificationType.SUBSCRIPTION;
         if (item.isGroupBuy()) return NotificationType.GROUP_BUY;
@@ -76,12 +153,12 @@ public class AlarmService {
     }
 
     private String generateMessage(OrderItem item) {
+        String productName = item.getProduct().getProductName();
+
         if (item.isSubscription()) {
-            return "[구독 주문] 상품이 주문되었습니다.";
-        } else if (item.isGroupBuy()) {
-            return "[공동구매] 상품이 주문되었습니다.";
+            return String.format("[구독 주문] '%s' 상품이 주문되었습니다.", productName);
         } else {
-            return "[일반 주문] 상품이 주문되었습니다.";
+            return String.format("[일반 주문] '%s' 상품이 주문되었습니다.", productName);
         }
     }
 
