@@ -64,6 +64,8 @@ public class GroupBuyCartController {
                 gb.setStatus(GroupBuyStatus.SUCCESS);
             }
             groupBuyRepo.save(gb);
+
+
         }
         return ResponseEntity.ok().build();
     }
@@ -104,9 +106,12 @@ public class GroupBuyCartController {
         order.setOrderItems(orderItems);
         orderRepo.save(order);// 주문 저장
 
-        // 알림 생성 (판매자에게)
-        orderItems.forEach(orderItem -> alarmService.notifySellerOnOrder(orderItem));
-
+        // 일반 주문만 알림 전송
+        orderItems.forEach(orderItem -> {
+            if (!orderItem.isGroupBuy()) {
+                alarmService.notifySellerOnOrder(orderItem);
+            }
+        });
 
         //payCount 증감 집계: key=그룹바이ID, value=증가할 카운트
         Map<Long,Integer> increments = new HashMap<>();
@@ -119,12 +124,31 @@ public class GroupBuyCartController {
         for (var entry : increments.entrySet()) {
             GroupBuy gb = groupBuyRepo.findById(entry.getKey())
                     .orElseThrow();
+
             gb.setPayCount(gb.getPayCount() + entry.getValue());
+
             if (gb.getPayCount().equals(gb.getPartiCount())) {
                 gb.setStatus(GroupBuyStatus.SUCCESS);
+                groupBuyRepo.save(gb);
+
+                // ✅ 판매자 알림
+                for (OrderItem orderItem : orderItems) {
+                    if (orderItem.isGroupBuy() &&
+                            orderItem.getProduct().equals(gb.getProduct())) {
+                        alarmService.notifySellerOnGroupBuyOrderSuccess(orderItem, gb);
+                    }
+                }
+
+                // ✅ 구매자 알림 (성공 참여자 전체)
+                for (Participant p : gb.getParticipants()) {
+                    alarmService.notifyGroupBuySuccessToBuyer(p.getConsumer(), gb);
+                }
+
+            } else {
+                groupBuyRepo.save(gb); // 성공 아닐 땐 그냥 저장만
             }
-            groupBuyRepo.save(gb);
         }
+
 
         //cartItem 상태도 모두 COMPLETED로
         for (var ci : cartItems) {

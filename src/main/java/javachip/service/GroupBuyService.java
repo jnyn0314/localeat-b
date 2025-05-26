@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class GroupBuyService {
-
+    private final AlarmService alarmService;
     private final ProductRepository productRepository;
     private final GroupBuyRepository groupBuyRepository;
     private final ConsumerRepository consumerRepository;
@@ -202,8 +202,10 @@ public class GroupBuyService {
                     // paymentStatus 기본값(PENDING)과 addedAt/prePersist 처리됨
                     .build();
             groupBuyCartItemRepository.save(gci);
+
+            // 4) 알림 전송 (FCM + DB)
+            alarmService.notifyGroupBuyCompletion(p.getConsumer(), gb);
         }
-        // (필요 시) 고객에게 “결제 대기 중” 알림 전송
     }
 
     //내가 참여한 공동구매 현황 조회

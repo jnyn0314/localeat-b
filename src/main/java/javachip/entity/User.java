@@ -8,6 +8,7 @@ package javachip.entity;
 
 
 import jakarta.persistence.*;
+import lombok.Builder;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
