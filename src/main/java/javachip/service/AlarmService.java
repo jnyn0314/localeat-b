@@ -145,6 +145,40 @@ public class AlarmService {
         }
     }
 
+    //공동구매 실패 알람(구매자에게 보냄)
+    public void notifyGroupBuyFailureToBuyer(Consumer consumer, Product product, String reason) {
+        String message;
+
+        if ("RECRUIT_FAILED".equals(reason)) {
+            message = String.format("[공동구매 실패] '%s' 상품의 공동구매가 인원 부족으로 종료되었습니다.",
+                    product.getProductName());
+        } else if ("PAYMENT_FAILED".equals(reason)) {
+            message = String.format("[공동구매 실패] '%s' 상품의 결제가 마감 기한 내에 완료되지 않았습니다.",
+                    product.getProductName());
+        } else {
+            message = String.format("[공동구매 실패] '%s' 상품의 공동구매가 실패하였습니다.",
+                    product.getProductName());
+        }
+
+        try {
+            Alarm alarm = Alarm.builder()
+                    .type(NotificationType.GROUP_BUY)
+                    .message(message)
+                    .timestamp(LocalDateTime.now())
+                    .user(consumer)
+                    .isRead("N")
+                    .build();
+
+            alarmRepository.save(alarm);
+            fcmService.sendNotificationToUser(consumer.getUserId(), "공동구매 실패", message);
+
+            System.out.println("📛 공동구매 실패 알림 전송 완료 - " + consumer.getUserId());
+        } catch (Exception e) {
+            System.out.println("❌ 공동구매 실패 알림 전송 실패: " + e.getMessage());
+        }
+    }
+
+
 
     private NotificationType getTypeFromOrderItem(OrderItem item) {
         if (item.isSubscription()) return NotificationType.SUBSCRIPTION;
