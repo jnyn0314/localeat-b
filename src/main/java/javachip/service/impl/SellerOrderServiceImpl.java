@@ -10,6 +10,7 @@ import javachip.dto.order.seller.SellerOrderResponse;
 import javachip.entity.OrderItem;
 import javachip.entity.OrderStatus;
 import javachip.repository.OrderItemRepository;
+import javachip.service.AlarmService;
 import javachip.service.SellerOrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 public class SellerOrderServiceImpl implements SellerOrderService {
 
     private final OrderItemRepository orderItemRepository;
+    private final AlarmService alarmService;
 
     @Override
     public List<SellerOrderResponse> getOrdersBySeller(String sellerId) {
@@ -36,7 +38,17 @@ public class SellerOrderServiceImpl implements SellerOrderService {
         OrderItem item = orderItemRepository.findById(orderItemId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 주문 아이템이 존재하지 않습니다."));
 
-        item.setStatus(OrderStatus.valueOf(status));
+        OrderStatus newStatus = OrderStatus.valueOf(status);
+
+        // ✅ 동일 상태일 경우 처리 생략
+        if (item.getStatus() == newStatus) {
+            System.out.println("⚠️ 이미 같은 상태입니다. 알림 생략");
+            return;
+        }
+
+        item.setStatus(newStatus);
         orderItemRepository.save(item);
+
+        alarmService.notifyBuyerOnOrderStatusChange(item);
     }
 }

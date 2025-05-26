@@ -116,4 +116,60 @@ public class AlarmService {
             throw new RuntimeException("알림 삭제 실패", e);
         }
     }
+
+    //배송상태변경
+    public void notifyBuyerOnOrderStatusChange(OrderItem orderItem) {
+        String buyerId = orderItem.getUserId();
+
+        if (buyerId == null || buyerId.isBlank()) {
+            System.out.println("❌ 구매자 ID 없음");
+            return;
+        }
+
+        NotificationType type = NotificationType.DELIVERY;
+        String message = generateStatusMessage(orderItem);
+
+        try {
+            Consumer consumer = new Consumer();
+            consumer.setUserId(buyerId);
+
+            Alarm alarm = Alarm.builder()
+                    .type(type)
+                    .message(message)
+                    .timestamp(LocalDateTime.now())
+                    .user(consumer)  // ✅ Consumer 객체 사용
+                    .order(orderItem.getOrder())
+                    .isRead("N")
+                    .build();
+
+
+            alarmRepository.save(alarm);
+
+            fcmService.sendNotificationToUser(
+                    buyerId,
+                    "배송 상태 변경 알림",
+                    message
+            );
+
+            System.out.println("✅ 구매자 배송 상태 알림 전송 완료 - " + message);
+
+        } catch (Exception e) {
+            System.out.println("❌ 알림 처리 실패: " + e.getMessage());
+            throw new RuntimeException("배송 상태 알림 실패", e);
+        }
+    }
+
+    private String generateStatusMessage(OrderItem item) {
+        String productName = item.getProduct().getProductName();
+        OrderStatus status = item.getStatus();
+
+        return switch (status) {
+            case READY -> "[배송 준비 중] " + productName + "이(가) 곧 배송됩니다.";
+            case DELIVERING -> "[배송 중] " + productName + "이(가) 배송 중입니다.";
+            case DELIVERED -> "[배송 완료] " + productName + "이(가) 도착했습니다.";
+            default -> "[알림] " + productName + "의 배송 상태가 변경되었습니다.";
+        };
+    }
+
+
 }
