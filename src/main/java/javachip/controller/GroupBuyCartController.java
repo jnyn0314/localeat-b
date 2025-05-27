@@ -91,6 +91,9 @@ public class GroupBuyCartController {
 
         List<OrderItem> orderItems = cartItems.stream().map(ci -> {
             CartItem base = ci.getCartItem();
+            int originalPrice = base.getProduct().getPrice();
+            int discountedPrice = (int) Math.floor(originalPrice * 0.9); // 10% 할인
+
             return OrderItem.builder()
                     .quantity(base.getQuantity())
                     .status(OrderStatus.PAID)
@@ -100,7 +103,7 @@ public class GroupBuyCartController {
                     .order(order)
                     .userId(userId)
                     .isReviewed(false)
-                    .price(base.getProduct().getPrice())
+                    .price(discountedPrice) //할인된 가격
                     .build();
         }).collect(Collectors.toList());
         order.setOrderItems(orderItems);
