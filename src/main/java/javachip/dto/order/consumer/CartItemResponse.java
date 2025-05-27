@@ -1,7 +1,6 @@
 package javachip.dto.order.consumer;
 
 import javachip.entity.CartItem;
-import javachip.entity.GradeBOption;
 import javachip.entity.Product;
 import lombok.Getter;
 
@@ -15,14 +14,11 @@ public class CartItemResponse {
 
     public CartItemResponse(CartItem item) {
         Product product = item.getProduct();
-        int finalPrice = product.getProductGrade() == GradeBOption.B
-                ? (int) Math.floor(product.getPrice() * (1 - product.getGradeDiscountRate()))
-                : product.getPrice();
 
         this.cartItemId = item.getCartItemId();
         this.productId = product.getId();
         this.productName = product.getProductName();
-        this.price = finalPrice;
+        this.price = product.getPrice();
         this.quantity = item.getQuantity();
     }
 

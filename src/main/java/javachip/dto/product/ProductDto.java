@@ -26,7 +26,6 @@ public class ProductDto {
 
     @NotNull(message = "{product.price.notNull}")
     private Integer price;
-    private Float gradeDiscountRate;
     private Float subscriptionDiscountRate;
 
     @NotNull(message = "{product.isGroupBuy.notNull}")
@@ -67,7 +66,6 @@ public class ProductDto {
                 .id(p.getId())
                 .productName(p.getProductName())
                 .price(p.getPrice())
-                .gradeDiscountRate(p.getGradeDiscountRate() != null ? p.getGradeDiscountRate() : 0.1f) // 10% 고정.
                 .subscriptionDiscountRate(p.getSubscriptionDiscountRate() != null ? p.getSubscriptionDiscountRate() : 0.2f) // 20% 로 고정
                 .isGroupBuy(p.getIsGroupBuy())
                 .local(p.getLocal())
@@ -101,7 +99,6 @@ public class ProductDto {
                 .id(id)
                 .productName(productName)
                 .price(price)
-                .gradeDiscountRate(gradeDiscountRate)
                 .subscriptionDiscountRate(subscriptionDiscountRate)
                 .isGroupBuy(isGroupBuy)
                 .local(local)

@@ -33,8 +33,6 @@ public class Product {
     private Integer price;
 
     @Transient
-    private Float gradeDiscountRate = 0.1f;
-    @Transient
     private Float subscriptionDiscountRate = 0.2f;
     @Transient
     private Integer deliveryFee = 3000;

@@ -9,7 +9,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "GENERALCARTITEM") // 언더스코어 없이 테이블명 일치
+@Table(name = "GENERALCARTITEM")
 public class GeneralCartItem {
 
     @Id
