@@ -4,6 +4,7 @@ import javachip.dto.inquiry.InquiryRequest;
 import javachip.dto.inquiry.InquiryResponse;
 import javachip.entity.*;
 import javachip.repository.*;
+import javachip.service.AlarmService;
 import javachip.service.InquiryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ public class InquiryServiceImpl implements InquiryService {
     private final InquiryRepository inquiryRepository;
     private final ProductRepository productRepository;
     private final ConsumerRepository consumerRepository;
+    private final AlarmService alarmService;
 
     @Override
     public InquiryResponse createInquiry(InquiryRequest request) {
@@ -32,6 +34,10 @@ public class InquiryServiceImpl implements InquiryService {
 
         Inquiry inquiry = request.toEntity(product, consumer);
         Inquiry saved = inquiryRepository.save(inquiry);
+
+        // 판매자에게 문의 등록 알림 전송
+        alarmService.notifySellerOnInquiry(saved);
+
         return InquiryResponse.fromEntity(saved);
     }
 
@@ -55,6 +61,10 @@ public class InquiryServiceImpl implements InquiryService {
 
         inquiry.setAnswer(answer);
         inquiry.setAnsweredAt(java.time.LocalDateTime.now());
+
+        // 구매자에게 답변 등록 알림 전송
+        alarmService.notifyBuyerOnInquiryAnswer(inquiry);
+
         return InquiryResponse.fromEntity(inquiry);
     }
 
@@ -73,4 +83,6 @@ public class InquiryServiceImpl implements InquiryService {
 
         inquiryRepository.delete(inquiry);
     }
+
+
 }

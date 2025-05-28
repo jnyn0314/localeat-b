@@ -312,4 +312,84 @@ public class AlarmService {
             throw new RuntimeException("공동구매 완료 알림 처리 실패", e);
         }
     }
+
+    /**
+     * 문의 등록 시 판매자에게 알림을 전송합니다.
+     */
+    public void notifySellerOnInquiry(Inquiry inquiry) {
+        Product product = inquiry.getProduct();
+        Seller seller = product.getSeller();
+
+        if (seller == null) {
+            System.out.println("❌ 판매자 정보 없음. 알림 생략.");
+            return;
+        }
+
+        String message = String.format("[문의 등록] '%s' 상품에 새로운 문의가 등록되었습니다.",
+                product.getProductName());
+
+        try {
+            Alarm alarm = Alarm.builder()
+                    .type(NotificationType.INQUIRY)
+                    .message(message)
+                    .timestamp(LocalDateTime.now())
+                    .user(seller)
+                    .isRead("N")
+                    .build();
+
+            alarmRepository.save(alarm);
+
+            fcmService.sendNotificationToUser(
+                    seller.getUserId(),
+                    "새로운 문의 알림",
+                    message
+            );
+
+            System.out.println("✅ 문의 등록 알림 전송 완료 - " + message);
+
+        } catch (Exception e) {
+            System.out.println("❌ 문의 등록 알림 실패: " + e.getMessage());
+            throw new RuntimeException("문의 등록 알림 실패", e);
+        }
+    }
+
+    /**
+     * 문의 답변 등록 시 구매자에게 알림을 전송합니다.
+     */
+    public void notifyBuyerOnInquiryAnswer(Inquiry inquiry) {
+        Consumer consumer = inquiry.getConsumer();
+        Product product = inquiry.getProduct();
+
+        if (consumer == null) {
+            System.out.println("❌ 구매자 정보 없음. 알림 생략.");
+            return;
+        }
+
+        String message = String.format("[문의 답변] '%s' 상품의 문의에 답변이 등록되었습니다.",
+                product.getProductName());
+
+        try {
+            Alarm alarm = Alarm.builder()
+                    .type(NotificationType.INQUIRY)
+                    .message(message)
+                    .timestamp(LocalDateTime.now())
+                    .user(consumer)
+                    .isRead("N")
+                    .build();
+
+            alarmRepository.save(alarm);
+
+            fcmService.sendNotificationToUser(
+                    consumer.getUserId(),
+                    "문의 답변 알림",
+                    message
+            );
+
+            System.out.println("✅ 문의 답변 알림 전송 완료 - " + message);
+
+        } catch (Exception e) {
+            System.out.println("❌ 문의 답변 알림 실패: " + e.getMessage());
+            throw new RuntimeException("문의 답변 알림 실패", e);
+        }
+    }
 }
