@@ -35,6 +35,7 @@ public class Cart {
     private Long id;
 
     @OneToOne(mappedBy = "cart", fetch = FetchType.LAZY)
+    @JoinColumn(name = "CONSUMER_ID")
     private Consumer consumer;
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)

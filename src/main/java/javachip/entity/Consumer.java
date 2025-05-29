@@ -28,4 +28,8 @@ public class Consumer extends User {
     public void setCart(Cart cart) {
         this.cart = cart;
     }
+    public String getId() {
+        return super.getUserId(); // User 클래스에서 상속된 id
+    }
+
 }
