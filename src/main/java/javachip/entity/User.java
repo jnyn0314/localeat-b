@@ -8,6 +8,8 @@ package javachip.entity;
 
 
 import jakarta.persistence.*;
+
+import lombok.Getter;
 import lombok.Builder;
 
 @Entity
@@ -94,13 +96,5 @@ public abstract class User {
 
     public void setRole(UserRole role) {
         this.role = role;
-    }
-
-    public String getNotifications() {
-        return notifications;
-    }
-
-    public void setNotifications(String notifications) {
-        this.notifications = notifications;
     }
 }

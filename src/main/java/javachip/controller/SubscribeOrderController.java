@@ -31,8 +31,6 @@ public class SubscribeOrderController {
             @RequestHeader("userId") String userId,
             @RequestBody SubscribeOrderRequest request
     ) {
-        System.out.println("== userId: " + userId);
-        System.out.println("== request: " + request);
         subscribeOrderService.createSubscribeOrder(request, userId);
         return ResponseEntity.ok().build();
     }
