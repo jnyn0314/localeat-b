@@ -39,7 +39,6 @@ public class OrdersServiceImpl implements OrdersService {
                 .build();
         orderRepository.save(order);
 
-        // 프론트 최종 가격 그대로 저장
         OrderItem orderItem = request.toOrderItem(product, order);
         orderItemRepository.save(orderItem);
 

@@ -8,10 +8,12 @@
 package javachip.service.impl;
 
 import javachip.dto.subscription.SubscribeOrderRequest;
+import javachip.entity.OrderItem;
 import javachip.entity.Orders;
 import javachip.entity.Product;
 import javachip.repository.OrderRepository;
 import javachip.repository.ProductRepository;
+import javachip.service.AlarmService;
 import javachip.service.SubscribeOrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,7 @@ public class SubscribeOrderServiceImpl implements SubscribeOrderService {
 
     private final ProductRepository productRepository;
     private final OrderRepository orderRepository;
+    private final AlarmService alarmService;
 
     /**
      * 구독 주문 생성
@@ -53,9 +56,14 @@ public class SubscribeOrderServiceImpl implements SubscribeOrderService {
                 .build();
 
         // 3. 주문 항목 추가
-        order.addOrderItem(request.toOrderItem(product, order));
+        //order.addOrderItem(request.toOrderItem(product, order));
+        OrderItem orderItem = request.toOrderItem(product, order);
+        order.addOrderItem(orderItem);
+
 
         // 4. 주문 저장
         orderRepository.save(order);
+
+        alarmService.notifySellerOnOrder(orderItem);
     }
 }

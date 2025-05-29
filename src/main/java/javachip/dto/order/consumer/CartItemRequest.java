@@ -18,7 +18,6 @@ public class CartItemRequest {
 
     private Long productId;
     private int quantity;
-    private int price;  // 단가 (할인 적용된 최종 가격)
 
     /**
      * @param cart 장바구니 엔티티

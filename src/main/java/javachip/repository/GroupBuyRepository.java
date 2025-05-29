@@ -14,5 +14,6 @@ public interface GroupBuyRepository extends JpaRepository<GroupBuy, Long> {
             GroupBuyStatus status,
             LocalDateTime now
     );
+    List<GroupBuy> findAllByStatusAndTimeBefore(GroupBuyStatus status, LocalDateTime time);
 
 }

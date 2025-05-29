@@ -20,7 +20,7 @@ public interface SellerOrderService {
     /**
      * 특정 주문 아이템의 상태를 업데이트
      * @param orderItemId 상태를 변경할 주문 아이템 ID
-     * @param status 변경할 상태 값 (문자열로 전달됨, 예: "SHIPPING")
+     * @param status 변경할 상태 값 (문자열로 전달됨)
      */
     void updateOrderStatus(Long orderItemId, String status);
 }
