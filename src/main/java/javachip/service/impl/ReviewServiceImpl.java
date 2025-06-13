@@ -83,14 +83,21 @@ public class ReviewServiceImpl implements ReviewService {
         List<ReviewDto> dtos = list.stream()
                 .map(ReviewDto::fromEntity)
                 .collect(Collectors.toList());
-        // 본인 리뷰 맨 위로
+
+        // 비로그인 사용자는 정렬 없이 전체 리뷰 반환
+        if (currentUserId == null || currentUserId.isBlank()) {
+            return dtos;
+        }
+
+        // 로그인 사용자: 본인 리뷰만 맨 위로 올리기 (여러 개면 첫 번째만)
         dtos.stream()
-                .filter(d -> d.getUserId().equals(currentUserId))
+                .filter(d -> currentUserId.equals(d.getUserId()))
                 .findFirst()
                 .ifPresent(me -> {
                     dtos.remove(me);
                     dtos.add(0, me);
                 });
+
         return dtos;
     }
 

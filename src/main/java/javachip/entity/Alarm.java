@@ -23,7 +23,7 @@ public class Alarm {
     @Column(nullable = false)
     private NotificationType type;
 
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, length = 200)
     private String message;
 
     @Column(nullable = false)

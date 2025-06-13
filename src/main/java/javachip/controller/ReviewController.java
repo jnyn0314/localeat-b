@@ -54,7 +54,7 @@ public class ReviewController {
     public ResponseEntity<List<ReviewDto>> getReviewsByProduct(
             @PathVariable Long productId,
             @RequestParam(defaultValue = "latest") String sortBy,
-            @RequestParam String currentUserId
+            @RequestParam(required = false) String currentUserId
     ) {
         List<ReviewDto> reviews = reviewService.getReviewsByProduct(
                 productId, sortBy, currentUserId
