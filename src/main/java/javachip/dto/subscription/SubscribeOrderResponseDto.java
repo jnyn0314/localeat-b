@@ -13,6 +13,7 @@ import lombok.Getter;
 @Getter
 @Builder
 public class SubscribeOrderResponseDto {
+    private Long productId; //상품id 추가
     private String productName;     // 상품명
     private String startDate;       // 주문 생성일 (구독 시작일)
     private String deliveryCycleType;    // 배송 주기 유형 (ex. WEEKLY, MONTHLY)

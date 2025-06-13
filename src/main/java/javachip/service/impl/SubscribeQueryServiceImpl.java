@@ -33,6 +33,7 @@ public class SubscribeQueryServiceImpl implements SubscribeQueryService {
         return items.stream()
                 .map(item -> SubscribeOrderResponseDto.builder()
                         .productName(item.getProduct().getProductName())
+                        .productId(item.getProduct().getId()) // productId 추가
                         .startDate(item.getOrder().getCreatedAt().toLocalDate().toString())
                         .deliveryCycleType(item.getDeliveryCycleType())
                         .deliveryCycleValue(item.getDeliveryCycleValue())
