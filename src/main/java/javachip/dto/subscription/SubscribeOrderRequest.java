@@ -7,10 +7,7 @@
 
 package javachip.dto.subscription;
 
-import javachip.entity.OrderItem;
-import javachip.entity.OrderStatus;
-import javachip.entity.Orders;
-import javachip.entity.Product;
+import javachip.entity.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,6 +18,22 @@ public class SubscribeOrderRequest {
     private int quantity;
     private DeliveryCycleRequest deliveryCycle; // 배송 주기 정보
     private int deliveryPeriodInMonths;  // 총 구독 기간 (개월 단위)
+
+    // 추가: enum 변환용 (선택)
+    public DeliveryCycle getDeliveryCycleTypeEnum() {
+        return DeliveryCycle.valueOf(deliveryCycle.getCycleType() + "_" + deliveryCycle.getCycleValue());
+    }
+
+    // 추가: getter proxy
+    public String getDeliveryCycleType() {
+        return deliveryCycle.getCycleType();
+    }
+
+    public int getDeliveryCycleValue() {
+        return deliveryCycle.getCycleValue();
+    }
+
+
 
     /**
      * OrderItem 엔티티로 변환하는 메서드

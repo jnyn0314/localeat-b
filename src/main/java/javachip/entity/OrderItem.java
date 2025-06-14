@@ -65,4 +65,7 @@ public class OrderItem {
 
     @Column(name = "delivery_period_months")
     private Integer deliveryPeriodInMonths;
+
+    @OneToOne(mappedBy = "orderItem")
+    private Subscription subscription;
 }

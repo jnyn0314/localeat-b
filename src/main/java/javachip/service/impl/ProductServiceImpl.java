@@ -22,6 +22,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -140,11 +141,21 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductDto> getLatestProducts() {
-        Pageable get8 = PageRequest.of(0, 8, Sort.by("createdAt").descending());
-        return repository.findAll(get8).stream()
+    public Map<String, Object> getLatestProducts(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        var pageResult = repository.findAll(pageable);
+        
+        List<ProductDto> products = pageResult.getContent().stream()
                 .map(ProductDto::fromEntity)
                 .toList();
+
+        return Map.of(
+            "content", products,
+            "totalElements", pageResult.getTotalElements(),
+            "totalPages", pageResult.getTotalPages(),
+            "currentPage", pageResult.getNumber(),
+            "size", pageResult.getSize()
+        );
     }
 
     @Override
@@ -199,5 +210,12 @@ public class ProductServiceImpl implements ProductService {
                 .toList();
     }
 
+    @Override
+    public List<ProductDto> getProductsBySeller(String sellerId) {
+        return repository.findBySeller_UserId(sellerId)
+            .stream()
+            .map(ProductDto::fromEntity)
+            .toList();
+    }
 
 }

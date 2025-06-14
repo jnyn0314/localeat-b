@@ -124,8 +124,11 @@ public class ProductController {
     }
 
     @GetMapping("/latest")
-    public ResponseEntity<List<ProductDto>> getLatestProducts() {
-        return ResponseEntity.ok(productService.getLatestProducts());
+    public ResponseEntity<Map<String, Object>> getLatestProducts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "8") int size
+    ) {
+        return ResponseEntity.ok(productService.getLatestProducts(page, size));
     }
 
     // 검색과 필터
@@ -136,5 +139,10 @@ public class ProductController {
     ) {
         List<ProductDto> result = productService.searchProducts(keyword, tag);
         return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/seller-list")
+    public ResponseEntity<List<ProductDto>> getProductsBySeller(@RequestParam String sellerId) {
+        return ResponseEntity.ok(productService.getProductsBySeller(sellerId));
     }
 }

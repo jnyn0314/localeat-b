@@ -46,4 +46,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     // 공동구매
     List<Product> findByProductNameContainingIgnoreCaseAndIsGroupBuy(String keyword, boolean isGroupBuy);
+
+    List<Product> findBySeller_UserId(String sellerId);
 }
