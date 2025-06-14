@@ -6,8 +6,8 @@
 */
 package javachip.dto.wish;
 
-import javachip.entity.Product;
-import javachip.entity.Wish;
+import javachip.entity.product.Product;
+import javachip.entity.wish.Wish;
 import lombok.*;
 
 @Getter

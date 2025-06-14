@@ -1,7 +1,7 @@
 package javachip.dto.inquiry;
 
-import javachip.entity.Inquiry;
-import javachip.entity.InquiryCategory;
+import javachip.entity.inquiry.Inquiry;
+import javachip.entity.inquiry.InquiryCategory;
 import lombok.*;
 
 import java.time.LocalDateTime;

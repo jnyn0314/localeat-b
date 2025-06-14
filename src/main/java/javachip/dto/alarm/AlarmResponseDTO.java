@@ -1,7 +1,7 @@
 package javachip.dto.alarm;
 
-import javachip.entity.Alarm;
-import javachip.entity.NotificationType;
+import javachip.entity.alarm.Alarm;
+import javachip.entity.alarm.NotificationType;
 import lombok.Getter;
 import lombok.Setter;
 

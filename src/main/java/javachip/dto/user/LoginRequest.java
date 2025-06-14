@@ -1,7 +1,7 @@
 package javachip.dto.user;
 
-import javachip.entity.LocalType;
-import javachip.entity.UserRole;
+import javachip.entity.product.LocalType;
+import javachip.entity.user.UserRole;
 
 public class LoginRequest {
     private String userId;

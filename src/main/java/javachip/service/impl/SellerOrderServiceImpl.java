@@ -7,11 +7,11 @@
 package javachip.service.impl;
 
 import javachip.dto.order.seller.SellerOrderResponse;
-import javachip.entity.OrderItem;
-import javachip.entity.OrderStatus;
-import javachip.repository.OrderItemRepository;
-import javachip.service.AlarmService;
-import javachip.service.SellerOrderService;
+import javachip.entity.order.OrderItem;
+import javachip.entity.order.OrderStatus;
+import javachip.repository.order.OrderItemRepository;
+import javachip.service.alarm.AlarmService;
+import javachip.service.order.SellerOrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -1,7 +1,7 @@
 package javachip.dto.order.consumer;
 
-import javachip.entity.CartItem;
-import javachip.entity.Product;
+import javachip.entity.cart.CartItem;
+import javachip.entity.product.Product;
 import lombok.Getter;
 
 @Getter

@@ -1,6 +1,6 @@
 package javachip.dto.user;
 
-import javachip.entity.LocalType;
+import javachip.entity.product.LocalType;
 
 public class ConsumerDto {
 

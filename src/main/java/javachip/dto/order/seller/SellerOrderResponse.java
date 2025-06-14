@@ -7,7 +7,7 @@
 */
 package javachip.dto.order.seller;
 
-import javachip.entity.OrderItem;
+import javachip.entity.order.OrderItem;
 import lombok.*;
 
 import java.time.LocalDateTime;

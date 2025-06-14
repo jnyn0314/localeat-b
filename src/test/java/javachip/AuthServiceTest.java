@@ -1,9 +1,9 @@
 package javachip;
 
 import javachip.dto.user.SignUpRequest;
-import javachip.service.AuthServiceConsumer;
-import javachip.entity.Consumer;
-import javachip.repository.ConsumerRepository;
+import javachip.service.user.AuthServiceConsumer;
+import javachip.entity.cart.Consumer;
+import javachip.repository.user.ConsumerRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;

@@ -2,10 +2,14 @@ package javachip.service.impl;
 
 import javachip.dto.inquiry.InquiryRequest;
 import javachip.dto.inquiry.InquiryResponse;
-import javachip.entity.*;
-import javachip.repository.*;
-import javachip.service.AlarmService;
-import javachip.service.InquiryService;
+import javachip.entity.cart.Consumer;
+import javachip.entity.inquiry.Inquiry;
+import javachip.entity.product.Product;
+import javachip.repository.inquiry.InquiryRepository;
+import javachip.repository.product.ProductRepository;
+import javachip.repository.user.ConsumerRepository;
+import javachip.service.alarm.AlarmService;
+import javachip.service.inquiry.InquiryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

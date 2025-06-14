@@ -5,7 +5,7 @@
 작성일 : 2025.05.29.
 */
 package javachip.dto.subscription;
-import javachip.entity.SubscribeCartItem;
+import javachip.entity.cart.SubscribeCartItem;
 import lombok.Getter;
 
 @Getter

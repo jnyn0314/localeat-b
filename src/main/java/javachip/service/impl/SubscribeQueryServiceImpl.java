@@ -8,10 +8,10 @@
 package javachip.service.impl;
 
 import javachip.dto.subscription.SubscribeOrderResponseDto;
-import javachip.entity.OrderItem;
-import javachip.entity.Subscription;
-import javachip.repository.OrderItemRepository;
-import javachip.service.SubscribeQueryService;
+import javachip.entity.order.OrderItem;
+import javachip.entity.subscribe.Subscription;
+import javachip.repository.order.OrderItemRepository;
+import javachip.service.subscribe.SubscribeQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

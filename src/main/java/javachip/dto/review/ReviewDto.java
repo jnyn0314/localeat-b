@@ -1,6 +1,10 @@
 package javachip.dto.review;
 
-import javachip.entity.*;
+import javachip.entity.order.OrderItem;
+import javachip.entity.product.Product;
+import javachip.entity.review.Review;
+import javachip.entity.review.ReviewImage;
+import javachip.entity.user.User;
 import lombok.*;
 import java.time.LocalDateTime;
 import java.util.Collections;
