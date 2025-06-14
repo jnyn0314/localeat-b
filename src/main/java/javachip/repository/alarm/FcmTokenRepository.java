@@ -7,10 +7,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface FcmTokenRepository extends JpaRepository<FcmToken, String> {
-    // 또는 토큰 문자열만 반환하고 싶다면:
-    @Query("SELECT t.token FROM FcmToken t WHERE t.userId = :userId")
-    String findTokenByUserId(String userId);
-
     // 수정: FcmToken 엔티티를 반환하도록 변경
     FcmToken findByUserId(String userId);
 

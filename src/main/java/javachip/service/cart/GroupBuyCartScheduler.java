@@ -45,8 +45,6 @@ public class GroupBuyCartScheduler {
             }
         }
 
-
-        // 🔔 조건 ①: 모집 실패 (RECRUITING + 마감 시간 경과)
         List<GroupBuy> expiredRecruiting = gbRepo.findAllByStatusAndTimeBefore(GroupBuyStatus.RECRUITING, now);
         for (GroupBuy gb : expiredRecruiting) {
             gb.setStatus(GroupBuyStatus.FAILED);

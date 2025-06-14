@@ -74,9 +74,6 @@ public class SubscribeOrderServiceImpl implements SubscribeOrderService {
         orderRepository.save(order);
         entityManager.flush(); // ← 강제 flush로 ID 생성
 
-        System.out.println("생성된 OrderItem ID: " + orderItem.getId());
-        System.out.println("생성된 OrderItem ID: " + orderItem.getId());
-
         // 5. Subscription 엔티티 생성 및 저장
         Subscription subscription = Subscription.builder()
                 .orderItem(orderItem)
@@ -100,12 +97,7 @@ public class SubscribeOrderServiceImpl implements SubscribeOrderService {
     public void updateSubscription(Long id, SubscribeUpdateRequest request) {
         Subscription subscription = subscriptionRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 구독 ID입니다: " + id));
-        System.out.println("🔄 [Update] 요청 ID = " + id);
-        System.out.println("🔄 [Update] request = " + request.getDeliveryCycleType() + ", " + request.getDeliveryCycleValue());
-        System.out.println("🔄 [Update] before = " + subscription.getDeliveryCycle() + ", " + subscription.getDeliveryCycleValue());
-
         subscription.setQuantity(request.getQuantity());
-        // Construct the enum value by combining type and value
         try {
             String enumValue = request.getDeliveryCycleType() + "_" + request.getDeliveryCycleValue();
             subscription.setDeliveryCycle(DeliveryCycle.valueOf(enumValue));
@@ -113,8 +105,6 @@ public class SubscribeOrderServiceImpl implements SubscribeOrderService {
             throw new RuntimeException("올바르지 않은 배송 주기 값입니다: " + request.getDeliveryCycleType() + "_" + request.getDeliveryCycleValue());
         }
         subscription.setDeliveryCycleValue(request.getDeliveryCycleValue());
-        System.out.println("🔄 [Update] after = " + subscription.getDeliveryCycle() + ", " + subscription.getDeliveryCycleValue());
-
         subscriptionRepository.save(subscription); // 또는 @Transactional이면 생략 가능
 
         entityManager.flush();
@@ -127,7 +117,7 @@ public class SubscribeOrderServiceImpl implements SubscribeOrderService {
         return subscriptionRepository.findByUserId(userId)
                 .stream()
                 .map(subscription -> {
-                    System.out.println("🔍 응답 매핑 중: id=" + subscription.getId()
+                    System.out.println("응답 매핑 중: id=" + subscription.getId()
                             + ", quantity=" + subscription.getQuantity()
                             + ", cycle=" + subscription.getDeliveryCycle());
 

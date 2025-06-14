@@ -15,7 +15,7 @@ public class FcmService {
     @Transactional
     public void saveOrUpdateToken(String userId, String token) {
         if (token == null || token.isBlank()) {
-            System.out.println("❌ 유효하지 않은 토큰입니다. userId=" + userId);
+            System.out.println("유효하지 않은 토큰입니다. userId=" + userId);
             return;
         }
 
@@ -32,9 +32,7 @@ public class FcmService {
             fcmToken.setToken(token);
             tokenRepository.save(fcmToken);
 
-            System.out.println("✅ FCM 토큰 저장/업데이트 성공: userId=" + userId);
         } catch (Exception e) {
-            System.out.println("❌ FCM 토큰 저장 실패: " + e.getMessage());
             throw new RuntimeException("FCM 토큰 저장 실패", e);
         }
     }
@@ -44,7 +42,6 @@ public class FcmService {
         // 수정: FcmToken 엔티티에서 토큰 값을 가져옴
         FcmToken fcmToken = tokenRepository.findByUserId(userId);
         if (fcmToken == null || fcmToken.getToken() == null || fcmToken.getToken().isBlank()) {
-            System.out.println("❌ FCM 토큰이 없습니다. userId=" + userId);
             return;
         }
 
@@ -58,15 +55,12 @@ public class FcmService {
 
         try {
             String response = FirebaseMessaging.getInstance().send(fcmMessage);
-            System.out.println("✅ FCM 푸시 성공: " + response);
         } catch (FirebaseMessagingException e) {
             // 토큰이 유효하지 않은 경우 삭제
             if (e.getMessagingErrorCode() == MessagingErrorCode.INVALID_ARGUMENT ||
                     e.getMessagingErrorCode() == MessagingErrorCode.UNREGISTERED) {
-                System.out.println("❌ 유효하지 않은 토큰 삭제: userId=" + userId);
                 tokenRepository.deleteByUserId(userId);
             }
-            System.out.println("❌ FCM 푸시 실패: " + e.getMessage());
             throw new RuntimeException("FCM 푸시 알림 전송 실패", e);
         }
     }

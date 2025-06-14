@@ -28,16 +28,9 @@ public class SubscribeOrderRequest {
         return DeliveryCycle.valueOf(deliveryCycle.getCycleType() + "_" + deliveryCycle.getCycleValue());
     }
 
-    // 추가: getter proxy
-    public String getDeliveryCycleType() {
-        return deliveryCycle.getCycleType();
-    }
-
     public int getDeliveryCycleValue() {
         return deliveryCycle.getCycleValue();
     }
-
-
 
     /**
      * OrderItem 엔티티로 변환하는 메서드
@@ -46,7 +39,6 @@ public class SubscribeOrderRequest {
      * @return OrderItem 객체
      */
     public OrderItem toOrderItem(Product product, Orders order) {
-        System.out.println("Order의 userId: " + order.getUserId());
         return OrderItem.builder()
                 .order(order)
                 .product(product)

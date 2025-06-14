@@ -20,12 +20,6 @@ import java.util.Optional;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
-    @EntityGraph(attributePaths = "productImages")
-    Optional<Product> findWithImagesById(Long id);
-
-    @Query("SELECT p FROM Product p ORDER BY p.createdAt DESC")
-    List<Product> findTop8ByOrderByCreatedAtDesc(Pageable pageable);
-
     // 키워드 검색
     List<Product> findByProductNameContainingIgnoreCase(String keyword);
 
