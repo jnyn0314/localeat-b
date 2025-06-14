@@ -14,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
 @RestController
 @RequestMapping("/api/subscribe-order")
 @RequiredArgsConstructor
@@ -31,7 +30,6 @@ public class SubscribeOrderController {
             @RequestHeader("userId") String userId,
             @RequestBody SubscribeOrderRequest request
     ) {
-        System.out.println("✅ POST /api/subscribe-order 도달함");
         subscribeOrderService.createSubscribeOrder(request, userId);
         return ResponseEntity.ok().build();
     }
@@ -44,7 +42,6 @@ public class SubscribeOrderController {
             @PathVariable Long id,
             @RequestBody SubscribeUpdateRequest request
     ) {
-        System.out.println("🚀 Controller: updateSubscription 도착");
         subscribeOrderService.updateSubscription(id, request);
         return ResponseEntity.ok().build();
     }

@@ -23,7 +23,7 @@ public class SubscribeOrderRequest {
     private DeliveryCycleRequest deliveryCycle; // 배송 주기 정보
     private int deliveryPeriodInMonths;  // 총 구독 기간 (개월 단위)
 
-    // 추가: enum 변환용 (선택)
+    // enum 변환용
     public DeliveryCycle getDeliveryCycleTypeEnum() {
         return DeliveryCycle.valueOf(deliveryCycle.getCycleType() + "_" + deliveryCycle.getCycleValue());
     }
@@ -48,7 +48,7 @@ public class SubscribeOrderRequest {
                 .deliveryCycleValue(deliveryCycle.getCycleValue())
                 .deliveryPeriodInMonths(deliveryPeriodInMonths)
                 .status(OrderStatus.PAID)
-                .isGroupBuy(false)                 // 반드시 명시
+                .isGroupBuy(false)                 // 반드시.
                 .isReviewed(false)                // 기본 false
                 .userId(order.getUserId())        // null 아님 주의
                 .price(product.getPrice())
