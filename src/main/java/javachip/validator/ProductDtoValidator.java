@@ -1,4 +1,4 @@
-package javachip.dto.validator;
+package javachip.validator;
 
 import javachip.dto.product.ProductDto;
 import org.springframework.stereotype.Component;
@@ -19,5 +19,4 @@ public class ProductDtoValidator implements Validator {
             errors.rejectValue("maxParticipants", "product.maxParticipants.requiredIfGroupBuy");
         }
     }
-
 }
