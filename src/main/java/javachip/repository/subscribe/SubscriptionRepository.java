@@ -8,5 +8,4 @@ import java.util.Optional;
 
 public interface SubscriptionRepository extends JpaRepository<Subscription, Long> {
     List<Subscription> findByUserId(String userId);
-    Optional<Subscription> findByOrderItemId(Long orderItemId);
 }

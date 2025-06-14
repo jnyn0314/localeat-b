@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface GroupBuyRepository extends JpaRepository<GroupBuy, Long> {
-    List<GroupBuy> findByProduct_IdAndStatus(Long productId, GroupBuyStatus status);
     List<GroupBuy> findByProduct_IdAndStatusAndTimeAfter(
             Long productId,
             GroupBuyStatus status,

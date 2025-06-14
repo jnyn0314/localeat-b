@@ -28,15 +28,12 @@ public class AlarmService {
     private final FcmService fcmService;
 
     public void notifySellerOnOrder(OrderItem orderItem) {
-        System.out.println("💡 알림 생성 시작 for OrderItem ID: " + orderItem.getId());
         Product product = orderItem.getProduct();
         if (product == null) {
-            System.out.println("❌ 상품이 없습니다.");
             return;
         }
         Seller seller = product.getSeller();
         if (seller == null) {
-            System.out.println("❌ 판매자가 없습니다.");
             return;
         }
 
@@ -68,12 +65,7 @@ public class AlarmService {
                     "새로운 주문 알림",
                     message
             );
-
-            System.out.println("✅ 알림 생성, DB 저장, FCM 전송 완료 - " + alarm.getMessage());
-
-
         } catch (Exception e) {
-            System.out.println("❌ 알림 저장 실패: " + e.getMessage());
             throw new RuntimeException("알림 처리 실패", e);
         }
     }
@@ -84,7 +76,6 @@ public class AlarmService {
         Seller seller = product.getSeller();
 
         if (seller == null) {
-            System.out.println("❌ 판매자 정보 없음. 알림 생략.");
             return;
         }
         String message = String.format("[공동 구매 주문] '%s' 상품이 주문되었습니다.",
@@ -116,10 +107,7 @@ public class AlarmService {
                     message
             );
 
-            System.out.println("✅ 공동구매 주문 성공 알림 전송 완료");
-
         } catch (Exception e) {
-            System.out.println("❌ 공동구매 주문 성공 알림 실패: " + e.getMessage());
             throw new RuntimeException("공동구매 알림 실패", e);
         }
     }
@@ -146,10 +134,7 @@ public class AlarmService {
                     message
             );
 
-            System.out.println("✅ 공동구매 성공 알림 (구매자) 전송 완료");
-
         } catch (Exception e) {
-            System.out.println("❌ 공동구매 성공 알림 (구매자) 실패: " + e.getMessage());
             throw new RuntimeException("공동구매 성공 알림 실패", e);
         }
     }
@@ -181,9 +166,8 @@ public class AlarmService {
             alarmRepository.save(alarm);
             fcmService.sendNotificationToUser(consumer.getUserId(), "공동구매 실패", message);
 
-            System.out.println("📛 공동구매 실패 알림 전송 완료 - " + consumer.getUserId());
         } catch (Exception e) {
-            System.out.println("❌ 공동구매 실패 알림 전송 실패: " + e.getMessage());
+            System.out.println("공동구매 실패 알림 전송 실패: " + e.getMessage());
         }
     }
 
