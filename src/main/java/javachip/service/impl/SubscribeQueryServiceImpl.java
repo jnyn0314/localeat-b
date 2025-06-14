@@ -38,16 +38,15 @@ public class SubscribeQueryServiceImpl implements SubscribeQueryService {
                     return SubscribeOrderResponseDto.builder()
                             .id(sub.getId())
                             .productName(item.getProduct().getProductName())
+                            .productId(item.getProduct().getId())
                             .startDate(item.getOrder().getCreatedAt().toLocalDate().toString())
                             .deliveryCycleType(item.getDeliveryCycleType())
                             .deliveryCycleValue(item.getDeliveryCycleValue())
                             .deliveryPeriodInMonths(item.getDeliveryPeriodInMonths())
-                            .quantity(sub.getQuantity()) // 여기
+                            .quantity(sub.getQuantity())
                             .orderItemId(item.getId())
                             .build();
                 })
                 .collect(Collectors.toList());
     }
-
-
 }

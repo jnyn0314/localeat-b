@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 @Builder
 public class SellerOrderResponse {
     private Long orderItemId;
+    private Long productId;
     private String productName;
     private boolean groupbuy;
     private boolean subscribe;
@@ -31,6 +32,7 @@ public class SellerOrderResponse {
     public static SellerOrderResponse fromEntity(OrderItem orderItem) {
         return SellerOrderResponse.builder()
                 .orderItemId(orderItem.getId())
+                .productId(orderItem.getProduct().getId())
                 .productName(orderItem.getProduct().getProductName())
                 .groupbuy(orderItem.isGroupBuy())
                 .subscribe(orderItem.isSubscription())
