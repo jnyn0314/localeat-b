@@ -1,6 +1,10 @@
 package javachip.dto.order.consumer;
 
-import javachip.entity.*;
+import javachip.entity.cart.CartItem;
+import javachip.entity.order.OrderItem;
+import javachip.entity.order.OrderStatus;
+import javachip.entity.order.Orders;
+import javachip.entity.product.Product;
 import lombok.Getter;
 import lombok.Setter;
 

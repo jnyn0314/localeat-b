@@ -1,6 +1,6 @@
 package javachip.dto.groupbuy;
 
-import javachip.entity.GroupBuyStatus;
+import javachip.entity.groupbuy.GroupBuyStatus;
 import lombok.Builder;
 import lombok.Getter;
 import java.time.LocalDate;

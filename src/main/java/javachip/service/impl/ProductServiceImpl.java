@@ -9,12 +9,17 @@ package javachip.service.impl;
 
 import jakarta.transaction.Transactional;
 import javachip.dto.product.ProductDto;
-import javachip.entity.*;
-import javachip.repository.ProductImageRepository;
-import javachip.repository.ProductRepository;
-import javachip.repository.UserRepository;
-import javachip.repository.WishRepository;
-import javachip.service.ProductService;
+import javachip.entity.product.GradeBOption;
+import javachip.entity.product.LocalType;
+import javachip.entity.product.Product;
+import javachip.entity.user.Seller;
+import javachip.entity.user.User;
+import javachip.entity.wish.Wish;
+import javachip.repository.product.ProductImageRepository;
+import javachip.repository.product.ProductRepository;
+import javachip.repository.user.UserRepository;
+import javachip.repository.wish.WishRepository;
+import javachip.service.product.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -24,7 +29,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

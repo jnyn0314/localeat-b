@@ -7,13 +7,13 @@
 package javachip.service.impl;
 
 import javachip.dto.product.ProductDto;
-import javachip.entity.Product;
-import javachip.entity.User;
-import javachip.entity.Wish;
-import javachip.repository.ProductRepository;
-import javachip.repository.UserRepository;
-import javachip.repository.WishRepository;
-import javachip.service.WishService;
+import javachip.entity.product.Product;
+import javachip.entity.user.User;
+import javachip.entity.wish.Wish;
+import javachip.repository.product.ProductRepository;
+import javachip.repository.user.UserRepository;
+import javachip.repository.wish.WishRepository;
+import javachip.service.wish.WishService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

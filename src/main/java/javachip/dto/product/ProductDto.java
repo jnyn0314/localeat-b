@@ -8,7 +8,11 @@ package javachip.dto.product;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import javachip.entity.*;
+import javachip.entity.product.GradeBOption;
+import javachip.entity.product.LocalType;
+import javachip.entity.product.Product;
+import javachip.entity.user.Seller;
+import javachip.entity.user.User;
 import lombok.*;
 
 import java.util.Date;

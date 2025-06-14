@@ -1,9 +1,9 @@
 package javachip;
 
 import javachip.dto.user.SignUpRequest;
-import javachip.service.AuthServiceSeller;
-import javachip.entity.Seller;
-import javachip.repository.SellerRepository;
+import javachip.service.user.AuthServiceSeller;
+import javachip.entity.user.Seller;
+import javachip.repository.user.SellerRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;

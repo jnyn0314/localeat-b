@@ -8,9 +8,16 @@
 package javachip.service.impl;
 
 import javachip.dto.review.ReviewDto;
-import javachip.entity.*;
-import javachip.repository.*;
-import javachip.service.ReviewService;
+import javachip.entity.order.OrderItem;
+import javachip.entity.order.OrderStatus;
+import javachip.entity.product.Product;
+import javachip.entity.review.Review;
+import javachip.entity.user.User;
+import javachip.repository.order.OrderItemRepository;
+import javachip.repository.product.ProductRepository;
+import javachip.repository.review.ReviewRepository;
+import javachip.repository.user.UserRepository;
+import javachip.service.review.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,10 +28,10 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class ReviewServiceImpl implements ReviewService {
-    private final ReviewRepository     reviewRepository;
-    private final OrderItemRepository  orderItemRepository;
-    private final ProductRepository    productRepository;
-    private final UserRepository       userRepository;
+    private final ReviewRepository reviewRepository;
+    private final OrderItemRepository orderItemRepository;
+    private final ProductRepository productRepository;
+    private final UserRepository userRepository;
 
     @Override
     @Transactional

@@ -1,10 +1,9 @@
 package javachip.dto.groupbuy;
 
-import javachip.entity.LocalType;
+import javachip.entity.product.LocalType;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Getter
 @Setter

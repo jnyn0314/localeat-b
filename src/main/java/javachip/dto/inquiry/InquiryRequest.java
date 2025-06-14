@@ -1,6 +1,9 @@
 package javachip.dto.inquiry;
 
-import javachip.entity.*;
+import javachip.entity.cart.Consumer;
+import javachip.entity.inquiry.Inquiry;
+import javachip.entity.inquiry.InquiryCategory;
+import javachip.entity.product.Product;
 import lombok.*;
 
 @Getter

@@ -7,7 +7,11 @@
 
 package javachip.dto.subscription;
 
-import javachip.entity.*;
+import javachip.entity.order.OrderItem;
+import javachip.entity.order.OrderStatus;
+import javachip.entity.order.Orders;
+import javachip.entity.product.Product;
+import javachip.entity.subscribe.DeliveryCycle;
 import lombok.Getter;
 import lombok.Setter;
 
