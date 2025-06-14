@@ -9,6 +9,7 @@ package javachip.controller;
 
 import jakarta.validation.Valid;
 import javachip.dto.subscription.SubscribeOrderRequest;
+import javachip.dto.subscription.SubscribeUpdateRequest;
 import javachip.service.SubscribeOrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +32,22 @@ public class SubscribeOrderController {
             @RequestHeader("userId") String userId,
             @RequestBody SubscribeOrderRequest request
     ) {
+        System.out.println("✅ POST /api/subscribe-order 도달함");
         subscribeOrderService.createSubscribeOrder(request, userId);
         return ResponseEntity.ok().build();
     }
+
+    /** [PUT]
+     * 클라이언트로부터 구독 수정 요청을 받아 처리
+     * */
+    @PutMapping("/subscription/{id}")
+    public ResponseEntity<?> updateSubscription(
+            @PathVariable Long id,
+            @RequestBody SubscribeUpdateRequest request
+    ) {
+        System.out.println("🚀 Controller: updateSubscription 도착");
+        subscribeOrderService.updateSubscription(id, request);
+        return ResponseEntity.ok().build();
+    }
+
 }

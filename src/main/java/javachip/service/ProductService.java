@@ -8,6 +8,7 @@ package javachip.service;
 
 import javachip.dto.product.ProductDto;
 import java.util.List;
+import java.util.Map;
 
 public interface ProductService {
     List<ProductDto> getAllProducts();
@@ -16,6 +17,7 @@ public interface ProductService {
     ProductDto saveProduct(ProductDto dto);
     void updateProduct(Long id, ProductDto dto);
     void deleteProduct(Long id);
-    List<ProductDto> getLatestProducts();
+    Map<String, Object> getLatestProducts(int page, int size);
     List<ProductDto> searchProducts(String keyword, String tag);
+    List<ProductDto> getProductsBySeller(String sellerId);
 }

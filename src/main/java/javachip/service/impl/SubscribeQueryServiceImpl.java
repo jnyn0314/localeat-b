@@ -9,6 +9,7 @@ package javachip.service.impl;
 
 import javachip.dto.subscription.SubscribeOrderResponseDto;
 import javachip.entity.OrderItem;
+import javachip.entity.Subscription;
 import javachip.repository.OrderItemRepository;
 import javachip.service.SubscribeQueryService;
 import lombok.RequiredArgsConstructor;
@@ -31,15 +32,21 @@ public class SubscribeQueryServiceImpl implements SubscribeQueryService {
         List<OrderItem> items = orderItemRepository.findByUserIdAndIsSubscriptionTrue(userId);
 
         return items.stream()
-                .map(item -> SubscribeOrderResponseDto.builder()
-                        .productName(item.getProduct().getProductName())
-                        .productId(item.getProduct().getId()) // productId 추가
-                        .startDate(item.getOrder().getCreatedAt().toLocalDate().toString())
-                        .deliveryCycleType(item.getDeliveryCycleType())
-                        .deliveryCycleValue(item.getDeliveryCycleValue())
-                        .deliveryPeriodInMonths(item.getDeliveryPeriodInMonths())
-                        .quantity(item.getQuantity())
-                        .build())
+                .filter(item -> item.getSubscription() != null) // NPE 방지
+                .map(item -> {
+                    Subscription sub = item.getSubscription();
+                    return SubscribeOrderResponseDto.builder()
+                            .id(sub.getId())
+                            .productName(item.getProduct().getProductName())
+                            .productId(item.getProduct().getId())
+                            .startDate(item.getOrder().getCreatedAt().toLocalDate().toString())
+                            .deliveryCycleType(item.getDeliveryCycleType())
+                            .deliveryCycleValue(item.getDeliveryCycleValue())
+                            .deliveryPeriodInMonths(item.getDeliveryPeriodInMonths())
+                            .quantity(sub.getQuantity())
+                            .orderItemId(item.getId())
+                            .build();
+                })
                 .collect(Collectors.toList());
     }
 }

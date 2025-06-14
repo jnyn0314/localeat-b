@@ -7,6 +7,11 @@
 package javachip.service;
 
 import javachip.dto.subscription.SubscribeOrderRequest;
+import javachip.dto.subscription.SubscribeOrderResponseDto;
+import javachip.dto.subscription.SubscribeUpdateRequest;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 public interface SubscribeOrderService {
     /**
@@ -16,4 +21,12 @@ public interface SubscribeOrderService {
      * @param userId
      */
     void createSubscribeOrder(SubscribeOrderRequest request, String userId);
+
+    /*
+    사용자가 마이페이지에서 수정한 구독정보를 반영하는 메서드
+    * */
+    void updateSubscription(Long id, SubscribeUpdateRequest request);
+
+    @Transactional(readOnly = true)
+    List<SubscribeOrderResponseDto> getSubscriptions(String userId);
 }
